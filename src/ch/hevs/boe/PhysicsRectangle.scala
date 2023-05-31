@@ -10,4 +10,6 @@ class PhysicsRectangle(
       private val _h: Int) extends PhysicsStaticBox(_name, _pos, _w, _h) {
 	def getWidth: Int = _w
 	def getHeight: Int = _h
+	
+	// hasRoom ?
 }
