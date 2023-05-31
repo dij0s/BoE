@@ -10,10 +10,10 @@ class Room {
 	private var _borders: HashMap[String, PhysicsRectangle] = HashMap.empty
 	
 	def init(): Unit = {
-		_borders = HashMap("top" -> new PhysicsRectangle("top", new Vector2(50, 450), 400, 50),
-											 "right" -> new PhysicsRectangle("right", new Vector2(650, 0), 50, 400),
-											 "bottom" -> new PhysicsRectangle("bottom", new Vector2(50, 0), 600, 50),
-											 "left" -> new PhysicsRectangle("left", new Vector2(0, 0), 50, 400))
+		_borders = HashMap("top" -> new PhysicsRectangle("top", new Vector2(450, 575), 900, 50),
+											 "right" -> new PhysicsRectangle("right", new Vector2(875, 300), 50, 600),
+											 "bottom" -> new PhysicsRectangle("bottom", new Vector2(450, 25), 900, 50),
+											 "left" -> new PhysicsRectangle("left", new Vector2(25, 300), 50, 600))
 	}
 	def borders: HashMap[String, PhysicsRectangle] = _borders
 	

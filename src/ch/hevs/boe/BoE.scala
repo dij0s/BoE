@@ -11,7 +11,7 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.World
 
 class Game extends PortableApplication(900, 600) {
-
+  val startRoom: Room = new Room
   var world: World = PhysicsWorld.getInstance()
   var square: PhysicsStaticBox = null
   var debugRenderer: DebugRenderer = null
@@ -21,6 +21,8 @@ class Game extends PortableApplication(900, 600) {
     debugRenderer = new DebugRenderer()
     square = new PhysicsStaticBox(null, new Vector2(100, 100), 50, 50)
     new PhysicsScreenBoundaries(900, 600)
+    
+    startRoom.init()
   }
 
   override def onGraphicRender(g: GdxGraphics): Unit = {
@@ -28,7 +30,7 @@ class Game extends PortableApplication(900, 600) {
 
     debugRenderer.render(world, g.getCamera.combined)
     g.drawFPS()
-    g.drawSchoolLogo()
+    startRoom.display(g)
     PhysicsWorld.updatePhysics(Gdx.graphics.getDeltaTime)
   }
 }
