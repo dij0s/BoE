@@ -11,13 +11,13 @@ import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.physics.box2d.World
 
 class Game extends PortableApplication(900, 600) {
-  val startRoom: Room = new Room
+  val startRoom: TestingRoom = new TestingRoom
   var world: World = PhysicsWorld.getInstance()
   var square: PhysicsStaticBox = null
   var debugRenderer: DebugRenderer = null
 
   override def onInit(): Unit = {
-    setTitle("The binding of Elijah")
+    setTitle("The Binding of Elijah")
     debugRenderer = new DebugRenderer()
     square = new PhysicsStaticBox(null, new Vector2(100, 100), 50, 50)
     new PhysicsScreenBoundaries(900, 600)
