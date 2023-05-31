@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.components.physics.primitives.PhysicsStaticBox
 import ch.hevs.gdx2d.lib.physics.{AbstractPhysicsObject, PhysicsWorld}
+import com.badlogic.gdx.math.Vector2
 
 import scala.collection.mutable.ListBuffer
 
@@ -17,7 +18,7 @@ class HelloWorldApplication extends PortableApplication(1200,1000) {
   override def onInit(): Unit = {
     setTitle("Hello world application")
 //    isaacSprites = new Spritesheet("data/sprites/isaac_og_sheet.png", 64, 64)
-//    physicsObjectsList.addOne(new PhysicsStaticBox(null, Vector[Int](100, 10), 40, 40))
+    physicsObjectsList.addOne(new PhysicsStaticBox(null, new Vector2(100, 10), 40, 40))
   }
 
   override def onGraphicRender(g: GdxGraphics): Unit = {
