@@ -1,6 +1,6 @@
 package ch.hevs.boe.movable
 
-import ch.hevs.boe.physics.{PhysicObject, Position}
+import ch.hevs.boe.physics.{PhysicObject, Position, CollisionManager}
 import ch.hevs.gdx2d.lib.GdxGraphics
 
 object Player {
@@ -9,4 +9,7 @@ object Player {
 }
 
 class Player(position: Position = new Position(0, 0)) extends PhysicObject(position, Player.SIZE, Player.SIZE) {
+
+  // Adding player to collision group
+//  var test:CollisionManager
 }

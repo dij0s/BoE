@@ -1,20 +1,11 @@
 package ch.hevs.boe.physics
 
-import ch.hevs.boe.physics.Types.{CollisionCallback, CollisionGroup}
-
-import scala.collection.mutable
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ArrayBuffer
-object Types {
-  type CollisionCallback = (ArrayBuffer[PhysicObject]) => Unit
 
-  type CollisionGroup = HashMap[String, ArrayBuffer[CollisionObject]]
-}
+import ch.hevs.boe.GenStuff._
 
-
-case class CollisionObject(rect: PhysicObject, collisionCallback: CollisionCallback)
-
-class CollisionManager {
+object CollisionManager {
 
   var groups: CollisionGroup = new CollisionGroup()
 
