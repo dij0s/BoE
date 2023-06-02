@@ -1,9 +1,13 @@
 package ch.hevs.boe.item
 
-import ch.hevs.boe.physics.PhysicObject
+import ch.hevs.boe.physics.{PhysicObject, Position}
+import ch.hevs.boe.movable.PlayerProperties
 
-trait Item extends PhysicObject {
+protected abstract class Item(position: Position,
+                              width: Int,
+                              height: Int) extends PhysicObject(position, width, height) {
   val name: String
   val description: String
-//  val affects: PlayerProperty ?
+  val affectedProperty: PlayerProperties.Value
+  val statEffect: Double
 }
