@@ -5,9 +5,6 @@ import ch.hevs.boe.utils.Utils
 import ch.hevs.gdx2d.lib.GdxGraphics
 
 class Position(var x: Int, var y: Int) {
-
-
-
   def clonePos(): Position = {
     new Position(x, y)
   }

@@ -1,5 +1,6 @@
 package ch.hevs.boe
 
+import ch.hevs.boe.stage.rooms.TestingRoom
 import ch.hevs.gdx2d.components.physics.primitives.PhysicsStaticBox
 import ch.hevs.gdx2d.components.physics.utils.PhysicsScreenBoundaries
 import ch.hevs.gdx2d.desktop.PortableApplication
@@ -12,26 +13,16 @@ import com.badlogic.gdx.physics.box2d.World
 
 class Game extends PortableApplication(900, 600) {
   val startRoom: TestingRoom = new TestingRoom
-  var world: World = PhysicsWorld.getInstance()
-  var square: PhysicsStaticBox = null
-  var debugRenderer: DebugRenderer = null
 
   override def onInit(): Unit = {
     setTitle("The Binding of Elijah")
-    debugRenderer = new DebugRenderer()
-    square = new PhysicsStaticBox(null, new Vector2(100, 100), 50, 50)
-    new PhysicsScreenBoundaries(900, 600)
-    
-    startRoom.init()
   }
 
   override def onGraphicRender(g: GdxGraphics): Unit = {
     g.clear()
 
-    debugRenderer.render(world, g.getCamera.combined)
     g.drawFPS()
-    startRoom.display(g)
-    PhysicsWorld.updatePhysics(Gdx.graphics.getDeltaTime)
+    startRoom.draw(g)
   }
 }
 
