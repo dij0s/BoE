@@ -3,11 +3,14 @@ package ch.hevs.boe.stage.rooms
 import ch.hevs.boe.draw.Drawable
 import ch.hevs.boe.physics.PhysicObject
 import ch.hevs.boe.stage.Directions
+import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
+
 import scala.collection.mutable.HashMap
 import com.badlogic.gdx.graphics.Color
 
-abstract class Room(private var _borders: HashMap[Directions.Value, PhysicObject] = HashMap.empty,
+abstract class Room(private val sprites: Spritesheet,
+										private var _borders: HashMap[Directions.Value, PhysicObject] = HashMap.empty,
                     private val _neighbor: HashMap[Directions.Value, Room] = HashMap.empty)
 extends Drawable{
 	def borders: HashMap[Directions.Value, PhysicObject] = _borders
