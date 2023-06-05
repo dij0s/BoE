@@ -8,7 +8,7 @@ import scala.collection.mutable.ArrayBuffer
 package object GenStuff {
   case class CollisionObject(rect: PhysicObject, collisionCallback: CollisionCallback)
 
-  type CollisionCallback = (ArrayBuffer[PhysicObject]) => Unit
+  type CollisionCallback = (HashMap[String, ArrayBuffer[PhysicObject]]) => Unit
 
   type CollisionGroup = HashMap[String, ArrayBuffer[CollisionObject]]
 }

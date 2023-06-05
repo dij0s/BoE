@@ -1,15 +1,21 @@
 package ch.hevs.boe.stage.rooms
 
-import ch.hevs.boe.physics.{PhysicObject, Position}
+import ch.hevs.boe.physics.{CollisionManager, PhysicObject, Position}
 import ch.hevs.boe.stage.Directions
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
+
+import scala.collection.mutable.HashMap
+import scala.collection.mutable.ArrayBuffer
 
 class Wall(_position: Position,
 					 _width: Int,
 					 _height: Int,
 					 private val direction: Directions.Value,
 					 private val sprites: Spritesheet) extends PhysicObject(_position, _width, _height) {
+
+	CollisionManager.addObjectToGroup("Wall", this, (obj: HashMap[String, ArrayBuffer[PhysicObject]]) => {})
+
 
 	private val rotationAngle: Float = direction match {
 		case Directions.TOP => 0f

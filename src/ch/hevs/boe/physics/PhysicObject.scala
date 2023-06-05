@@ -31,7 +31,7 @@ abstract class PhysicObject(protected var _position: Position, protected var _wi
 
 
 
-  def checkCollision(rect: PhysicObject): Boolean = {
+  def checkCollision(rect: PhysicObject, doubleChecked: Boolean = false): Boolean = {
 
     // checking collisions
     if(rect.position.x >= this.position.x && rect.position.x <= this.maxX) {
@@ -45,6 +45,9 @@ abstract class PhysicObject(protected var _position: Position, protected var _wi
         return true
       }
     }
-    return false
+    if(doubleChecked) {
+      return false
+    }
+    return rect.checkCollision(this, true)
   }
 }
