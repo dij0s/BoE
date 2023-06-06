@@ -1,7 +1,7 @@
 package ch.hevs.boe.movable
 
 import ch.hevs.boe.movable.statisctics.Statistic
-import ch.hevs.boe.physics.{CollisionManager, PhysicObject, Position}
+import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.{Gdx, Input}
 
@@ -11,7 +11,7 @@ object Player {
   val SIZE: Int = 50
 }
 
-class Player(_position: Position = new Position(0, 0)) extends PhysicObject(_position, Player.SIZE, Player.SIZE) with Statistic {
+class Player(_position: Position = new Position(0, 0)) extends PhysicalObject(_position, Player.SIZE, Player.SIZE) with Statistic {
   // Adding player to collision group
   //  var test:CollisionManager
 
@@ -26,7 +26,7 @@ class Player(_position: Position = new Position(0, 0)) extends PhysicObject(_pos
 
 
 
-  def collision(obj: HashMap[String, ArrayBuffer[PhysicObject]]) = {
+  def collision(obj: HashMap[String, ArrayBuffer[PhysicalObject]]) = {
     for(v <- obj) {
       if(v._1 == "Wall") {
         if(oldPos != null) {

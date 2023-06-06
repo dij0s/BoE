@@ -7,11 +7,9 @@ import ch.hevs.boe.GenStuff._
 import scala.collection.mutable
 
 object CollisionManager {
+  val groups: CollisionGroup = new CollisionGroup()
 
-  var groups: CollisionGroup = new CollisionGroup()
-
-
-  def addObjectToGroup(groupName: String, obj:PhysicObject, cb: CollisionCallback) = {
+  def addObjectToGroup(groupName: String, obj:PhysicalObject, cb: CollisionCallback) = {
     println("Added object to group ", groupName)
     println(obj.position.x, obj.position.y, obj.width, obj.height)
     if(!groups.contains(groupName)) {
@@ -21,7 +19,7 @@ object CollisionManager {
   }
 
   def checkCollisions() = {
-    val toTriggerArr: HashMap[CollisionObject, HashMap[String, ArrayBuffer[PhysicObject]]] = new HashMap[CollisionObject, HashMap[String, ArrayBuffer[PhysicObject]]]()
+    val toTriggerArr: HashMap[CollisionObject, HashMap[String, ArrayBuffer[PhysicalObject]]] = new HashMap[CollisionObject, HashMap[String, ArrayBuffer[PhysicalObject]]]()
     for(name <- groups.keys) {
       val group = groups(name)
       val groupsToCheck = groups.clone()
@@ -31,10 +29,10 @@ object CollisionManager {
           if(current.rect.checkCollision(g.rect)) {
             // This means that we have a collision between current and to check
             if(!toTriggerArr.contains(current)) {
-              toTriggerArr.addOne(current, new HashMap[String, ArrayBuffer[PhysicObject]]())
+              toTriggerArr.addOne(current, new HashMap[String, ArrayBuffer[PhysicalObject]]())
             }
             if(!toTriggerArr(current).contains(toCheck._1)) {
-              toTriggerArr(current).addOne(toCheck._1, new ArrayBuffer[PhysicObject]())
+              toTriggerArr(current).addOne(toCheck._1, new ArrayBuffer[PhysicalObject]())
             }
             toTriggerArr(current)(toCheck._1).addOne(g.rect)
           }

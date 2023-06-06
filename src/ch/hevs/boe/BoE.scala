@@ -10,7 +10,7 @@ import ch.hevs.gdx2d.lib.GdxGraphics
 class Game extends PortableApplication(900, 600) {
   private var wallSprite: Spritesheet = null
   private var startRoom: TestingRoom = null
-  private var player: Player = new Player(new Position(250, 250))
+  private val player: Player = new Player(new Position(250, 250))
 
   override def onInit(): Unit = {
     setTitle("The Binding of Elijah")

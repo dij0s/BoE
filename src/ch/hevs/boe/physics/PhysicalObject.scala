@@ -10,7 +10,7 @@ class Position(var x: Int, var y: Int) {
   }
 }
 
-abstract class PhysicObject(protected var _position: Position, protected var _width: Int, protected var _height: Int) extends Drawable {
+abstract class PhysicalObject(protected var _position: Position, protected var _width: Int, protected var _height: Int) extends Drawable {
 
   def width = this._width
 
@@ -31,7 +31,7 @@ abstract class PhysicObject(protected var _position: Position, protected var _wi
 
 
 
-  def checkCollision(rect: PhysicObject, doubleChecked: Boolean = false): Boolean = {
+  def checkCollision(rect: PhysicalObject, doubleChecked: Boolean = false): Boolean = {
 
     // checking collisions
     if(rect.position.x >= this.position.x && rect.position.x <= this.maxX) {
