@@ -1,11 +1,13 @@
 package ch.hevs.boe.entity.player
 
 import ch.hevs.boe.GenStuff._
+import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.projectile.Projectile
+import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
@@ -31,9 +33,14 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
 
   private var oldPos: Position = null
   private var playerSprite: Spritesheet = null
-  
+
+
+  // TEMP
+  var fireKeyDown: Boolean = false
   private def initSprite(sheet: Spritesheet): Unit = playerSprite = sheet
 
+
+  DrawManager.subscribe(draw)
   CollisionManager.addObjectToGroup(CollisionGroupNames.Player, this, collision)
   
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_temp.png", 28, 33), initSprite)
@@ -65,16 +72,20 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
         case CollisionGroupNames.EnemyProjectile => {
 
         }
+        case _ => {
+
+        }
       }
     }
   }
 
   def fire(direction: Direction) = {
-    val proj = new Projectile(this.position, direction, true)
+    val projPos: Position = new Position(position.x + width / 2, position.y + height / 2)
+    val proj = new Projectile(projPos, direction, true)
     proj.damage = damage
   }
   
-  def doGameplayTick() = {
+  override def doGameplayTick() = {
     var newX = position.x
     var newY = position.y
     if(Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -87,20 +98,19 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
       newX += speed
     }
     if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-
-    } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-
+      fire(Directions.TOP)
     } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-
+      fire(Directions.RIGHT)
     } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-
+      fire(Directions.BOTTOM)
     } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-
+      fire(Directions.LEFT)
     }
     position = new Position(newX, newY)
   }
 
   override def kill(): Unit = {
+
     // TODO: Implement death of player
   }
 }

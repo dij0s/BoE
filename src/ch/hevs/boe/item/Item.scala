@@ -25,6 +25,9 @@ protected abstract class Item(position: Position,
             this.applyItem(p.asInstanceOf[Entity])
           }
         }
+        case _ => {
+          // Default case
+        }
       }
     }
   }

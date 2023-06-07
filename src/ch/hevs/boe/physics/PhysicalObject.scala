@@ -20,6 +20,11 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
   def position_=(newVal: Position) = this._position = newVal
   override def draw(g: GdxGraphics): Unit = {
     Utils.drawPhysicalObject(this, g)
+    doGameplayTick()
+  }
+
+  def doGameplayTick() = {
+
   }
 
   def maxX = {
