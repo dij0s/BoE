@@ -1,8 +1,8 @@
 package ch.hevs.boe.item
 
-import ch.hevs.boe.GenStuff.CollisionGroupNames
-import ch.hevs.boe.movable.statistics.UnitStatistics
-import ch.hevs.boe.physics.{CollisionManager, Position}
+import ch.hevs.boe.physics.{Position}
+
+import scala.collection.mutable.ArrayBuffer
 
 protected abstract class PassiveItem(position: Position,
                                      width: Int,

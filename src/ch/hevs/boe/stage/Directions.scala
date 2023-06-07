@@ -1,6 +1,6 @@
 package ch.hevs.boe.stage
 
 object Directions extends Enumeration {
-//	type Direction = Value
+	type Direction = Value
 	val TOP, RIGHT, BOTTOM, LEFT = Value
 }

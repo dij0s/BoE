@@ -1,7 +1,6 @@
 package ch.hevs.boe.physics
 
-import ch.hevs.boe.movable.Player
-
+import ch.hevs.boe.entity.player.Player
 import scala.collection.mutable.ArrayBuffer
 
 object test extends App {
