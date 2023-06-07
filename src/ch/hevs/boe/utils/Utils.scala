@@ -13,10 +13,20 @@ object Utils {
     g.drawRectangle(centerX, centerY, obj.width, obj.height, 0)
   }
   
-  def drawSprite(sprites: TextureRegion, obj: PhysicalObject, g: GdxGraphics, rotationAngle: Float): Unit = {
-    val screenH: Float = g.getScreenHeight.asInstanceOf[Float]
-    val updatedY: Float = screenH - obj.position.y - obj.height
-    // must make use of rotation angle
-    g.draw(sprites, obj.position.x, updatedY, 0f, 0f, obj.width, obj.height, 1f, 1f, 0)
-  }
+//  def drawSprite(sprites: TextureRegion, obj: PhysicalObject, g: GdxGraphics): Unit = {
+//    val screenH: Float = g.getScreenHeight.asInstanceOf[Float]
+//    var rotationYpad: Float = 0f
+//    var rotationXpad: Float = 0f
+//
+//    rotationAngle match {
+//      case 180f => rotationYpad = obj.height; rotationXpad = obj.width
+//      case _ => 0f
+//    }
+//
+//    val updatedY: Float = screenH - obj.position.y - obj.height + rotationYpad
+//    val updatedX: Float = obj.position.x + rotationXpad
+//
+//    // must make use of rotation angle
+//    g.draw(sprites, updatedX, updatedY, 0f, 0f, obj.width, obj.height, 1f, 1f, rotationAngle)
+//  }
 }

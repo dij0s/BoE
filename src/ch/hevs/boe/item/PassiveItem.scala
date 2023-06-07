@@ -11,7 +11,7 @@ protected abstract class PassiveItem(position: Position,
 	// links the item's effect to the player
 	// should be correctly implemented
 	def triggerLink: Unit = {
-		if (isMultiplier) null// multiplies player's property by given factor
+		if (isMultiplier) null // should impact player's speed
 		else null // adds player's property to current stats
 	}
 }
