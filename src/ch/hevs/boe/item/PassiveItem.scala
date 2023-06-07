@@ -12,11 +12,4 @@ protected abstract class PassiveItem(position: Position,
 	val isMultiplier: Boolean
 	// links the item's effect to the player
 	// should be correctly implemented
-<<<<<<< HEAD
-	def triggerLink: Unit = {
-		if (isMultiplier) null // should impact player's speed
-		else null // adds player's property to current stats
-	}
-=======
->>>>>>> feature/stats
 }

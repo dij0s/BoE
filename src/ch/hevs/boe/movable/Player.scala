@@ -37,7 +37,7 @@ class Player extends PhysicalObject(null, Player.SIZE_DEFAULT, Player.SIZE_DEFAU
   }
   
   override def draw(g: GdxGraphics): Unit = {
-    g.draw(playerSprite.sprites(0)(0), _position.x, _position.y, SIZE, SIZE)
+    g.draw(playerSprite.sprites(0)(0), _position.x, _position.y, size, size)
     // hitbox
     super.draw(g)
   }
