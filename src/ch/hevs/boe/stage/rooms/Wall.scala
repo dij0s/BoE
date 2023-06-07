@@ -1,5 +1,6 @@
 package ch.hevs.boe.stage.rooms
-
+import ch.hevs.boe.GenStuff._
+import ch.hevs.boe.GenStuff.CollisionGroupNames
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.utils.Utils
@@ -15,7 +16,7 @@ class Wall(_position: Position,
 					 private val direction: Directions.Value,
 					 private val sprites: Spritesheet) extends PhysicalObject(_position, _width, _height) {
 
-	CollisionManager.addObjectToGroup("Wall", this, (obj: HashMap[String, ArrayBuffer[PhysicalObject]]) => {})
+	CollisionManager.addObjectToGroup(CollisionGroupNames.Wall, this, (obj: CollisionList) => {})
 	
 	private val rotationAngle: Float = direction match {
 		case Directions.TOP => 0f
@@ -26,7 +27,6 @@ class Wall(_position: Position,
 	override def draw(g: GdxGraphics): Unit = {
 		super.draw(g)
 	//	 what kind of origins and scalings ?
-		println(_position.x, _position.y)
 		Utils.drawSprite(sprites.sprites(0)(0), this, g, rotationAngle)
 	}
 }

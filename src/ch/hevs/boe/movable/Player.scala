@@ -1,5 +1,6 @@
 package ch.hevs.boe.movable
 
+import ch.hevs.boe.GenStuff._
 import ch.hevs.boe.movable.statisctics.Statistic
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 import ch.hevs.gdx2d.lib.GdxGraphics
@@ -17,7 +18,7 @@ class Player(_position: Position = new Position(0, 0)) extends PhysicalObject(_p
 
   private var oldPos: Position = null
 
-  CollisionManager.addObjectToGroup("Player", this, collision)
+  CollisionManager.addObjectToGroup(CollisionGroupNames.Player, this, collision)
 
   override def position_=(newVal: Position): Unit = {
     oldPos = position
@@ -26,13 +27,21 @@ class Player(_position: Position = new Position(0, 0)) extends PhysicalObject(_p
 
 
 
-  def collision(obj: HashMap[String, ArrayBuffer[PhysicalObject]]) = {
+  def collision(obj: CollisionList) = {
     for(v <- obj) {
-      if(v._1 == "Wall") {
-        if(oldPos != null) {
-          position = oldPos
-        } else {
-          println("Spawned in a wall !")
+      v._1 match {
+        case CollisionGroupNames.Wall => {
+          if (oldPos != null) {
+            position = oldPos
+          } else {
+            println("Spawned in a wall !")
+          }
+        }
+        case CollisionGroupNames.Enemy => {
+
+        }
+        case CollisionGroupNames.EnemyProjectile => {
+
         }
       }
     }

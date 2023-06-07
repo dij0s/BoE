@@ -1,5 +1,6 @@
 package ch.hevs.boe
 
+import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.physics.PhysicalObject
 
 import scala.collection.mutable.HashMap
@@ -8,7 +9,14 @@ import scala.collection.mutable.ArrayBuffer
 package object GenStuff {
   case class CollisionObject(rect: PhysicalObject, collisionCallback: CollisionCallback)
 
-  type CollisionCallback = (HashMap[String, ArrayBuffer[PhysicalObject]]) => Unit
+  type CollisionCallback = (HashMap[CollisionGroupNames, ArrayBuffer[PhysicalObject]]) => Unit
 
-  type CollisionGroup = HashMap[String, ArrayBuffer[CollisionObject]]
+  type CollisionGroup = HashMap[CollisionGroupNames, ArrayBuffer[CollisionObject]]
+
+  type CollisionList = HashMap[CollisionGroupNames, ArrayBuffer[PhysicalObject]]
+
+  object CollisionGroupNames extends Enumeration {
+    type CollisionGroupNames = Value
+    val Wall, Player, Enemy, PlayerProjectile, EnemyProjectile = Value
+  }
 }
