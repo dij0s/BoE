@@ -2,7 +2,12 @@ package ch.hevs.boe.movable.statistics
 
 trait DefaultStatistics {
   val DAMAGE_DEFAULT : Int
-  val DAMAGE_SIZE : Int = 8
+  val SPEED_DEFAULT : Int
+  val SIZE_DEFAULT: Int
+}
+
+trait DefaultUnitStatistics extends DefaultStatistics {
+  val FIRE_RATE_DEFAULT: Int
 }
 
 trait Statistic {
@@ -18,6 +23,7 @@ trait UnitStatistics extends Statistic {
 }
 
 trait ProjectileStatistics extends Statistic {
+  var ttl: Int // Number of tick before disappearing
   var piercingNbr: Int  // The number of hitboxes to hit before disappearing
 }
 

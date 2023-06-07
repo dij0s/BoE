@@ -9,7 +9,7 @@ import scala.collection.mutable.ArrayBuffer
 package object GenStuff {
   case class CollisionObject(rect: PhysicalObject, collisionCallback: CollisionCallback)
 
-  type CollisionCallback = (HashMap[CollisionGroupNames, ArrayBuffer[PhysicalObject]]) => Unit
+  type CollisionCallback = (CollisionList) => Unit
 
   type CollisionGroup = HashMap[CollisionGroupNames, ArrayBuffer[CollisionObject]]
 
@@ -17,6 +17,6 @@ package object GenStuff {
 
   object CollisionGroupNames extends Enumeration {
     type CollisionGroupNames = Value
-    val Wall, Player, Enemy, PlayerProjectile, EnemyProjectile = Value
+    val Wall, Player, Enemy, PlayerProjectile, EnemyProjectile, Item = Value
   }
 }
