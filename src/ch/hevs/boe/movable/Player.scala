@@ -1,20 +1,27 @@
 package ch.hevs.boe.movable
 
 import ch.hevs.boe.GenStuff._
-import ch.hevs.boe.movable.statisctics.Statistic
+import ch.hevs.boe.movable.statistics.{DefaultStatistics, Statistic}
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.{Gdx, Input}
 
 import scala.collection.mutable.{ArrayBuffer, HashMap}
 
-object Player {
-  val SIZE: Int = 50
+object Player extends DefaultStatistics{
+  override val DAMAGE_DEFAULT: Int = 12
 }
 
-class Player(_position: Position = new Position(0, 0)) extends PhysicalObject(_position, Player.SIZE, Player.SIZE) with Statistic {
-  // Adding player to collision group
-  //  var test:CollisionManager
+class Player extends PhysicalObject(null, Player.DAMAGE_SIZE, Player.size) with Statistic {
+
+  var damage: Int = Player.DAMAGE_DEFAULT
+  var speed: Int = Player.speed
+  var size: Int = Player.size
+
+
+  def this(_position: Position = new Position(0, 0)) = {
+    this(_position, this.size, this.size)
+  }
 
   private var oldPos: Position = null
 

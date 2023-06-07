@@ -1,6 +1,6 @@
 package ch.hevs.boe.item
 
-import ch.hevs.boe.movable.statisctics.Statistics
+import ch.hevs.boe.movable.statistics.Statistics
 import ch.hevs.boe.physics.{PhysicalObject, Position}
 
 protected abstract class Item(position: Position,
