@@ -1,13 +1,32 @@
 package ch.hevs.boe.item
 
-import ch.hevs.boe.movable.statisctics.Statistics
-import ch.hevs.boe.physics.{PhysicalObject, Position}
+import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
+import ch.hevs.boe.movable.Player
+import ch.hevs.boe.movable.statistics.UnitStatistics
+import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 
 protected abstract class Item(position: Position,
                               width: Int,
                               height: Int) extends PhysicalObject(position, width, height) {
   val name: String
   val description: String
-  val affectedProperty: Statistics.Value
-  val statEffect: Double
+  val statEffect: Int
+
+  CollisionManager.addObjectToGroup(CollisionGroupNames.Item,this, collision)
+
+
+
+  def collision(list: CollisionList) = {
+    for(i <- list) {
+      i._1 match {
+        case CollisionGroupNames.Player => {
+          for(p <- i._2) {
+            this.applyItem(p.asInstanceOf[Player])
+          }
+        }
+      }
+    }
+  }
+
+  def applyItem(target: UnitStatistics): Unit
 }

@@ -2,18 +2,26 @@ package ch.hevs.boe.movable
 
 import ch.hevs.boe.GenStuff._
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
-import ch.hevs.boe.movable.Player.SIZE
-import ch.hevs.boe.movable.statisctics.Statistic
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.{Gdx, Input}
+import ch.hevs.boe.movable.statistics.{DefaultStatistics, Statistic, UnitStatistics}
 
-object Player {
-  val SIZE: Int = 50
+object Player extends DefaultStatistics{
+  override val DAMAGE_DEFAULT: Int = 12
+  override val SPEED_DEFAULT: Int = 5
+  override val SIZE_DEFAULT: Int = 25
 }
 
-class Player(_position: Position = new Position(0, 0)) extends PhysicalObject(_position, Player.SIZE, Player.SIZE) with Statistic {
+class Player extends PhysicalObject(null, Player.SIZE_DEFAULT, Player.SIZE_DEFAULT) with UnitStatistics {
+
+  var damage: Int = Player.DAMAGE_DEFAULT
+  var speed: Int = Player.SPEED_DEFAULT
+  var size: Int = Player.SIZE_DEFAULT
+  var fireRate: Int = 20
+  var hp: Int = 5
+
   private var oldPos: Position = null
   private var playerSprite: Spritesheet = null
   

@@ -1,7 +1,7 @@
 package ch.hevs.boe.item.passive
 
 import ch.hevs.boe.item.PassiveItem
-import ch.hevs.boe.movable.statisctics.Statistics
+import ch.hevs.boe.movable.statistics.Statistics
 import ch.hevs.boe.physics.Position
 
 class TestItem(position: Position, width: Int, height: Int) extends PassiveItem(position, width, height) {

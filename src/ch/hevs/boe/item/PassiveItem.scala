@@ -1,6 +1,8 @@
 package ch.hevs.boe.item
 
-import ch.hevs.boe.physics.Position
+import ch.hevs.boe.GenStuff.CollisionGroupNames
+import ch.hevs.boe.movable.statistics.UnitStatistics
+import ch.hevs.boe.physics.{CollisionManager, Position}
 
 protected abstract class PassiveItem(position: Position,
                                      width: Int,
@@ -10,8 +12,11 @@ protected abstract class PassiveItem(position: Position,
 	val isMultiplier: Boolean
 	// links the item's effect to the player
 	// should be correctly implemented
+<<<<<<< HEAD
 	def triggerLink: Unit = {
 		if (isMultiplier) null // should impact player's speed
 		else null // adds player's property to current stats
 	}
+=======
+>>>>>>> feature/stats
 }
