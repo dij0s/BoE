@@ -1,7 +1,8 @@
-package ch.hevs.boe.stage.room
+package ch.hevs.boe.stage.room.predefined
 
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.stage.Directions
+import ch.hevs.boe.stage.room.{Room, Wall}
 
 import scala.collection.mutable.HashMap
 

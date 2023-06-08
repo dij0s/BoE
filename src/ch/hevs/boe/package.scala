@@ -17,6 +17,6 @@ package object GenStuff {
 
   object CollisionGroupNames extends Enumeration {
     type CollisionGroupNames = Value
-    val Wall, Player, Enemy, PlayerProjectile, EnemyProjectile, Item = Value
+    val Door, Wall, Player, Enemy, PlayerProjectile, EnemyProjectile, Item = Value
   }
 }

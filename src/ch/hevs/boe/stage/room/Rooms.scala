@@ -1,5 +1,7 @@
 package ch.hevs.boe.stage.room
 
+import ch.hevs.boe.stage.room.predefined.{BossRoom, ItemRoom, MobRoom, SpawnRoom}
+
 object Rooms extends Enumeration {
 	val BossRoom, ItemRoom, MobRoom, SpawnRoom = Value
 	

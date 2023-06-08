@@ -2,7 +2,6 @@ package ch.hevs.boe.item
 
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.entity.Entity
-import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.entity.statistics.EntityStatistics
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 

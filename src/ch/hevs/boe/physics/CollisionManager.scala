@@ -12,7 +12,6 @@ object CollisionManager {
   val groups: CollisionGroup = new CollisionGroup()
 
   def addObjectToGroup(groupName: CollisionGroupNames, obj:PhysicalObject, cb: CollisionCallback) = {
-    println("Added object to group ", groupName)
     if(!groups.contains(groupName)) {
       groups.addOne(groupName, new ArrayBuffer[CollisionObject]())
     }

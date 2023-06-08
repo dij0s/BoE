@@ -3,6 +3,7 @@ package ch.hevs.boe.entity.player
 import ch.hevs.boe.GenStuff._
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.Entity
+import ch.hevs.boe.entity.player.Player.SPRITE_VARIATIONS
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.projectile.Projectile
@@ -15,9 +16,10 @@ import com.badlogic.gdx.{Gdx, Input}
 object Player extends DefaultEntityStatistics{
   override val DAMAGE_DEFAULT: Int = 12
   override val SPEED_DEFAULT: Int = 5
-  override val SIZE_DEFAULT: Int = 25
+  override val SIZE_DEFAULT: Int = 50
   override val FIRE_RATE_DEFAULT: Int = 2
   override val DEFAULT_HP: Int = 5
+  val SPRITE_VARIATIONS: Int = 10
 }
 
 class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE_DEFAULT) {
@@ -25,6 +27,7 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   var speed: Int = Player.SPEED_DEFAULT
   var size: Int = Player.SIZE_DEFAULT
   var fireRate: Int = 20
+  private var spriteMovementIndex: Int = 0
 
   // TODO: Maybe find a better way to do that
   this._hp = Player.DEFAULT_HP
@@ -36,7 +39,7 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
 
   CollisionManager.addObjectToGroup(CollisionGroupNames.Player, this, collision)
   
-  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_temp.png", 28, 33), initSprite)
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initSprite)
 
   override def position_=(newVal: Position): Unit = {
     oldPos = position
@@ -44,7 +47,8 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   }
   
   override def draw(g: GdxGraphics): Unit = {
-    g.draw(playerSprite.sprites(0)(0), _position.x, _position.y, size, size)
+    val updatedY: Int = g.getScreenHeight - _position.y - size
+    g.draw(playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, size)
     // hitbox
     super.draw(g)
   }
@@ -73,19 +77,32 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
     val proj = new Projectile(this.position, direction, true)
     proj.damage = damage
   }
+
+  def handleSpriteVariation(): Unit = {
+    if ((spriteMovementIndex + 1) < SPRITE_VARIATIONS) spriteMovementIndex += 1
+    else spriteMovementIndex = 0
+  }
   
-  def doGameplayTick() = {
+  def doGameplayTick: Unit = {
     var newX = position.x
     var newY = position.y
+
+
     if(Gdx.input.isKeyPressed(Input.Keys.W)) {
       newY -= speed
+      handleSpriteVariation()
     } else if (Gdx.input.isKeyPressed(Input.Keys.A)) {
       newX -= speed
+      handleSpriteVariation()
     } else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
       newY += speed
+      handleSpriteVariation()
     } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
       newX += speed
-    }
+      handleSpriteVariation()
+    } else spriteMovementIndex = 0
+
+
     if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
 
     } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
