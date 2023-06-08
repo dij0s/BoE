@@ -1,8 +1,9 @@
 package ch.hevs.boe.item
 
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
-import ch.hevs.boe.movable.Player
-import ch.hevs.boe.movable.statistics.UnitStatistics
+import ch.hevs.boe.entity.Entity
+import ch.hevs.boe.entity.player.Player
+import ch.hevs.boe.entity.statistics.EntityStatistics
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 
 protected abstract class Item(position: Position,
@@ -21,12 +22,12 @@ protected abstract class Item(position: Position,
       i._1 match {
         case CollisionGroupNames.Player => {
           for(p <- i._2) {
-            this.applyItem(p.asInstanceOf[Player])
+            this.applyItem(p.asInstanceOf[Entity])
           }
         }
       }
     }
   }
 
-  def applyItem(target: UnitStatistics): Unit
+  def applyItem(target: EntityStatistics): Unit
 }

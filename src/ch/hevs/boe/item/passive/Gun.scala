@@ -1,7 +1,7 @@
 package ch.hevs.boe.item.passive
 
+import ch.hevs.boe.entity.statistics.EntityStatistics
 import ch.hevs.boe.item.PassiveItem
-import ch.hevs.boe.movable.statistics.UnitStatistics
 import ch.hevs.boe.physics.Position
 
 object Gun {
@@ -14,7 +14,7 @@ class Gun(pos: Position) extends PassiveItem(pos, Gun.ITEM_SIZE, Gun.ITEM_SIZE){
   override val description: String = "May be practical in case of a global conflict"
   override val statEffect: Int = 2
 
-  override def applyItem(target: UnitStatistics): Unit = {
+  override def applyItem(target: EntityStatistics): Unit = {
     target.damage = target.damage * this.statEffect
   }
 }

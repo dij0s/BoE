@@ -1,26 +1,33 @@
-package ch.hevs.boe.movable
+package ch.hevs.boe.entity.player
 
 import ch.hevs.boe.GenStuff._
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
-import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
+import ch.hevs.boe.entity.Entity
+import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
+import ch.hevs.boe.physics.{CollisionManager, Position}
+import ch.hevs.boe.projectile.Projectile
+import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.{Gdx, Input}
-import ch.hevs.boe.movable.statistics.{DefaultStatistics, Statistic, UnitStatistics}
 
-object Player extends DefaultStatistics{
+
+object Player extends DefaultEntityStatistics{
   override val DAMAGE_DEFAULT: Int = 12
   override val SPEED_DEFAULT: Int = 5
   override val SIZE_DEFAULT: Int = 25
+  override val FIRE_RATE_DEFAULT: Int = 2
+  override val DEFAULT_HP: Int = 5
 }
 
-class Player extends PhysicalObject(null, Player.SIZE_DEFAULT, Player.SIZE_DEFAULT) with UnitStatistics {
-
+class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE_DEFAULT) {
   var damage: Int = Player.DAMAGE_DEFAULT
   var speed: Int = Player.SPEED_DEFAULT
   var size: Int = Player.SIZE_DEFAULT
   var fireRate: Int = 20
-  var hp: Int = 5
+
+  // TODO: Maybe find a better way to do that
+  this._hp = Player.DEFAULT_HP
 
   private var oldPos: Position = null
   private var playerSprite: Spritesheet = null
@@ -61,6 +68,11 @@ class Player extends PhysicalObject(null, Player.SIZE_DEFAULT, Player.SIZE_DEFAU
       }
     }
   }
+
+  def fire(direction: Direction) = {
+    val proj = new Projectile(this.position, direction, true)
+    proj.damage = damage
+  }
   
   def doGameplayTick() = {
     var newX = position.x
@@ -74,6 +86,21 @@ class Player extends PhysicalObject(null, Player.SIZE_DEFAULT, Player.SIZE_DEFAU
     } else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
       newX += speed
     }
+    if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+
+    } else if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+
+    } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+
+    } else if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+
+    } else if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+
+    }
     position = new Position(newX, newY)
+  }
+
+  override def kill(): Unit = {
+    // TODO: Implement death of player
   }
 }

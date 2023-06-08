@@ -1,7 +1,7 @@
 package ch.hevs.boe
 
 import ch.hevs.boe.draw.sprites.SpritesManager
-import ch.hevs.boe.movable.Player
+import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.stage.room.SpawnRoom
 import ch.hevs.gdx2d.desktop.PortableApplication
