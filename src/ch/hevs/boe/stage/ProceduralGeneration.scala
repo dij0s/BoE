@@ -44,6 +44,6 @@ object ProceduralGeneration {
 
 		// TODO: create loops in graph ?
 
-		new Stage(spawnRoom)
+		new Stage(spawnRoom, Rooms.handleRoomExit)
 	}
 }

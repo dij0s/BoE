@@ -63,12 +63,7 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
             println("Spawned in a wall !")
           }
         }
-        case CollisionGroupNames.Enemy => {
-
-        }
-        case CollisionGroupNames.EnemyProjectile => {
-
-        }
+        case _ => {}
       }
     }
   }
