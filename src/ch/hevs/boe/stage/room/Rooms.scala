@@ -12,5 +12,7 @@ object Rooms extends Enumeration {
 			case _ => new MobRoom
 		}
 	}
-	def handleRoomExit(): Room = ???
+	def handleRoomExit(): Room = {
+		return new SpawnRoom
+	}
 }

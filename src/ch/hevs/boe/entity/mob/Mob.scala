@@ -1,20 +1,38 @@
 package ch.hevs.boe.entity.mob
 
+import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
+import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.entity.Entity
+import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
-import ch.hevs.boe.physics.Position
+import ch.hevs.boe.physics.{CollisionManager, Position}
 
-object Mob extends DefaultEntityStatistics {
-  override val FIRE_RATE_DEFAULT: Int = 5
-  override val DEFAULT_HP: Int = 2
-  override val DAMAGE_DEFAULT: Int = 1
-  override val SPEED_DEFAULT: Int = 2
-  override val SIZE_DEFAULT: Int = 10
-}
 
 abstract class Mob(position: Position, width: Int, height: Int) extends Entity(position, width, height) {
+  protected val contactDamage: Int
+
+
+  CollisionManager.addObjectToGroup(CollisionGroupNames.Enemy, this, collision)
+
+  def collision(list: CollisionList) = {
+    for(g <- list) {
+      g._1 match {
+        case CollisionGroupNames.Player => {
+          val pl: Player = g._2.asInstanceOf[Player]
+          pl.damageEntity(contactDamage)
+        }
+        case CollisionGroupNames.Wall => {
+          restorePreviousPosition()
+        }
+        case _ => {
+
+        }
+      }
+    }
+  }
   override def kill(): Unit = {
-
-
+    super.kill()
+    println("A mob has been killed !!!")
+    CollisionManager.removeObjectFromGroup(CollisionGroupNames.Enemy, this)
   }
 }

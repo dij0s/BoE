@@ -2,18 +2,20 @@ package ch.hevs.boe
 
 import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.draw.sprites.SpritesManager
+import ch.hevs.boe.entity.mob.Firemen
 import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.stage.{ProceduralGeneration, Stage}
 import ch.hevs.boe.stage.room.predefined.SpawnRoom
+import ch.hevs.boe.utils.time.{Timeout, Timer}
 import ch.hevs.gdx2d.desktop.PortableApplication
 import ch.hevs.gdx2d.lib.GdxGraphics
 
 class Game extends PortableApplication(900, 600) {
 
   // TODO: implement camera based on user position (inside Player class ig ?)
-
   private val player: Player = new Player(new Position(250, 250))
+  private val mob: Firemen = new Firemen(new Position(700, 400), player)
   private var startStage: Stage = null
 
   override def onInit(): Unit = {
@@ -24,11 +26,9 @@ class Game extends PortableApplication(900, 600) {
 
   override def onGraphicRender(g: GdxGraphics): Unit = {
     g.clear()
-    player.doGameplayTick
     // must make sure to draw stage before any entity
     startStage.draw(g)
 //    startStage.compileGraph()
-    player.draw(g)
     DrawManager.onDraw(g)
     g.drawFPS()
     CollisionManager.checkCollisions()

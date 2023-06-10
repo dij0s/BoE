@@ -18,6 +18,19 @@ object CollisionManager {
     groups(groupName).addOne(new CollisionObject(obj, cb))
   }
 
+  def removeObjectFromGroup(groupName: CollisionGroupNames, obj: PhysicalObject): Unit = {
+    if(groups.contains(groupName)) {
+      val group = groups(groupName)
+      val clone = group.clone()
+      for(i <- 0 until clone.length) {
+        val current = clone(i)
+        if(current.rect == obj) {
+          group.remove(i)
+        }
+      }
+    }
+  }
+
   def checkCollisions() = {
     val toTriggerArr: HashMap[CollisionObject, CollisionList] = new HashMap[CollisionObject, CollisionList]()
     for(name <- groups.keys) {

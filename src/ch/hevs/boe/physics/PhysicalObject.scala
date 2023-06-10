@@ -1,6 +1,6 @@
 package ch.hevs.boe.physics
 
-import ch.hevs.boe.draw.Drawable
+import ch.hevs.boe.draw.{DrawManager, Drawable}
 import ch.hevs.boe.utils.Utils
 import ch.hevs.gdx2d.lib.GdxGraphics
 
@@ -18,14 +18,15 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
 
   def position = this._position
   def position_=(newVal: Position) = this._position = newVal
+
+  protected val drawManagerId = DrawManager.subscribe(draw)
+
   override def draw(g: GdxGraphics): Unit = {
     Utils.drawPhysicalObject(this, g)
     doGameplayTick()
   }
 
-  def doGameplayTick() = {
-
-  }
+  def doGameplayTick() = {}
 
   def maxX = {
     this.position.x + _width
