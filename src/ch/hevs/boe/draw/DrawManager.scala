@@ -23,10 +23,12 @@ object DrawManager {
     }
   }
 
-  def onDraw(g: GdxGraphics) = {
+  def onDraw(g: GdxGraphics): Unit = {
     val clone = subscribers.clone()
     for(cb <- clone.values) {
       cb(g)
     }
   }
+
+//  def onDraw(g: GdxGraphics): Unit = subscribers.values.foreach(_(g))
 }

@@ -13,6 +13,6 @@ object Rooms extends Enumeration {
 		}
 	}
 	def handleRoomExit(): Room = {
-		return new SpawnRoom
+		new SpawnRoom
 	}
 }

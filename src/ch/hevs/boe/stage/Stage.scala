@@ -12,7 +12,10 @@ class Stage(private val _spawnRoom: Room, private val _changeRoom: () => Room, p
 	def next: Stage = _next
 	def next_= (newStage: Stage): Unit = _next = newStage
 	// TODO : correctly implement following method so we can display a minimap
-	def draw(g: GdxGraphics): Unit = _currentRoom.draw(g)
+
+//	def draw(g: GdxGraphics): Unit = _currentRoom.draw(g)
+
+	def draw(g: GdxGraphics): Unit = _spawnRoom.draw(g)
 	def compileGraph(currentRoom: Room = _spawnRoom, lastCheckedDirection: Direction = null): Unit = {
 		println(lastCheckedDirection, currentRoom)
 		// room is a leaf if the only neighbor is in the
