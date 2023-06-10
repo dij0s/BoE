@@ -70,6 +70,9 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
             println("Spawned in a wall !")
           }
         }
+<<<<<<< HEAD
+        case _ => {}
+=======
         case CollisionGroupNames.Enemy => {
 
         }
@@ -79,6 +82,7 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
         case _ => {
 
         }
+>>>>>>> feature/items
       }
     }
   }
@@ -94,7 +98,11 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
     else spriteMovementIndex = 0
   }
   
+<<<<<<< HEAD
+  def doGameplayTick: Unit = {
+=======
   override def doGameplayTick() = {
+>>>>>>> feature/items
     var newX = position.x
     var newY = position.y
 
