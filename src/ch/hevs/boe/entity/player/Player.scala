@@ -78,10 +78,7 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
           restorePreviousPosition()
         }
         case CollisionGroupNames.Enemy => {
-
-        }
-        case CollisionGroupNames.EnemyProjectile => {
-
+          // TODO Implement only if player should damage enemy on contact !!!
         }
         case _ => {
 
@@ -123,7 +120,7 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   }
 
   private def move(oldPos: Position) : Position = {
-    val newPos = oldPos
+    val newPos = oldPos.clonePos()
     var moved = true
     currentMovingDirection match {
       case PlayerDirections.TOP => {

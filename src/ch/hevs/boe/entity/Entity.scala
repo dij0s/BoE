@@ -24,7 +24,7 @@ abstract class Entity(pos: Position, width: Int, height: Int) extends PhysicalOb
 
   private var oldPos: Position = null
   override def position_=(newPos: Position) = {
-    this.oldPos = position
+    this.oldPos = position.clonePos()
     _position = newPos
   }
 
