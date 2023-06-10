@@ -38,8 +38,4 @@ abstract class Entity(pos: Position, width: Int, height: Int) extends PhysicalOb
       this.position = oldPos
     }
   }
-
-  def kill(): Unit = {
-    DrawManager.unsubscribe(drawManagerId)
-  }
 }

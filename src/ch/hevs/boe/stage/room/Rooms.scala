@@ -12,7 +12,4 @@ object Rooms extends Enumeration {
 			case _ => new MobRoom
 		}
 	}
-	def handleRoomExit(): Room = {
-		new SpawnRoom
-	}
 }

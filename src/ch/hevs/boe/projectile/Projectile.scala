@@ -80,7 +80,7 @@ abstract class Projectile(emitter: Entity) extends PhysicalObject(Utils.getEntit
     position = getNewCoordinates(position)
     ttl = ttl - 1
   }
-  def kill() = {
+  override def kill() = {
     CollisionManager.removeObjectFromGroup(getGroupName(), this)
     DrawManager.unsubscribe(drawManagerId)
   }

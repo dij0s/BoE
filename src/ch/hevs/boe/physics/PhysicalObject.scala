@@ -35,8 +35,6 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
     this.position.y + _height
   }
 
-
-
   def checkCollision(rect: PhysicalObject, doubleChecked: Boolean = false): Boolean = {
 
     // checking collisions
@@ -56,4 +54,6 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
     }
     return rect.checkCollision(this, true)
   }
+
+  def kill(): Unit = DrawManager.unsubscribe(drawManagerId)
 }

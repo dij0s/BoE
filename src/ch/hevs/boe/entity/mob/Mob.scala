@@ -11,7 +11,6 @@ import ch.hevs.boe.physics.{CollisionManager, Position}
 abstract class Mob(position: Position, width: Int, height: Int) extends Entity(position, width, height) {
   protected val contactDamage: Int
 
-
   CollisionManager.addObjectToGroup(CollisionGroupNames.Enemy, this, collision)
 
   def collision(list: CollisionList) = {

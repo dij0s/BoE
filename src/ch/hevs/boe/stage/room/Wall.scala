@@ -18,4 +18,9 @@ class Wall(_position: Position,
 	}
 	
 	CollisionManager.addObjectToGroup(CollisionGroupNames.Wall, this, (obj: CollisionList) => {})
+
+	override def kill(): Unit = {
+		super.kill()
+		CollisionManager.removeObjectFromGroup(CollisionGroupNames.Wall, this)
+	}
 }

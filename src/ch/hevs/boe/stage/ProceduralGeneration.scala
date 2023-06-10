@@ -27,8 +27,6 @@ object ProceduralGeneration {
 			var directionToAddRoom: Direction = null
 			var currentRoom: Room = spawnRoom
 
-			println(currentRoom.getNeighborsDirection.mkString("Array(", ", ", ")"))
-
 			// 'to' so we also handle leaf room in here
 			(0 to leafRoomDistance).foreach(i => {
 				// add next room in random empty direction
@@ -44,6 +42,6 @@ object ProceduralGeneration {
 
 		// TODO: create loops in graph ?
 
-		new Stage(spawnRoom, Rooms.handleRoomExit)
+		new Stage(spawnRoom)
 	}
 }
