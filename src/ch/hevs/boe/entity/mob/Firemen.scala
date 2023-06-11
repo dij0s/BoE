@@ -36,7 +36,7 @@ class Firemen(pos: Position,
   private def fireToPlayer(): Unit = {
     if(fireCooldown) return
     fireCooldown = true
-    new Rocket(this, player)
+    new DirectedProjectile(this, player)
     Timeout((1000 / fireRate).toInt) {fireCooldown = false}
   }
 

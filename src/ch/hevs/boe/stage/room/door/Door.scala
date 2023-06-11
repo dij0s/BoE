@@ -15,7 +15,9 @@ class Door(position: Position,
            private val _sprite: Spritesheet,
            private val _cb: (Direction) => Unit) extends PhysicalObject(position, width, height){
   override def selfInit: Boolean = false
-  
+
+  var closed: Boolean = false
+
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Door
   
   private val doorSpriteIndex: Int = _direction match {
@@ -34,10 +36,11 @@ class Door(position: Position,
     println("Door disposed")
     super._dispose()
   }
-  def drawHandlingState(g: GdxGraphics, hasMobs: Boolean): Unit = {
+
+  override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
     val updatedY: Int = g.getScreenHeight - position.y - height
-    val doorState = if (hasMobs) 0 else 1
+    val doorState = if (closed) 0 else 1
     g.draw(_sprite.sprites(doorState)(doorSpriteIndex), position.x, updatedY, width, height)
   }
 
