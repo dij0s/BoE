@@ -12,9 +12,7 @@ class DirectedProjectile(emitter: Entity, target: Entity) extends Projectile(emi
 
   private val step: Position = new Position((res._1 * speed).toInt, (res._2 * speed).toInt)
 
-  override def getGroupName(): CollisionGroupNames = {
-    CollisionGroupNames.EnemyProjectile
-  }
+  override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.EnemyProjectile
 
   override def getNewCoordinates(currentPos: Position): Position = {
     return new Position(currentPos.x + step.x, currentPos.y + step.y)

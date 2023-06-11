@@ -16,8 +16,8 @@ abstract class Boss(pos: Position, width: Int, height: Int) extends Mob(pos, wid
   }
 
 
-  override def kill(): Unit = {
-    super.kill()
+  override protected def _dispose(): Unit = {
+    super._dispose()
     for(s <- subscribers.clone) {
       s()
     }

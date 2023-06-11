@@ -1,5 +1,6 @@
 package ch.hevs.boe.entity.mob
 
+import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.entity.Entity
@@ -9,11 +10,12 @@ import ch.hevs.boe.physics.{CollisionManager, Position}
 
 
 abstract class Mob(position: Position, width: Int, height: Int) extends Entity(position, width, height) {
+  var selfInit: Boolean = false
   protected val contactDamage: Int
 
-  CollisionManager.addObjectToGroup(CollisionGroupNames.Enemy, this, collision)
+  override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Enemy
 
-  def collision(list: CollisionList) = {
+  override def collision(list: CollisionList) = {
     for(g <- list) {
       g._1 match {
         case CollisionGroupNames.Player => {
@@ -29,9 +31,8 @@ abstract class Mob(position: Position, width: Int, height: Int) extends Entity(p
       }
     }
   }
-  override def kill(): Unit = {
-    super.kill()
+  override protected def _dispose(): Unit = {
+    super._dispose()
     println("A mob has been killed !!!")
-    CollisionManager.removeObjectFromGroup(CollisionGroupNames.Enemy, this)
   }
 }

@@ -4,28 +4,31 @@ import ch.hevs.boe.GenStuff.CollisionGroupNames
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.Position
-import ch.hevs.boe.utils.Utils.getStepTowardEntity
+import ch.hevs.boe.utils.Utils.{getEntityCenter, getStepTowardEntity}
+import ch.hevs.boe.utils.time.Timeout
 
 object Rocket {
   private val START_VALUE: Double = 1.1
   private val STEP_INDEX : Double = 0.02
+  private val WIDTH: Int = 25
+  private val HEIGHT: Int = 25
+  private val EXPLOSION_LENGTH = 500
+  private val EXPLOSION_SIZE = 75
 }
 
 
-class Rocket(emitter: Entity, target: Entity, emitterGroup: CollisionGroupNames = CollisionGroupNames.EnemyProjectile) extends DirectedProjectile(emitter, target) {
+class Rocket(emitter: Entity, target: Entity, emitterGroup: CollisionGroupNames = CollisionGroupNames.EnemyProjectile) extends Projectile(emitter, Rocket.WIDTH, Rocket.HEIGHT) {
 
+  private var exploding: Boolean = false
 
+  override def ttl_=(newVal: Int): Unit = return
 
-  ttl = 100000
   private var index: Double = Rocket.START_VALUE
 
   private val step = getStepTowardEntity(emitter, target)
 
-  override def getGroupName(): CollisionGroupNames = emitterGroup
-
-
   private def easeInQuint(x: Double): Double = {
-    Math.pow(x, 5)
+    Math.pow(x, 4)
   }
 
   override def getNewCoordinates(currentPos: Position): Position = {
@@ -34,4 +37,19 @@ class Rocket(emitter: Entity, target: Entity, emitterGroup: CollisionGroupNames 
     index += Rocket.STEP_INDEX
     return newPos
   }
+
+  override protected def _dispose(): Unit = {
+    if (exploding) return
+    exploding = true
+    val pos = getEntityCenter(this)
+    pos.x -= Rocket.EXPLOSION_SIZE / 2
+    pos.y -= Rocket.EXPLOSION_SIZE / 2
+    val exp = new Explosion(pos, Rocket.EXPLOSION_SIZE, Rocket.EXPLOSION_SIZE, damage)
+    Timeout(Rocket.EXPLOSION_LENGTH) {
+      exp.dispose()
+    }
+    super._dispose()
+  }
+
+  override def getCollisionGroup(): CollisionGroupNames = emitterGroup
 }

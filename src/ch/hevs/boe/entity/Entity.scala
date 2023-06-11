@@ -18,7 +18,7 @@ abstract class Entity(pos: Position, width: Int, height: Int) extends PhysicalOb
   override def hp_= (newVal: Int) = {
     _hp = newVal
     if(_hp <= 0) {
-      this.kill()
+      this.dispose()
     }
   }
 

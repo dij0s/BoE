@@ -3,17 +3,30 @@ package ch.hevs.boe.stage
 import ch.hevs.boe.draw.Drawable
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.stage.room.Room
+import ch.hevs.boe.utils.Initiable
 import ch.hevs.gdx2d.lib.GdxGraphics
 
-class Stage(private val _spawnRoom: Room, private var _next: Stage = null) extends Drawable {
-	_spawnRoom.stageRoomExitCallback = handleRoomExit
+class Stage(private val _spawnRoom: Room, private var _next: Stage = null) extends Drawable with Initiable{
 
 	// field used to know which room of
 	// current stage we should be displaying
-	private var _currentRoom: Room = _spawnRoom
+
+	private var _currentRoom: Room = null
+	private def currentRoom: Room = _currentRoom
+	private def currentRoom_=(newVal : Room) = {
+		if(currentRoom != null) {
+			currentRoom.dispose()
+			currentRoom.stageRoomExitCallback = null
+		}
+		_currentRoom = newVal
+		if(newVal != null) {
+			currentRoom.init()
+			currentRoom.stageRoomExitCallback = handleRoomExit
+		}
+	}
 	def handleRoomExit(nextRoom: Room): Unit = {
-		nextRoom.stageRoomExitCallback = handleRoomExit
-		_currentRoom = nextRoom
+		println("Changing room ???")
+		currentRoom = nextRoom
 	}
 	def spawnRoom: Room = _spawnRoom
 	def next: Stage = _next
@@ -23,6 +36,7 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null) exten
 
 	// TODO : correctly implement following method so we can display a minimap
 	def compileGraph(currentRoom: Room = _spawnRoom, lastCheckedDirection: Direction = null): Unit = {
+		println("Compiling graph ??")
 		println(lastCheckedDirection, currentRoom)
 		// room is a leaf if the only neighbor is in the
 		// opposite direction of lastCheckedDirection
@@ -35,5 +49,14 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null) exten
 				if (neighborDirection != lastCheckedDirection) compileGraph(neighborRoom, neighborDirection)
 			})
 		}
+	}
+
+	override protected def _init(): Unit = {
+		this.currentRoom = spawnRoom
+	}
+
+	override protected def _dispose(): Unit = {
+		// We need to clear out all the instances correctly
+		this.currentRoom.dispose()
 	}
 }

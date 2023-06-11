@@ -1,5 +1,6 @@
 package ch.hevs.boe.item
 
+import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.statistics.EntityStatistics
@@ -11,17 +12,16 @@ protected abstract class Item(position: Position,
   val name: String
   val description: String
   val statEffect: Int
+  var selfInit: Boolean = false
 
-  CollisionManager.addObjectToGroup(CollisionGroupNames.Item,this, collision)
-
-
-
-  def collision(list: CollisionList) = {
+  def collision(list: CollisionList): Unit = {
     for(i <- list) {
       i._1 match {
         case CollisionGroupNames.Player => {
           for(p <- i._2) {
             this.applyItem(p.asInstanceOf[Entity])
+            this.dispose()
+            return
           }
         }
         case _ => {
@@ -30,6 +30,8 @@ protected abstract class Item(position: Position,
       }
     }
   }
+
+  override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Item
 
   def applyItem(target: EntityStatistics): Unit
 }

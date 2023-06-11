@@ -21,6 +21,8 @@ class Game extends PortableApplication(900, 600) {
   override def onInit(): Unit = {
     setTitle("The Binding of Elijah")
     startStage = ProceduralGeneration.generateStage()
+    startStage.init()
+    mob.init()
     SpritesManager.init()
   }
 
@@ -28,7 +30,7 @@ class Game extends PortableApplication(900, 600) {
     g.clear()
     // must make sure to draw stage before any entity
     startStage.draw(g)
-//    startStage.compileGraph()
+    //startStage.compileGraph()
     DrawManager.onDraw(g)
     g.drawFPS()
     CollisionManager.checkCollisions()
