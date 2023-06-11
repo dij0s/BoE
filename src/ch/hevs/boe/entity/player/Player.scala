@@ -1,5 +1,6 @@
 package ch.hevs.boe.entity.player
 
+import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.GenStuff._
 import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
@@ -11,7 +12,7 @@ import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.projectile.{PlayerProjectile, Projectile}
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
-import ch.hevs.boe.utils.time.Timeout
+import ch.hevs.boe.utils.time.{Timeout, Timer}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.{Gdx, Input}
@@ -30,6 +31,7 @@ object Player extends DefaultEntityStatistics{
   override val FIRE_RATE_DEFAULT: Double = 1.5
   override val DEFAULT_HP: Int = 5
   val SPRITE_VARIATIONS: Int = 10
+  val IMMUNITY_LENGTH: Int = 500
 }
 
 class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE_DEFAULT) {
@@ -54,24 +56,25 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   private var onFireCooldown: Boolean = false
   private var playerSprite: Spritesheet = null
 
+  private var hideSprite: Boolean = false
+
   private var currentMovingDirection: PlayerDirections = null
 
 
   private def initSprite(sheet: Spritesheet): Unit = playerSprite = sheet
 
-
-  CollisionManager.addObjectToGroup(CollisionGroupNames.Player, this, collision)
-
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initSprite)
 
   override def draw(g: GdxGraphics): Unit = {
     val updatedY: Int = g.getScreenHeight - _position.y - size
-    g.draw(playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, size)
+    if(!hideSprite) {
+      g.draw(playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, size)
+    }
     // hitbox
     super.draw(g)
   }
 
-  def collision(obj: CollisionList) = {
+  override def collision(obj: CollisionList) = {
     for(v <- obj) {
       v._1 match {
         case CollisionGroupNames.Wall => {
@@ -115,7 +118,14 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
     this.hp = hp - amount
     if(amount > 0) {
       immunityFrames = true
-      Timeout(500) {immunityFrames = false}
+      val timer = Timer(100) {
+        hideSprite = !hideSprite
+      }
+      Timeout(Player.IMMUNITY_LENGTH) {
+        immunityFrames = false
+        hideSprite = false
+        timer.stop
+      }
     }
   }
 
@@ -213,8 +223,9 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
 
   override def kill(): Unit = {
     super.kill()
-    CollisionManager.removeObjectFromGroup(CollisionGroupNames.Player, this)
     println("YOU LOSE !!!")
     // TODO: Implement death of player
   }
+
+  override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Player
 }

@@ -19,7 +19,7 @@ object Utils {
   }
 
 
-  def getEntityCenter(e: Entity): Position = {
+  def getEntityCenter(e: PhysicalObject): Position = {
     return new Position(e.position.x + e.width / 2, e.position.y + e.height / 2)
   }
 

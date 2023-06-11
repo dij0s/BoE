@@ -1,5 +1,7 @@
 package ch.hevs.boe.physics
 
+import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
+import ch.hevs.boe.GenStuff.CollisionList
 import ch.hevs.boe.draw.{DrawManager, Drawable}
 import ch.hevs.boe.utils.Utils
 import ch.hevs.gdx2d.lib.GdxGraphics
@@ -20,11 +22,16 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
   def position_=(newVal: Position) = this._position = newVal
 
   protected val drawManagerId = DrawManager.subscribe(draw)
+  CollisionManager.addObjectToGroup(getCollisionGroup(), this, collision)
 
   override def draw(g: GdxGraphics): Unit = {
     Utils.drawPhysicalObject(this, g)
     doGameplayTick()
   }
+
+  def getCollisionGroup() : CollisionGroupNames
+
+  def collision(list: CollisionList): Unit
 
   def doGameplayTick() = {}
 
@@ -57,5 +64,6 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
 
   def kill(): Unit = {
     DrawManager.unsubscribe(drawManagerId)
+    CollisionManager.removeObjectFromGroup(getCollisionGroup(), this)
   }
 }

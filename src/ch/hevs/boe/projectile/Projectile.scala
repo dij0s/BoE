@@ -20,7 +20,7 @@ object Projectile extends DefaultProjectileStatistic {
 }
 
 // This class may need to become abstract in the future
-abstract class Projectile(emitter: Entity) extends PhysicalObject(Utils.getEntityCenter(emitter), Projectile.SIZE_DEFAULT: Int, Projectile.SIZE_DEFAULT) with ProjectileStatistics {
+abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT, height: Int = Projectile.SIZE_DEFAULT) extends PhysicalObject(Utils.getEntityCenter(emitter), width, height) with ProjectileStatistics {
 
   protected var _ttl: Int = Projectile.TTL_DEFAULT
   var _piercing: Int = Projectile.PIERCING_DEFAULT
@@ -45,9 +45,7 @@ abstract class Projectile(emitter: Entity) extends PhysicalObject(Utils.getEntit
     }
   }
 
-  CollisionManager.addObjectToGroup(getGroupName(), this, collision)
-
-  def getGroupName(): CollisionGroupNames
+  override def getCollisionGroup(): CollisionGroupNames
 
   def hitEntity(entity: Entity) = {
     entity.damageEntity(this.damage)
@@ -58,13 +56,13 @@ abstract class Projectile(emitter: Entity) extends PhysicalObject(Utils.getEntit
     for(i <- list) {
       if(i._1 == CollisionGroupNames.Wall) {
         // Need to kill the projectile
-        ttl = 0
-      } else if(this.getGroupName() == CollisionGroupNames.PlayerProjectile && i._1 == CollisionGroupNames.Enemy) {
+        this.kill()
+      } else if(this.getCollisionGroup() == CollisionGroupNames.PlayerProjectile && i._1 == CollisionGroupNames.Enemy) {
         for(el <- i._2) {
           hitEntity(el.asInstanceOf[Entity])
         }
         // Need to hurt the enemy
-      } else if (this.getGroupName() == CollisionGroupNames.EnemyProjectile && i._1 == CollisionGroupNames.Player) {
+      } else if (this.getCollisionGroup() == CollisionGroupNames.EnemyProjectile && i._1 == CollisionGroupNames.Player) {
         // Need to hurt the player
         for(el <- i._2) {
           hitEntity(el.asInstanceOf[Entity])
@@ -79,9 +77,5 @@ abstract class Projectile(emitter: Entity) extends PhysicalObject(Utils.getEntit
     // We need to move the projectile in the correct direction and decrease his ttl
     position = getNewCoordinates(position)
     ttl = ttl - 1
-  }
-  override def kill() = {
-    CollisionManager.removeObjectFromGroup(getGroupName(), this)
-    DrawManager.unsubscribe(drawManagerId)
   }
 }

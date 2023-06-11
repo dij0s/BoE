@@ -1,5 +1,6 @@
 package ch.hevs.boe.stage.room.door
 
+import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 import ch.hevs.boe.stage.Directions
@@ -13,7 +14,6 @@ class Door(position: Position,
            private val _direction: Direction,
            private val _sprite: Spritesheet,
            private val _cb: (Direction) => Unit) extends PhysicalObject(position, width, height){
-  CollisionManager.addObjectToGroup(CollisionGroupNames.Door, this, handleCollision)
 
   private val doorSpriteIndex: Int = _direction match {
     case Directions.TOP => 0
@@ -28,7 +28,7 @@ class Door(position: Position,
     g.draw(_sprite.sprites(0)(doorSpriteIndex), position.x, updatedY, width, height)
   }
 
-  def handleCollision(list: CollisionList): Unit = {
+  override def collision(list: CollisionList): Unit = {
     list.foreach{case (collisionGroup, collisionEntities) => {
       // handle player collision with door object
       if (collisionGroup == CollisionGroupNames.Player) _cb(_direction)
@@ -37,6 +37,8 @@ class Door(position: Position,
 
   override def kill(): Unit = {
     super.kill()
-    CollisionManager.removeObjectFromGroup(CollisionGroupNames.Door, this)
   }
+
+  override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Door
+
 }
