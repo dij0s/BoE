@@ -50,7 +50,6 @@ extends Drawable{
 	private var doorsSpritesInitiated: Boolean = false
 
 	protected val mobs: ListBuffer[Mob] = ListBuffer.empty
-	val hasMobs: Boolean
 
 	private def initRoomSprite(sheet: Spritesheet): Unit = roomSprite = sheet
 	private def initDoorSprite(sheet: Spritesheet): Unit = {
@@ -58,10 +57,9 @@ extends Drawable{
 		doorsSpritesInitiated = true
 		refreshDoors()
 	}
-	private def handleExit(direction: Direction): Unit = {
+	private def handleExit(direction: Direction): Unit = if (mobs.isEmpty) {
 		dispose()
 		val playerPosition: Position = getPlayerPositionOnExit(direction)
-		println(playerPosition.x, playerPosition.y)
 		if (stageRoomExitCallback != null) stageRoomExitCallback(getNeighborRoom(direction), playerPosition)
 	}
 
@@ -96,7 +94,7 @@ extends Drawable{
 		// draws room
 		g.draw(roomSprite.sprites(0)(0), 0, 0, g.getScreenWidth, g.getScreenHeight)
 		// create physical doors and display them
-		doorsPhysicalObjects.foreach(_.draw(g))
+		doorsPhysicalObjects.foreach(_.drawHandlingState(g, mobs.nonEmpty))
 		// this down here is needed to show walls hit-boxes
 		_borders.foreach(border => border._2.draw(g))
 	}

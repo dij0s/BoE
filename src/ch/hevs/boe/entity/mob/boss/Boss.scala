@@ -7,20 +7,20 @@ import scala.collection.mutable.ArrayBuffer
 
 
 
-abstract class Boss(pos: Position, width: Int, height: Int) extends Mob(pos, width, height) {
+abstract class Boss(pos: Position, width: Int, height: Int, callbackOnKilled: (Mob) => Unit) extends Mob(pos, width, height, callbackOnKilled) {
 
-  private val subscribers: ArrayBuffer[() => Unit] = new ArrayBuffer[() => Unit]()
-
-  def subscribeOnKill(cb:() => Unit) = {
-    subscribers.addOne(cb)
-  }
+//  private val subscribers: ArrayBuffer[() => Unit] = new ArrayBuffer[() => Unit]()
+//
+//  def subscribeOnKill(cb:() => Unit) = {
+//    subscribers.addOne(cb)
+//  }
 
 
   override def kill(): Unit = {
     super.kill()
-    for(s <- subscribers.clone) {
-      s()
-    }
+//    for(s <- subscribers.clone) {
+//      s()
+//    }
   }
 
 }

@@ -22,14 +22,14 @@ class Door(position: Position,
     case Directions.LEFT => 3
   }
 
-  override def draw(g: GdxGraphics, hasMobs: Boolean): Unit = {
+  def drawHandlingState(g: GdxGraphics, hasMobs: Boolean): Unit = {
     super.draw(g)
     val updatedY: Int = g.getScreenHeight - position.y - height
     val doorState = if (hasMobs) 0 else 1
     g.draw(_sprite.sprites(doorState)(doorSpriteIndex), position.x, updatedY, width, height)
   }
 
-  def handleCollision(list: CollisionList): Unit = {
+  private def handleCollision(list: CollisionList): Unit = {
     list.foreach{case (collisionGroup, collisionEntities) => {
       // handle player collision with door object
       if (collisionGroup == CollisionGroupNames.Player) _cb(_direction)

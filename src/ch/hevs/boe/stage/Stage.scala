@@ -14,7 +14,6 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null, priva
 	// current stage we should be displaying
 	private var _currentRoom: Room = _spawnRoom
 
-	println(_currentRoom.getClass)
 	private def handleRoomExit(nextRoom: Room, newPlayerPosition: Position): Unit = {
 		nextRoom.stageRoomExitCallback = handleRoomExit
 		_currentRoom = nextRoom

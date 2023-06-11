@@ -8,8 +8,6 @@ import ch.hevs.boe.stage.room.{Room, Wall}
 import scala.collection.mutable.HashMap
 
 class SpawnRoom extends Room("data/sprites/cave_room.png") {
-	override val hasMobs: Boolean = false
-
 	borders = HashMap(Directions.LEFT -> new Wall(new Position(0,0), 100, 600, Directions.LEFT),
 		Directions.BOTTOM -> new Wall(new Position(100,500), 700, 100, Directions.BOTTOM),
 		Directions.RIGHT -> new Wall(new Position(800,0), 100, 600, Directions.RIGHT),

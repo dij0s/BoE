@@ -17,7 +17,10 @@ object Firemen extends DefaultEntityStatistics {
   override val SIZE_DEFAULT: Int = 15
 }
 
-class Firemen(pos: Position, private val player: Player) extends Mob(pos, 15, (15*1.5).toInt) {
+class Firemen(pos: Position,
+              private val player: Player,
+              callbackOnKilled: (Mob) => Unit) extends Mob(pos, 15, (15*1.5).toInt, callbackOnKilled) {
+
   override var fireRate: Double = Firemen.FIRE_RATE_DEFAULT
   override var damage: Int = DAMAGE_DEFAULT
   override var speed: Int = SPEED_DEFAULT
@@ -27,6 +30,7 @@ class Firemen(pos: Position, private val player: Player) extends Mob(pos, 15, (1
   private var fireCooldown = false
 
   override def doGameplayTick(): Unit = {
+    println("test")
     fireToPlayer()
   }
 

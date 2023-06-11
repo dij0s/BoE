@@ -1,14 +1,12 @@
 package ch.hevs.boe.entity.mob
 
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
-import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.player.Player
-import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.{CollisionManager, Position}
 
 
-abstract class Mob(position: Position, width: Int, height: Int) extends Entity(position, width, height) {
+abstract class Mob(position: Position, width: Int, height: Int, private val callbackOnKilled: (Mob) => Unit) extends Entity(position, width, height) {
   protected val contactDamage: Int
 
   CollisionManager.addObjectToGroup(CollisionGroupNames.Enemy, this, collision)
@@ -31,6 +29,7 @@ abstract class Mob(position: Position, width: Int, height: Int) extends Entity(p
   }
   override def kill(): Unit = {
     super.kill()
+    callbackOnKilled(this)
     println("A mob has been killed !!!")
     CollisionManager.removeObjectFromGroup(CollisionGroupNames.Enemy, this)
   }
