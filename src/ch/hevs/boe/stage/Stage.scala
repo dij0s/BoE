@@ -26,7 +26,7 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null) exten
 			currentRoom.stageRoomExitCallback = handleRoomExit
 		}
 	}
-	def handleRoomExit(nextRoom: Room): Unit = {
+	def handleRoomExit(nextRoom: Room, pos: Position): Unit = {
 		println("Changing room ???")
 		currentRoom = nextRoom
 	}

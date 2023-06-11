@@ -9,18 +9,9 @@ import scala.collection.mutable.ArrayBuffer
 
 abstract class Boss(pos: Position, width: Int, height: Int, callbackOnKilled: (Mob) => Unit) extends Mob(pos, width, height, callbackOnKilled) {
 
-//  private val subscribers: ArrayBuffer[() => Unit] = new ArrayBuffer[() => Unit]()
-//
-//  def subscribeOnKill(cb:() => Unit) = {
-//    subscribers.addOne(cb)
-//  }
-
 
   override protected def _dispose(): Unit = {
     super._dispose()
-    for(s <- subscribers.clone) {
-      s()
-    }
   }
 
 }

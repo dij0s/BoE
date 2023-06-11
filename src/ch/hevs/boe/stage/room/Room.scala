@@ -88,15 +88,10 @@ extends Drawable with Initiable {
 	}
 
 	private def refreshDoors(): Unit = {
-<<<<<<< HEAD
-		if(!doorsSpritesInitied) return
+		if(!doorsSpritesInitiated) return
 		for(i <- doorsPhysicalObjects) {
 			i.dispose()
 		}
-=======
-		if(!doorsSpritesInitiated) return
-		doorsPhysicalObjects.foreach(_.kill())
->>>>>>> e01bdf8c5455bb61abd97b6b2ce52b6c78fd1f60
 		doorsPhysicalObjects.clear()
 		_neighbors.foreach(neighbor => {
 			val doorPosition: Position = Room.getDoorPosition(neighbor._1)
@@ -110,13 +105,6 @@ extends Drawable with Initiable {
 	def draw(g: GdxGraphics): Unit = {
 		// draws room
 		g.draw(roomSprite.sprites(0)(0), 0, 0, g.getScreenWidth, g.getScreenHeight)
-<<<<<<< HEAD
-=======
-		// create physical doors and display them
-		doorsPhysicalObjects.foreach(_.drawHandlingState(g, mobs.nonEmpty))
-		// this down here is needed to show walls hit-boxes
-		_borders.foreach(border => border._2.draw(g))
->>>>>>> e01bdf8c5455bb61abd97b6b2ce52b6c78fd1f60
 	}
 
 	override protected def _dispose(): Unit = {
