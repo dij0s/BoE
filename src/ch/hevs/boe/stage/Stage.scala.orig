@@ -8,6 +8,7 @@ import ch.hevs.boe.stage.room.Room
 import ch.hevs.boe.utils.Initiable
 import ch.hevs.gdx2d.lib.GdxGraphics
 
+<<<<<<< HEAD
 class Stage(private val _spawnRoom: Room, private var _next: Stage = null) extends Drawable with Initiable{
 
 	// field used to know which room of
@@ -26,9 +27,22 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null) exten
 			currentRoom.stageRoomExitCallback = handleRoomExit
 		}
 	}
-	def handleRoomExit(nextRoom: Room, pos: Position): Unit = {
+	def handleRoomExit(nextRoom: Room): Unit = {
 		println("Changing room ???")
 		currentRoom = nextRoom
+=======
+class Stage(private val _spawnRoom: Room, private var _next: Stage = null, private val playerEntity: Player) extends Drawable {
+	_spawnRoom.stageRoomExitCallback = handleRoomExit
+
+	// field used to know which room of
+	// current stage we should be displaying
+	private var _currentRoom: Room = _spawnRoom
+
+	private def handleRoomExit(nextRoom: Room, newPlayerPosition: Position): Unit = {
+		nextRoom.stageRoomExitCallback = handleRoomExit
+		_currentRoom = nextRoom
+		playerEntity.position = newPlayerPosition
+>>>>>>> e01bdf8c5455bb61abd97b6b2ce52b6c78fd1f60
 	}
 	def spawnRoom: Room = _spawnRoom
 	def next: Stage = _next

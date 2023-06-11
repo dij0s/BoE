@@ -1,29 +1,48 @@
 package ch.hevs.boe.stage
 
-import ch.hevs.boe.stage.room.{Room, Rooms, SpawnRoom}
+import ch.hevs.boe.entity.player.Player
+import ch.hevs.boe.stage.Directions.Direction
+import ch.hevs.boe.stage.room.predefined.{MobRoom, SpawnRoom}
+import ch.hevs.boe.stage.room.{Room, Rooms}
 
 import scala.collection.immutable.HashMap
-import scala.collection.mutable.ArrayBuffer
+import scala.util.Random
 
 object ProceduralGeneration {
+	private val leafMobRoomFactor: Float = 0.7f
 	// this method should generate a single
-	// stage making use of some magic stuff
-	def generateStage(stageDepth: Int): Stage = {
-		val stage: Stage = new Stage(new SpawnRoom)
-		val generatedRooms: ArrayBuffer[Room] = ArrayBuffer.empty
-		
-		val scalingFunction = (x: Int) => (1/8 * math.pow(x,2)).toInt
+	def generateStage(playerEntity: Player, stageDepth: Int = 0): Stage = {
+		val spawnRoom: Room = new SpawnRoom
+
+		val scalingFunction = (x: Int) => 1/8 * math.pow(x,2)
 		// stocker la distance minimale depuis le spawn
-		val roomsToGenerate: HashMap[Rooms.Value, Int] = HashMap[Room, Int](
-			Rooms.ItemRoom -> 1,
-			Rooms.BossRoom -> 1,
-			Rooms.MobRoom -> (4 + scalingFunction(stageDepth))
+		val leafRoomsToGenerate: HashMap[Rooms.Value, Int] = HashMap[Rooms.Value, Int](
+			Rooms.BossRoom -> (3 + leafMobRoomFactor * scalingFunction(stageDepth)).toInt,
+			Rooms.MobRoom -> (4 + scalingFunction(stageDepth)).toInt,
+			Rooms.ItemRoom -> (1 + scalingFunction(stageDepth)).toInt
 		)
-		
-		roomsToGenerate.foreach(roomType => {
-			(0 until roomType._2).foreach(_ => generatedRooms.addOne(Rooms.createRoom(roomType._1)))
+
+		leafRoomsToGenerate.foreach(leafRoom => {
+			val (leafRoomType, leafRoomDistance) = leafRoom
+
+			var directionToAddRoom: Direction = null
+			var currentRoom: Room = spawnRoom
+
+			// 'to' so we also handle leaf room in here
+			(0 to leafRoomDistance).foreach(i => {
+				// add next room in random empty direction
+				val emptyDirections: Array[Direction] = currentRoom.getEmptyNeighborDirections
+				directionToAddRoom = emptyDirections(Random.nextInt(emptyDirections.length))
+				val newRoom: Room = if (i < leafRoomDistance) new MobRoom(playerEntity) else Rooms.createRoom(leafRoomType, playerEntity)
+				newRoom.addNeighbor(Directions.getOpposite(directionToAddRoom), currentRoom)
+				currentRoom.addNeighbor(directionToAddRoom, newRoom)
+				// current room now is freshly created room
+				currentRoom = newRoom
+			})
 		})
-		// define doors to go from a room to another
-		
+
+		// TODO: create loops in graph ?
+
+		new Stage(spawnRoom, null)
 	}
 }

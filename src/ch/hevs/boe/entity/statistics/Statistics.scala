@@ -12,7 +12,7 @@ trait DefaultProjectileStatistic extends DefaultStatistics {
 }
 
 trait DefaultEntityStatistics extends DefaultStatistics {
-  val FIRE_RATE_DEFAULT: Int
+  val FIRE_RATE_DEFAULT: Double
   val DEFAULT_HP: Int
 }
 
@@ -24,7 +24,7 @@ trait Statistic {
 
 
 trait EntityStatistics extends Statistic {
-  var fireRate: Int
+  var fireRate: Double
   var hp: Int
 }
 

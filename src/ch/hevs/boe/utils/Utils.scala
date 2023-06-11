@@ -1,6 +1,7 @@
 package ch.hevs.boe.utils
 
-import ch.hevs.boe.physics.PhysicalObject
+import ch.hevs.boe.entity.Entity
+import ch.hevs.boe.physics.{PhysicalObject, Position}
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 
@@ -12,7 +13,46 @@ object Utils {
     val centerY: Float = screenH - obj.position.y - (obj.height / 2f)
     g.drawRectangle(centerX, centerY, obj.width, obj.height, 0)
   }
-  
+
+  def getVectorLength(pos: Position): Double = {
+    return Math.sqrt(Math.pow(pos.x, 2) + Math.pow(pos.y, 2))
+  }
+
+
+  def getEntityCenter(e: PhysicalObject): Position = {
+    return new Position(e.position.x + e.width / 2, e.position.y + e.height / 2)
+  }
+
+  def getEntityCenterWithChild(e: PhysicalObject, width: Int, _height: Int = -1): Position = {
+    var height = _height
+    if(_height == -1) height = width
+    val center = getEntityCenter(e)
+    center.x -= width / 2
+    center.y -= height / 2
+    return center
+  }
+
+  def getStepTowardEntity(emitter: Entity, target: Entity): (Double, Double) = {
+    val targetCenter: Position = Utils.getEntityCenter(target)
+    val emitterCenter: Position = Utils.getEntityCenter(emitter)
+    val posDiff = new Position(targetCenter.x - emitterCenter.x, targetCenter.y - emitterCenter.y)
+    val norme = Utils.getVectorLength(posDiff)
+    val stepX = posDiff.x.toDouble / norme
+    val stepY = posDiff.y.toDouble / norme
+    return (stepX, stepY)
+  }
+
+  def equalWithMargin(x: Int, y: Int, margin: Int): Boolean = {
+    val minX = x - margin
+    val maxX = x + margin
+    if(y <= maxX && y >= minX) {
+      return true
+    }
+    return false
+  }
+
+
+
 //  def drawSprite(sprites: TextureRegion, obj: PhysicalObject, g: GdxGraphics): Unit = {
 //    val screenH: Float = g.getScreenHeight.asInstanceOf[Float]
 //    var rotationYpad: Float = 0f

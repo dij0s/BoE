@@ -21,10 +21,10 @@ object Room {
 	}
 
 	private def getDoorPosition(direction: Direction): Position = direction match {
-		case Directions.TOP => new Position(400, 48)
-		case Directions.RIGHT => new Position(790, 269)
-		case Directions.BOTTOM => new Position(400, 490)
-		case Directions.LEFT => new Position(48, 269)
+		case Directions.TOP => new Position(400, 38)
+		case Directions.RIGHT => new Position(800, 269)
+		case Directions.BOTTOM => new Position(400, 500)
+		case Directions.LEFT => new Position(38, 269)
 	}
 
 	private def getPlayerPositionOnExit(direction: Direction): Position = {
@@ -42,8 +42,13 @@ object Room {
 abstract class Room(private val _spriteFilePath: String,
 										private var _borders: HashMap[Direction, PhysicalObject] = HashMap.empty,
                     private val _neighbors: HashMap[Direction, Room] = HashMap.empty)
+<<<<<<< HEAD
 extends Drawable with Initiable {
+	var stageRoomExitCallback: Room => Unit = null
+=======
+extends Drawable{
 	var stageRoomExitCallback: (Room, Position) => Unit = null
+>>>>>>> e01bdf8c5455bb61abd97b6b2ce52b6c78fd1f60
 
 	private var roomSprite: Spritesheet = null
 	private var doorsSprite: Spritesheet = null
@@ -88,10 +93,15 @@ extends Drawable with Initiable {
 	}
 
 	private def refreshDoors(): Unit = {
-		if(!doorsSpritesInitiated) return
+<<<<<<< HEAD
+		if(!doorsSpritesInitied) return
 		for(i <- doorsPhysicalObjects) {
 			i.dispose()
 		}
+=======
+		if(!doorsSpritesInitiated) return
+		doorsPhysicalObjects.foreach(_.kill())
+>>>>>>> e01bdf8c5455bb61abd97b6b2ce52b6c78fd1f60
 		doorsPhysicalObjects.clear()
 		_neighbors.foreach(neighbor => {
 			val doorPosition: Position = Room.getDoorPosition(neighbor._1)
@@ -105,6 +115,13 @@ extends Drawable with Initiable {
 	def draw(g: GdxGraphics): Unit = {
 		// draws room
 		g.draw(roomSprite.sprites(0)(0), 0, 0, g.getScreenWidth, g.getScreenHeight)
+<<<<<<< HEAD
+=======
+		// create physical doors and display them
+		doorsPhysicalObjects.foreach(_.drawHandlingState(g, mobs.nonEmpty))
+		// this down here is needed to show walls hit-boxes
+		_borders.foreach(border => border._2.draw(g))
+>>>>>>> e01bdf8c5455bb61abd97b6b2ce52b6c78fd1f60
 	}
 
 	override protected def _dispose(): Unit = {

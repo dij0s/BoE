@@ -12,17 +12,34 @@ object CollisionManager {
   val groups: CollisionGroup = new CollisionGroup()
 
   def addObjectToGroup(groupName: CollisionGroupNames, obj:PhysicalObject, cb: CollisionCallback) = {
-    println("Added object to group ", groupName)
     if(!groups.contains(groupName)) {
       groups.addOne(groupName, new ArrayBuffer[CollisionObject]())
     }
     groups(groupName).addOne(new CollisionObject(obj, cb))
   }
 
+  def removeObjectFromGroup(groupName: CollisionGroupNames, obj: PhysicalObject): Unit = {
+    if(groups.contains(groupName)) {
+      val group = groups(groupName)
+      val clone = group.clone()
+      for(i <- 0 until clone.length) {
+        val current = clone(i)
+        if(current.rect == obj) {
+          group.remove(i)
+          return
+        }
+      }
+      println("Trying to remove an object that was not in the group")
+    } else {
+      println("Trying to remove an object from a non existent group")
+    }
+  }
+
   def checkCollisions() = {
     val toTriggerArr: HashMap[CollisionObject, CollisionList] = new HashMap[CollisionObject, CollisionList]()
-    for(name <- groups.keys) {
-      val group = groups(name)
+    val groupsClone = groups.clone
+    for(name <- groupsClone.keys) {
+      val group = groupsClone(name)
       val groupsToCheck = groups.clone()
       groupsToCheck.remove(name)
       for(current <- group) {

@@ -1,7 +1,10 @@
-package ch.hevs.boe.stage.room
+package ch.hevs.boe.stage.room.predefined
 
+import ch.hevs.boe.entity.mob.Firemen
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.stage.Directions
+import ch.hevs.boe.stage.room.{Room, Wall}
+
 import scala.collection.mutable.HashMap
 
 class SpawnRoom extends Room("data/sprites/cave_room.png") {
