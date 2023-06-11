@@ -19,9 +19,13 @@ class Game extends PortableApplication(900, 600) {
 
   override def onInit(): Unit = {
     setTitle("The Binding of Elijah")
+<<<<<<< HEAD
     startStage = ProceduralGeneration.generateStage()
     startStage.init()
     mob.init()
+=======
+    startStage = ProceduralGeneration.generateStage(player)
+>>>>>>> e01bdf8c5455bb61abd97b6b2ce52b6c78fd1f60
     SpritesManager.init()
   }
 

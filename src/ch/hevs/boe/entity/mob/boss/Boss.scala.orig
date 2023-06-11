@@ -16,11 +16,19 @@ abstract class Boss(pos: Position, width: Int, height: Int, callbackOnKilled: (M
 //  }
 
 
+<<<<<<< HEAD
   override protected def _dispose(): Unit = {
     super._dispose()
     for(s <- subscribers.clone) {
       s()
     }
+=======
+  override def kill(): Unit = {
+    super.kill()
+//    for(s <- subscribers.clone) {
+//      s()
+//    }
+>>>>>>> e01bdf8c5455bb61abd97b6b2ce52b6c78fd1f60
   }
 
 }

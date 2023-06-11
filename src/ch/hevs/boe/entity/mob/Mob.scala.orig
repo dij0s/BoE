@@ -7,8 +7,12 @@ import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.physics.{CollisionManager, Position}
 
 
-abstract class Mob(position: Position, width: Int, height: Int, private val callbackOnKilled: (Mob) => Unit) extends Entity(position, width, height) {
+<<<<<<< HEAD
+abstract class Mob(position: Position, width: Int, height: Int) extends Entity(position, width, height) {
   var selfInit: Boolean = false
+=======
+abstract class Mob(position: Position, width: Int, height: Int, private val callbackOnKilled: (Mob) => Unit) extends Entity(position, width, height) {
+>>>>>>> e01bdf8c5455bb61abd97b6b2ce52b6c78fd1f60
   protected val contactDamage: Int
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Enemy
@@ -29,9 +33,14 @@ abstract class Mob(position: Position, width: Int, height: Int, private val call
       }
     }
   }
+<<<<<<< HEAD
   override protected def _dispose(): Unit = {
     super._dispose()
+=======
+  override def kill(): Unit = {
+    super.kill()
     callbackOnKilled(this)
+>>>>>>> e01bdf8c5455bb61abd97b6b2ce52b6c78fd1f60
     println("A mob has been killed !!!")
   }
 }

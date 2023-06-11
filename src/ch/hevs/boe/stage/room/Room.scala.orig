@@ -42,8 +42,13 @@ object Room {
 abstract class Room(private val _spriteFilePath: String,
 										private var _borders: HashMap[Direction, PhysicalObject] = HashMap.empty,
                     private val _neighbors: HashMap[Direction, Room] = HashMap.empty)
+<<<<<<< HEAD
 extends Drawable with Initiable {
+	var stageRoomExitCallback: Room => Unit = null
+=======
+extends Drawable{
 	var stageRoomExitCallback: (Room, Position) => Unit = null
+>>>>>>> e01bdf8c5455bb61abd97b6b2ce52b6c78fd1f60
 
 	private var roomSprite: Spritesheet = null
 	private var doorsSprite: Spritesheet = null

@@ -15,7 +15,7 @@ object DrawManager {
     return old
   }
 
-  def unsubscribe(i: Int) = {
+  def unsubscribe(i: Int): Unit = {
     if(subscribers.contains(i)) {
       subscribers.remove(i)
     } else {
