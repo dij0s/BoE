@@ -19,16 +19,16 @@ object Room {
 	}
 
 	private def getDoorPosition(direction: Direction): Position = direction match {
-		case Directions.TOP => new Position(400, 48)
-		case Directions.RIGHT => new Position(790, 269)
-		case Directions.BOTTOM => new Position(400, 490)
-		case Directions.LEFT => new Position(48, 269)
+		case Directions.TOP => new Position(400, 38)
+		case Directions.RIGHT => new Position(800, 269)
+		case Directions.BOTTOM => new Position(400, 500)
+		case Directions.LEFT => new Position(38, 269)
 	}
 
 	private def getPlayerPositionOnExit(direction: Direction): Position = {
 		direction match {
-			case Directions.TOP => new Position(425, 440)
-			case Directions.RIGHT => new Position(110, 275)
+			case Directions.TOP => new Position(435, 440)
+			case Directions.RIGHT => new Position(110, 269)
 			case Directions.BOTTOM => new Position(425, 110)
 			case Directions.LEFT => new Position(740, 275)
 		}
