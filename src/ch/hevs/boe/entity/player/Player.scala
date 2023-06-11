@@ -213,6 +213,7 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
 
   override def kill(): Unit = {
     super.kill()
+    CollisionManager.removeObjectFromGroup(CollisionGroupNames.Player, this)
     println("YOU LOSE !!!")
     // TODO: Implement death of player
   }

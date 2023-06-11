@@ -22,6 +22,16 @@ object Utils {
   def getEntityCenter(e: Entity): Position = {
     return new Position(e.position.x + e.width / 2, e.position.y + e.height / 2)
   }
+
+  def getStepTowardEntity(emitter: Entity, target: Entity): (Double, Double) = {
+    val targetCenter: Position = Utils.getEntityCenter(target)
+    val emitterCenter: Position = Utils.getEntityCenter(emitter)
+    val posDiff = new Position(targetCenter.x - emitterCenter.x, targetCenter.y - emitterCenter.y)
+    val norme = Utils.getVectorLength(posDiff)
+    val stepX = posDiff.x.toDouble / norme
+    val stepY = posDiff.y.toDouble / norme
+    return (stepX, stepY)
+  }
 //  def drawSprite(sprites: TextureRegion, obj: PhysicalObject, g: GdxGraphics): Unit = {
 //    val screenH: Float = g.getScreenHeight.asInstanceOf[Float]
 //    var rotationYpad: Float = 0f
