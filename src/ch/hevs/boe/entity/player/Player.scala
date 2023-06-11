@@ -22,7 +22,7 @@ object PlayerDirections extends Enumeration {
 }
 
 object Player extends DefaultEntityStatistics{
-  override val DAMAGE_DEFAULT: Int = 12
+  override val DAMAGE_DEFAULT: Int = 2
   override val SPEED_DEFAULT: Int = 5
   override val SIZE_DEFAULT: Int = 50
   override val FIRE_RATE_DEFAULT: Double = 1.5
@@ -32,6 +32,7 @@ object Player extends DefaultEntityStatistics{
 }
 
 class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE_DEFAULT) {
+  override var _hp = Player.DEFAULT_HP
   var damage: Int = Player.DAMAGE_DEFAULT
   private var _speed: Int = Player.SPEED_DEFAULT
   var size: Int = Player.SIZE_DEFAULT

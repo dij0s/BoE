@@ -12,8 +12,6 @@ object Rocket {
   private val STEP_INDEX : Double = 0.02
   private val WIDTH: Int = 25
   private val HEIGHT: Int = 25
-  private val EXPLOSION_LENGTH = 500
-  private val EXPLOSION_SIZE = 75
 }
 
 
@@ -41,13 +39,7 @@ class Rocket(emitter: Entity, target: Entity, emitterGroup: CollisionGroupNames 
   override protected def _dispose(): Unit = {
     if (exploding) return
     exploding = true
-    val pos = getEntityCenter(this)
-    pos.x -= Rocket.EXPLOSION_SIZE / 2
-    pos.y -= Rocket.EXPLOSION_SIZE / 2
-    val exp = new Explosion(pos, Rocket.EXPLOSION_SIZE, Rocket.EXPLOSION_SIZE, damage)
-    Timeout(Rocket.EXPLOSION_LENGTH) {
-      exp.dispose()
-    }
+    new Explosion(this, damage)
     super._dispose()
   }
 

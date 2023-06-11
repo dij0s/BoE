@@ -23,6 +23,15 @@ object Utils {
     return new Position(e.position.x + e.width / 2, e.position.y + e.height / 2)
   }
 
+  def getEntityCenterWithChild(e: PhysicalObject, width: Int, _height: Int = -1): Position = {
+    var height = _height
+    if(_height == -1) height = width
+    val center = getEntityCenter(e)
+    center.x -= width / 2
+    center.y -= height / 2
+    return center
+  }
+
   def getStepTowardEntity(emitter: Entity, target: Entity): (Double, Double) = {
     val targetCenter: Position = Utils.getEntityCenter(target)
     val emitterCenter: Position = Utils.getEntityCenter(emitter)
@@ -32,6 +41,18 @@ object Utils {
     val stepY = posDiff.y.toDouble / norme
     return (stepX, stepY)
   }
+
+  def equalWithMargin(x: Int, y: Int, margin: Int): Boolean = {
+    val minX = x - margin
+    val maxX = x + margin
+    if(y <= maxX && y >= minX) {
+      return true
+    }
+    return false
+  }
+
+
+
 //  def drawSprite(sprites: TextureRegion, obj: PhysicalObject, g: GdxGraphics): Unit = {
 //    val screenH: Float = g.getScreenHeight.asInstanceOf[Float]
 //    var rotationYpad: Float = 0f

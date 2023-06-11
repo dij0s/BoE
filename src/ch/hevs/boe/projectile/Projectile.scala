@@ -20,7 +20,7 @@ object Projectile extends DefaultProjectileStatistic {
 }
 
 // This class may need to become abstract in the future
-abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT, height: Int = Projectile.SIZE_DEFAULT) extends PhysicalObject(Utils.getEntityCenter(emitter), width, height) with ProjectileStatistics {
+abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT, height: Int = Projectile.SIZE_DEFAULT) extends PhysicalObject(Utils.getEntityCenterWithChild(emitter, width, height), width, height) with ProjectileStatistics {
 
   protected var _ttl: Int = Projectile.TTL_DEFAULT
   var _piercing: Int = Projectile.PIERCING_DEFAULT

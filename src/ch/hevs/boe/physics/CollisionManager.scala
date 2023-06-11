@@ -37,8 +37,9 @@ object CollisionManager {
 
   def checkCollisions() = {
     val toTriggerArr: HashMap[CollisionObject, CollisionList] = new HashMap[CollisionObject, CollisionList]()
-    for(name <- groups.keys) {
-      val group = groups(name)
+    val groupsClone = groups.clone
+    for(name <- groupsClone.keys) {
+      val group = groupsClone(name)
       val groupsToCheck = groups.clone()
       groupsToCheck.remove(name)
       for(current <- group) {

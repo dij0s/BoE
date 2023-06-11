@@ -2,7 +2,8 @@ package ch.hevs.boe
 
 import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.draw.sprites.SpritesManager
-import ch.hevs.boe.entity.mob.Firemen
+import ch.hevs.boe.entity.mob.{Firemen, Mob}
+import ch.hevs.boe.entity.mob.boss.Tank
 import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.stage.{ProceduralGeneration, Stage}
@@ -15,12 +16,14 @@ class Game extends PortableApplication(900, 600) {
 
   // TODO: implement camera based on user position (inside Player class ig ?)
   private val player: Player = new Player(new Position(250, 250))
+  private val boss: Tank = new Tank(new Position(400, 400), player, (mob: Mob) => {})
   private var startStage: Stage = null
 
   override def onInit(): Unit = {
     setTitle("The Binding of Elijah")
     startStage = ProceduralGeneration.generateStage(player)
     startStage.init()
+    boss.init()
     SpritesManager.init()
   }
 

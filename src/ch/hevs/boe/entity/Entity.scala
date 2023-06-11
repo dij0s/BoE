@@ -13,7 +13,7 @@ object Entity extends DefaultEntityStatistics {
 }
 
 abstract class Entity(pos: Position, width: Int, height: Int) extends PhysicalObject(pos, width, height) with EntityStatistics {
-  protected var _hp: Int = Entity.DEFAULT_HP
+  protected var _hp: Int
   override def hp: Int = _hp
   override def hp_= (newVal: Int) = {
     _hp = newVal
