@@ -2,12 +2,15 @@ package ch.hevs.boe.stage.room
 
 import ch.hevs.boe.draw.Drawable
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
+import ch.hevs.boe.entity.mob.Mob
 import ch.hevs.boe.physics.{PhysicalObject, Position}
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
+import ch.hevs.boe.stage.room.Room.getPlayerPositionOnExit
 import ch.hevs.boe.stage.room.door.Door
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
+
 import scala.collection.mutable.{HashMap, ListBuffer}
 
 object Room {
@@ -22,36 +25,51 @@ object Room {
 		case Directions.BOTTOM => new Position(400, 500)
 		case Directions.LEFT => new Position(38, 269)
 	}
+
+	private def getPlayerPositionOnExit(direction: Direction): Position = {
+		println(direction)
+		direction match {
+			case Directions.TOP => new Position(425, 450)
+			case Directions.RIGHT => new Position(100, 275)
+			//		case Directions.BOTTOM => new Position(425, 100)
+			//		case Directions.LEFT => new Position(750, 275)
+			case _ => new Position(0, 0)
+		}
+	}
 }
 
 abstract class Room(private val _spriteFilePath: String,
 										private var _borders: HashMap[Direction, PhysicalObject] = HashMap.empty,
                     private val _neighbors: HashMap[Direction, Room] = HashMap.empty)
 extends Drawable{
-	var stageRoomExitCallback: Room => Unit = null
+	var stageRoomExitCallback: (Room, Position) => Unit = null
 
 	private var roomSprite: Spritesheet = null
 	private var doorsSprite: Spritesheet = null
 	private val doorsPhysicalObjects: ListBuffer[Door] = ListBuffer.empty
+	private var doorsSpritesInitiated: Boolean = false
 
-	private var doorsSpritesInitied: Boolean = false
+	protected val mobs: ListBuffer[Mob] = ListBuffer.empty
+	val hasMobs: Boolean
 
 	private def initRoomSprite(sheet: Spritesheet): Unit = roomSprite = sheet
 	private def initDoorSprite(sheet: Spritesheet): Unit = {
 		doorsSprite = sheet
-		doorsSpritesInitied = true
+		doorsSpritesInitiated = true
 		refreshDoors()
 	}
 	private def handleExit(direction: Direction): Unit = {
 		dispose()
-		if (stageRoomExitCallback != null) stageRoomExitCallback(getNeighborRoom(direction))
+		val playerPosition: Position = getPlayerPositionOnExit(direction)
+		println(playerPosition.x, playerPosition.y)
+		if (stageRoomExitCallback != null) stageRoomExitCallback(getNeighborRoom(direction), playerPosition)
 	}
 
 	SpritesManager.addSprites(SpritesheetModel(_spriteFilePath, 278, 186), initRoomSprite)
 	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room_doors.png", 50, 34), initDoorSprite)
 
 	def borders: HashMap[Direction, PhysicalObject] = _borders
-	def borders_= (h: HashMap[Direction, PhysicalObject]): Unit = _borders = h
+	def borders_= (newBorders: HashMap[Direction, PhysicalObject]): Unit = _borders = newBorders
 	def neighbors: HashMap[Direction, Room] = _neighbors
 	def addNeighbor(direction: Direction, neighbor: Room): Unit = {
 		_neighbors.addOne(direction -> neighbor)
@@ -63,10 +81,8 @@ extends Drawable{
 	def getEmptyNeighborDirections: Array[Direction] = Directions.values.toArray.diff(_neighbors.keys.toSeq)
 
 	private def refreshDoors(): Unit = {
-		if(!doorsSpritesInitied) return
-		for(i <- doorsPhysicalObjects) {
-			i.kill()
-		}
+		if(!doorsSpritesInitiated) return
+		doorsPhysicalObjects.foreach(_.kill())
 		doorsPhysicalObjects.clear()
 		_neighbors.foreach(neighbor => {
 			val doorPosition: Position = Room.getDoorPosition(neighbor._1)
@@ -80,12 +96,8 @@ extends Drawable{
 		// draws room
 		g.draw(roomSprite.sprites(0)(0), 0, 0, g.getScreenWidth, g.getScreenHeight)
 		// create physical doors and display them
-
-		doorsPhysicalObjects.foreach(e => {
-			e.draw(g)
-		})
-
-		// this down here is needed to show walls hitboxes
+		doorsPhysicalObjects.foreach(_.draw(g))
+		// this down here is needed to show walls hit-boxes
 		_borders.foreach(border => border._2.draw(g))
 	}
 

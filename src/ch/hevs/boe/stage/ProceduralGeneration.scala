@@ -1,5 +1,6 @@
 package ch.hevs.boe.stage
 
+import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.stage.room.predefined.{MobRoom, SpawnRoom}
 import ch.hevs.boe.stage.room.{Room, Rooms}
@@ -10,7 +11,7 @@ import scala.util.Random
 object ProceduralGeneration {
 	private val leafMobRoomFactor: Float = 0.7f
 	// this method should generate a single
-	def generateStage(stageDepth: Int = 0): Stage = {
+	def generateStage(playerEntity: Player, stageDepth: Int = 0): Stage = {
 		val spawnRoom: Room = new SpawnRoom
 
 		val scalingFunction = (x: Int) => 1/8 * math.pow(x,2)
@@ -32,7 +33,7 @@ object ProceduralGeneration {
 				// add next room in random empty direction
 				val emptyDirections: Array[Direction] = currentRoom.getEmptyNeighborDirections
 				directionToAddRoom = emptyDirections(Random.nextInt(emptyDirections.length))
-				val newRoom: Room = if (i < leafRoomDistance) new MobRoom else Rooms.createRoom(leafRoomType)
+				val newRoom: Room = if (i < leafRoomDistance) new MobRoom(playerEntity) else Rooms.createRoom(leafRoomType, playerEntity)
 				newRoom.addNeighbor(Directions.getOpposite(directionToAddRoom), currentRoom)
 				currentRoom.addNeighbor(directionToAddRoom, newRoom)
 				// current room now is freshly created room
@@ -42,6 +43,6 @@ object ProceduralGeneration {
 
 		// TODO: create loops in graph ?
 
-		new Stage(spawnRoom)
+		new Stage(spawnRoom, null, playerEntity)
 	}
 }

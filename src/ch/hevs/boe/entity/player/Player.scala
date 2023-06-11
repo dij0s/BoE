@@ -1,22 +1,19 @@
 package ch.hevs.boe.entity.player
 
 import ch.hevs.boe.GenStuff._
-import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.player.Player.SPRITE_VARIATIONS
 import ch.hevs.boe.entity.player.PlayerDirections.PlayerDirections
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.{CollisionManager, Position}
-import ch.hevs.boe.projectile.{PlayerProjectile, Projectile}
+import ch.hevs.boe.projectile.PlayerProjectile
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.utils.time.Timeout
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.{Gdx, Input}
-import org.lwjgl.opengl.EXTDrawRangeElements
-
 
 object PlayerDirections extends Enumeration {
   type PlayerDirections = Value

@@ -11,7 +11,7 @@ class Position(var x: Int, var y: Int) {
 }
 
 abstract class PhysicalObject(protected var _position: Position, protected var _width: Int, protected var _height: Int) extends Drawable {
-
+  protected val drawManagerId: Int = DrawManager.subscribe(draw)
   def width = this._width
 
   def height = this._height
@@ -19,7 +19,6 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
   def position = this._position
   def position_=(newVal: Position) = this._position = newVal
 
-  protected val drawManagerId = DrawManager.subscribe(draw)
 
   override def draw(g: GdxGraphics): Unit = {
     Utils.drawPhysicalObject(this, g)
@@ -52,10 +51,8 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
     if(doubleChecked) {
       return false
     }
-    return rect.checkCollision(this, true)
+    rect.checkCollision(this, true)
   }
 
-  def kill(): Unit = {
-    DrawManager.unsubscribe(drawManagerId)
-  }
+  def kill(): Unit = DrawManager.unsubscribe(drawManagerId)
 }
