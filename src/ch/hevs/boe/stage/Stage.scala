@@ -1,6 +1,6 @@
 package ch.hevs.boe.stage
 
-import ch.hevs.boe.draw.Drawable
+import ch.hevs.boe.draw.{DrawManager, Drawable}
 import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.stage.Directions.Direction
@@ -12,9 +12,9 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null, playe
 
 	// field used to know which room of
 	// current stage we should be displaying
-
+	private var drawManagerId: Int = -1
 	private var _currentRoom: Room = null
-	private def currentRoom: Room = _currentRoom
+	def currentRoom: Room = _currentRoom
 	private def currentRoom_= (newRoom: Room): Unit = {
 		if(currentRoom != null) {
 			currentRoom.dispose()
@@ -29,7 +29,9 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null, playe
 	def handleRoomExit(nextRoom: Room, newPosition: Position): Unit = {
 		currentRoom = nextRoom
 		player.position = newPosition
-		// TODO: should modify user position which is given in parameter
+		// This is a little hack to avoid the wall collision problem
+		// By setting player position two times, we ensure that the old position of the player is the same
+		player.position = newPosition
 	}
 	def spawnRoom: Room = _spawnRoom
 	def next: Stage = _next
@@ -54,11 +56,13 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null, playe
 
 	override protected def _init(): Unit = {
 		println("Init stage")
+		drawManagerId = DrawManager.subscribe(draw)
 		this.currentRoom = spawnRoom
 	}
 
 	override protected def _dispose(): Unit = {
 		// We need to clear out all the instances correctly
+		DrawManager.unsubscribe(drawManagerId)
 		this.currentRoom.dispose()
 	}
 }

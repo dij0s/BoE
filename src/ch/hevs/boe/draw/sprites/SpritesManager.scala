@@ -1,5 +1,6 @@
 package ch.hevs.boe.draw.sprites
 
+import ch.hevs.boe.utils.Initiable
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 
 import scala.collection.mutable.ListBuffer
@@ -7,23 +8,31 @@ import scala.collection.mutable.ListBuffer
 case class SpritesheetModel(file: String, tileWidth: Int, tileHeight: Int)
 case class SpritesheetCreator(model: SpritesheetModel, callback: (Spritesheet) => Unit)
 
-object SpritesManager {
+object SpritesManager extends Initiable {
 	private val spritesBatch: ListBuffer[SpritesheetCreator] = ListBuffer.empty
-//	private val loadedSpritesBatch: ListBuffer[Spritesheet] = ListBuffer.empty
-	private var isManagerLoaded: Boolean = false
-	
-	def addSprites(sheet: SpritesheetModel, cb: (Spritesheet) => Unit): Unit = spritesBatch.addOne(SpritesheetCreator(sheet, cb))
-	def init(): Unit = {
-		if (!isManagerLoaded) spritesBatch.foreach(spritesCreator => {
+
+	def addSprites(sheet: SpritesheetModel, cb: (Spritesheet) => Unit): Unit = {
+		if(!initiated) {
+			spritesBatch.addOne(SpritesheetCreator(sheet, cb))
+		} else {
+			val createdSprite: Spritesheet = new Spritesheet(sheet.file, sheet.tileWidth, sheet.tileHeight)
+			cb(createdSprite)
+		}
+	}
+	def _init(): Unit = {
+		spritesBatch.foreach(spritesCreator => {
 			val createdSprite: Spritesheet = new Spritesheet(spritesCreator.model.file, spritesCreator.model.tileWidth, spritesCreator.model.tileHeight)
-//			loadedSpritesBatch.addOne(createdSprite)
 			spritesCreator.callback(createdSprite)
 		})
-		isManagerLoaded = true
 	}
 
 //	def dispose(): Unit = {
 //		loadedSpritesBatch.foreach(_.dispose())
 //		isManagerLoaded = false
 //	}
+
+	override protected def _dispose(): Unit = {
+		//TODO To be fancy, we should dispose all loaded sprites
+		// but i don't know how to keep track of all active sprites
+	}
 }

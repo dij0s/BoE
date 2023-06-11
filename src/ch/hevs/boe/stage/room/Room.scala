@@ -48,7 +48,9 @@ extends Drawable with Initiable {
 
 	protected val mobs: ListBuffer[Mob] = ListBuffer.empty
 
-	private def initRoomSprite(sheet: Spritesheet): Unit = roomSprite = sheet
+	private def initRoomSprite(sheet: Spritesheet): Unit = {
+		roomSprite = sheet
+	}
 	private def initDoorSprite(sheet: Spritesheet): Unit = {
 		doorsSprite = sheet
 		doorsSpritesInitiated = true
@@ -66,7 +68,10 @@ extends Drawable with Initiable {
 	def borders: HashMap[Direction, PhysicalObject] = _borders
 	def borders_= (newBorders: HashMap[Direction, PhysicalObject]): Unit = _borders = newBorders
 	def neighbors: HashMap[Direction, Room] = _neighbors
-	def addNeighbor(direction: Direction, neighbor: Room): Unit = _neighbors.addOne(direction -> neighbor)
+	def addNeighbor(direction: Direction, neighbor: Room): Unit = {
+		_neighbors.addOne(direction -> neighbor)
+		refreshDoors()
+	}
 	def hasNeighbors: Boolean = _neighbors.nonEmpty
 	def getNeighborRoom(direction: Direction): Room = _neighbors(direction)
 	def getNeighborsDirection: Array[Direction] = _neighbors.keys.toArray

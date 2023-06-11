@@ -38,7 +38,7 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   var size: Int = Player.SIZE_DEFAULT
   var fireRate: Double = Player.FIRE_RATE_DEFAULT
 
-  override def selfInit: Boolean = true
+  override def selfInit: Boolean = false
 
   override def speed = this._speed
   override def speed_=(newVal: Int) = {
@@ -61,7 +61,10 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   private var currentMovingDirection: PlayerDirections = null
 
 
-  private def initSprite(sheet: Spritesheet): Unit = playerSprite = sheet
+  private def initSprite(sheet: Spritesheet): Unit = {
+    println("Player sprite init")
+    playerSprite = sheet
+  }
 
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initSprite)
 
