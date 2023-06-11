@@ -23,7 +23,7 @@ class Game extends PortableApplication(900, 600) {
     setTitle("The Binding of Elijah")
     startStage = ProceduralGeneration.generateStage(player)
     startStage.init()
-    boss.init()
+//    boss.init()
     SpritesManager.init()
   }
 

@@ -15,21 +15,21 @@ class Position(var x: Int, var y: Int) {
 }
 
 abstract class PhysicalObject(protected var _position: Position, protected var _width: Int, protected var _height: Int) extends Drawable with Initiable {
-  def selfInit:Boolean
+  def selfInit: Boolean
 
-  def width = this._width
+  def width: Int = this._width
 
-  def height = this._height
-
-  def position = this._position
-  def position_=(newVal: Position) = this._position = newVal
+  def height: Int = this._height
+  
+  def position: Position = this._position
+  def position_=(newVal: Position): Unit = this._position = newVal
 
   private var drawManagerId = -1
 
 
   override protected def _init(): Unit = {
     drawManagerId = DrawManager.subscribe(draw)
-    CollisionManager.addObjectToGroup(getCollisionGroup(), this, collision)
+    CollisionManager.addObjectToGroup(getCollisionGroup, this, collision)
   }
 
   override def draw(g: GdxGraphics): Unit = {
@@ -37,16 +37,16 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
     doGameplayTick()
   }
 
-  def getCollisionGroup() : CollisionGroupNames
+  def getCollisionGroup: CollisionGroupNames
 
   def collision(list: CollisionList): Unit
 
-  def doGameplayTick() = {}
+  def doGameplayTick(): Unit = {}
 
-  def maxX = {
+  def maxX: Int = {
     this.position.x + _width
   }
-  def maxY = {
+  def maxY: Int = {
     this.position.y + _height
   }
 
@@ -72,7 +72,7 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
 
   override protected def _dispose(): Unit = {
     DrawManager.unsubscribe(drawManagerId)
-    CollisionManager.removeObjectFromGroup(getCollisionGroup(), this)
+    CollisionManager.removeObjectFromGroup(getCollisionGroup, this)
   }
 
   if (selfInit) {

@@ -1,21 +1,21 @@
 package ch.hevs.boe.utils
 
 trait Initiable {
-  private var _initied: Boolean = false
+  private var _initiated: Boolean = false
 
-  def initied: Boolean = _initied
-  def initied_=(newVal: Boolean) = {
-    _initied = newVal
+  def initiated: Boolean = _initiated
+  def initiated_=(newVal: Boolean): Unit = {
+    _initiated = newVal
   }
   final def init(): Unit = {
-    if(initied) return
-    initied = true
+    if(initiated) return
+    initiated = true
     this._init()
   }
 
   final def dispose(): Unit = {
-    if(!initied) return
-    initied = false
+    if(!initiated) return
+    initiated = false
     this._dispose()
   }
 

@@ -15,20 +15,21 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null) exten
 
 	private var _currentRoom: Room = null
 	private def currentRoom: Room = _currentRoom
-	private def currentRoom_=(newVal : Room) = {
+	private def currentRoom_= (newRoom: Room): Unit = {
 		if(currentRoom != null) {
 			currentRoom.dispose()
 			currentRoom.stageRoomExitCallback = null
 		}
-		_currentRoom = newVal
-		if(newVal != null) {
+		_currentRoom = newRoom
+		if(newRoom != null) {
 			currentRoom.init()
 			currentRoom.stageRoomExitCallback = handleRoomExit
 		}
 	}
-	def handleRoomExit(nextRoom: Room, pos: Position): Unit = {
+	def handleRoomExit(nextRoom: Room, newPosition: Position): Unit = {
 		println("Changing room ???")
 		currentRoom = nextRoom
+		// TODO: should modify user position which is given in parameter
 	}
 	def spawnRoom: Room = _spawnRoom
 	def next: Stage = _next

@@ -19,7 +19,7 @@ object Tank extends DefaultEntityStatistics {
   override val DAMAGE_DEFAULT: Int = 20
   override val SPEED_DEFAULT: Int = 1
   override val SIZE_DEFAULT: Int = 50
-  val EQUAL_MARGIN_DEFAULT: Int = 25
+  private val EQUAL_MARGIN_DEFAULT: Int = 25
 }
 
 class Tank(pos: Position, player: Player, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tank.SIZE_DEFAULT, Tank.SIZE_DEFAULT, callbackOnKilled) {
