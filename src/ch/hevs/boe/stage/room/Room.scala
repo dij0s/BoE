@@ -52,7 +52,6 @@ extends Drawable with Initiable {
 	private def initDoorSprite(sheet: Spritesheet): Unit = {
 		doorsSprite = sheet
 		doorsSpritesInitiated = true
-		println(doorsSpritesInitiated)
 		refreshDoors()
 	}
 	private def handleExit(direction: Direction): Unit = if (mobs.isEmpty) {
@@ -74,13 +73,17 @@ extends Drawable with Initiable {
 	def getEmptyNeighborDirections: Array[Direction] = Directions.values.toArray.diff(_neighbors.keys.toSeq)
 
 	private def refreshDoors(): Unit = {
-		if(!doorsSpritesInitiated) println("alksdjalksd")
 		doorsPhysicalObjects.foreach(_.dispose())
 		doorsPhysicalObjects.clear()
 		_neighbors.foreach(neighbor => {
 			val doorPosition: Position = Room.getDoorPosition(neighbor._1)
 			val (doorWidth, doorHeight): (Int, Int) = Room.getDoorSize(neighbor._1)
 			val doorObject: Door = new Door(doorPosition, doorWidth, doorHeight, neighbor._1, doorsSprite, handleExit)
+			// We only want to init the doors right away if the rooms whose creating the doors is initied
+			// If the room isnt initied, the doors will be initied in the room _init method
+			if(this.initiated)  {
+				doorObject.init()
+			}
 			doorsPhysicalObjects.addOne(doorObject)
 		})
 	}
@@ -92,12 +95,14 @@ extends Drawable with Initiable {
 	}
 	
 	override protected def _init(): Unit = {
+		println("Init room")
 		borders.values.foreach(_.init())
 		doorsPhysicalObjects.foreach(_.init())
 		mobs.foreach(_.init())
 	}
 	
 	override protected def _dispose(): Unit = {
+		println("Dispose room")
 		_borders.values.foreach(_.dispose())
 		doorsPhysicalObjects.foreach(_.dispose())
 		mobs.foreach(_.dispose())

@@ -8,7 +8,7 @@ import ch.hevs.boe.stage.room.Room
 import ch.hevs.boe.utils.Initiable
 import ch.hevs.gdx2d.lib.GdxGraphics
 
-class Stage(private val _spawnRoom: Room, private var _next: Stage = null) extends Drawable with Initiable{
+class Stage(private val _spawnRoom: Room, private var _next: Stage = null, player: Player) extends Drawable with Initiable{
 
 	// field used to know which room of
 	// current stage we should be displaying
@@ -27,8 +27,8 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null) exten
 		}
 	}
 	def handleRoomExit(nextRoom: Room, newPosition: Position): Unit = {
-		println("Changing room ???")
 		currentRoom = nextRoom
+		player.position = newPosition
 		// TODO: should modify user position which is given in parameter
 	}
 	def spawnRoom: Room = _spawnRoom
@@ -38,7 +38,6 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null) exten
 
 	// TODO : correctly implement following method so we can display a minimap
 	def compileGraph(currentRoom: Room = _spawnRoom, lastCheckedDirection: Direction = null): Unit = {
-		println("Compiling graph ??")
 		println(lastCheckedDirection, currentRoom)
 		// room is a leaf if the only neighbor is in the
 		// opposite direction of lastCheckedDirection
@@ -54,6 +53,7 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null) exten
 	}
 
 	override protected def _init(): Unit = {
+		println("Init stage")
 		this.currentRoom = spawnRoom
 	}
 

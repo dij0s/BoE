@@ -43,6 +43,6 @@ object ProceduralGeneration {
 
 		// TODO: create loops in graph ?
 
-		new Stage(spawnRoom, null)
+		new Stage(spawnRoom, null, playerEntity)
 	}
 }
