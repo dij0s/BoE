@@ -84,11 +84,10 @@ extends Drawable with Initiable {
 			val doorPosition: Position = Room.getDoorPosition(neighbor._1)
 			val (doorWidth, doorHeight): (Int, Int) = Room.getDoorSize(neighbor._1)
 			val doorObject: Door = new Door(doorPosition, doorWidth, doorHeight, neighbor._1, doorsSprite, handleExit)
-			// We only want to init the doors right away if the rooms whose creating the doors is initied
-			// If the room isnt initied, the doors will be initied in the room _init method
-			if(this.initiated)  {
-				doorObject.init()
-			}
+			// We only want to init the doors right away
+			// if the room's which is creating the doors is initiated.
+			// Else, the doors will be initiated in the room _init method
+			if(this.initiated) doorObject.init()
 			doorsPhysicalObjects.addOne(doorObject)
 		})
 	}

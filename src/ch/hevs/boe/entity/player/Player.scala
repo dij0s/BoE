@@ -55,23 +55,24 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   private var immunityFrames: Boolean = false
   private var onFireCooldown: Boolean = false
   private var playerSprite: Spritesheet = null
+  private var hudSprite: Spritesheet = null
 
   private var hideSprite: Boolean = false
 
   private var currentMovingDirection: PlayerDirections = null
-
-
-  private def initSprite(sheet: Spritesheet): Unit = {
-    println("Player sprite init")
-    playerSprite = sheet
-  }
-
-  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initSprite)
+  
+  
+  private def initPlayerSprite(sheet: Spritesheet): Unit = playerSprite = sheet
+  private def initHudSprite(sheet: Spritesheet): Unit = hudSprite = sheet
+  
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initPlayerSprite)
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite)
 
   override def draw(g: GdxGraphics): Unit = {
     val updatedY: Int = g.getScreenHeight - _position.y - size
     if(!hideSprite) {
       g.draw(playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, size)
+      g.draw(hudSprite.sprites(_hp-1)(0), 30, 30, 140, 26)
     }
     // hitbox
     super.draw(g)
