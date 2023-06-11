@@ -11,4 +11,9 @@ class ItemRoom extends Room("data/sprites/cave_room.png") {
 		Directions.BOTTOM -> new Wall(new Position(100, 500), 700, 100, Directions.BOTTOM),
 		Directions.RIGHT -> new Wall(new Position(800, 0), 100, 600, Directions.RIGHT),
 		Directions.TOP -> new Wall(new Position(100, 0), 700, 100, Directions.TOP))
+
+	override def _init(): Unit = {
+		super._init()
+		println("Item room initied !!!aw")
+	}
 }
