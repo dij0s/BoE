@@ -34,8 +34,14 @@ extends Drawable{
 	private var doorsSprite: Spritesheet = null
 	private val doorsPhysicalObjects: ListBuffer[Door] = ListBuffer.empty
 
+	private var doorsSpritesInitied: Boolean = false
+
 	private def initRoomSprite(sheet: Spritesheet): Unit = roomSprite = sheet
-	private def initDoorSprite(sheet: Spritesheet): Unit = doorsSprite = sheet
+	private def initDoorSprite(sheet: Spritesheet): Unit = {
+		doorsSprite = sheet
+		doorsSpritesInitied = true
+		refreshDoors()
+	}
 	private def handleExit(direction: Direction): Unit = {
 		dispose()
 		if (stageRoomExitCallback != null) stageRoomExitCallback(getNeighborRoom(direction))
@@ -47,27 +53,38 @@ extends Drawable{
 	def borders: HashMap[Direction, PhysicalObject] = _borders
 	def borders_= (h: HashMap[Direction, PhysicalObject]): Unit = _borders = h
 	def neighbors: HashMap[Direction, Room] = _neighbors
-	def addNeighbor(direction: Direction, neighbor: Room): Unit = _neighbors.addOne(direction -> neighbor)
+	def addNeighbor(direction: Direction, neighbor: Room): Unit = {
+		_neighbors.addOne(direction -> neighbor)
+		this.refreshDoors()
+	}
 	def hasNeighbors: Boolean = _neighbors.nonEmpty
 	def getNeighborRoom(direction: Direction): Room = _neighbors(direction)
 	def getNeighborsDirection: Array[Direction] = _neighbors.keys.toArray
 	def getEmptyNeighborDirections: Array[Direction] = Directions.values.toArray.diff(_neighbors.keys.toSeq)
-	def draw(g: GdxGraphics): Unit = {
-		// draws room
-		g.draw(roomSprite.sprites(0)(0), 0, 0, g.getScreenWidth, g.getScreenHeight)
-		// create physical doors and display them
 
+	private def refreshDoors(): Unit = {
+		if(!doorsSpritesInitied) return
 		_neighbors.foreach(neighbor => {
 			val doorPosition: Position = Room.getDoorPosition(neighbor._1)
 			val (doorWidth, doorHeight): (Int, Int) = Room.getDoorSize(neighbor._1)
 			val doorObject: Door = new Door(doorPosition, doorWidth, doorHeight, neighbor._1, doorsSprite, handleExit)
 			doorsPhysicalObjects.addOne(doorObject)
-			doorObject.draw(g)
+		})
+	}
+
+	def draw(g: GdxGraphics): Unit = {
+		// draws room
+		g.draw(roomSprite.sprites(0)(0), 0, 0, g.getScreenWidth, g.getScreenHeight)
+		// create physical doors and display them
+
+		doorsPhysicalObjects.foreach(e => {
+			e.draw(g)
 		})
 
 		// this down here is needed to show walls hitboxes
 		_borders.foreach(border => border._2.draw(g))
 	}
+
 	private def dispose(): Unit = {
 		doorsPhysicalObjects.foreach(_.kill())
 		_borders.values.foreach(_.kill())

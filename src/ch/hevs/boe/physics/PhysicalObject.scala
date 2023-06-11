@@ -55,5 +55,7 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
     return rect.checkCollision(this, true)
   }
 
-  def kill(): Unit = DrawManager.unsubscribe(drawManagerId)
+  def kill(): Unit = {
+    DrawManager.unsubscribe(drawManagerId)
+  }
 }
