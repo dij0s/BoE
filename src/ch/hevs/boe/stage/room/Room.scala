@@ -64,6 +64,10 @@ extends Drawable{
 
 	private def refreshDoors(): Unit = {
 		if(!doorsSpritesInitied) return
+		for(i <- doorsPhysicalObjects) {
+			i.kill()
+		}
+		doorsPhysicalObjects.clear()
 		_neighbors.foreach(neighbor => {
 			val doorPosition: Position = Room.getDoorPosition(neighbor._1)
 			val (doorWidth, doorHeight): (Int, Int) = Room.getDoorSize(neighbor._1)
