@@ -26,8 +26,12 @@ object CollisionManager {
         val current = clone(i)
         if(current.rect == obj) {
           group.remove(i)
+          return
         }
       }
+      println("Trying to remove an object that was not in the group")
+    } else {
+      println("Trying to remove an object from a non existent group")
     }
   }
 

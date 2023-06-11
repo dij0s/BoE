@@ -15,12 +15,13 @@ class Game extends PortableApplication(900, 600) {
 
   // TODO: implement camera based on user position (inside Player class ig ?)
   private val player: Player = new Player(new Position(250, 250))
-  private val mob: Firemen = new Firemen(new Position(700, 400), player)
+  //private val mob: Firemen = new Firemen(new Position(700, 400), player)
   private var startStage: Stage = null
 
   override def onInit(): Unit = {
     setTitle("The Binding of Elijah")
     startStage = ProceduralGeneration.generateStage()
+    startStage.init()
     SpritesManager.init()
   }
 
@@ -28,7 +29,7 @@ class Game extends PortableApplication(900, 600) {
     g.clear()
     // must make sure to draw stage before any entity
     startStage.draw(g)
-//    startStage.compileGraph()
+    //startStage.compileGraph()
     DrawManager.onDraw(g)
     g.drawFPS()
     CollisionManager.checkCollisions()

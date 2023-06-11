@@ -15,6 +15,8 @@ class Door(position: Position,
            private val _sprite: Spritesheet,
            private val _cb: (Direction) => Unit) extends PhysicalObject(position, width, height){
 
+  override def selfInit: Boolean = false
+
   private val doorSpriteIndex: Int = _direction match {
     case Directions.TOP => 0
     case Directions.BOTTOM => 1
@@ -35,10 +37,5 @@ class Door(position: Position,
     }
   }}
 
-  override def kill(): Unit = {
-    super.kill()
-  }
-
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Door
-
 }

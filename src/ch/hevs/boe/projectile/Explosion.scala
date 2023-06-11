@@ -6,6 +6,7 @@ import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 
 class Explosion(pos: Position, width: Int, height: Int, damage: Int, colGroup: CollisionGroupNames = CollisionGroupNames.EnemyProjectile) extends PhysicalObject(pos, width, height) {
+  override def selfInit: Boolean = true
 
   def damageEntity(e: Entity) = {
       e.damageEntity(damage)
@@ -33,11 +34,6 @@ class Explosion(pos: Position, width: Int, height: Int, damage: Int, colGroup: C
         }
       }
     }
-  }
-
-
-  override def kill(): Unit = {
-    super.kill()
   }
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.EnemyProjectile

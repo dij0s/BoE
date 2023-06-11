@@ -12,7 +12,7 @@ protected abstract class Item(position: Position,
   val name: String
   val description: String
   val statEffect: Int
-
+  var selfInit: Boolean = false
 
   def collision(list: CollisionList): Unit = {
     for(i <- list) {
@@ -20,7 +20,7 @@ protected abstract class Item(position: Position,
         case CollisionGroupNames.Player => {
           for(p <- i._2) {
             this.applyItem(p.asInstanceOf[Entity])
-            this.kill()
+            this.dispose()
             return
           }
         }

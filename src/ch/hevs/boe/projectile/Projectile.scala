@@ -27,12 +27,13 @@ abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT,
   override var damage: Int = Projectile.DAMAGE_DEFAULT
   override var speed: Int = Projectile.SPEED_DEFAULT
   override var size: Int = Projectile.SIZE_DEFAULT
+  override def selfInit: Boolean = true
 
   override def ttl: Int = _ttl
   override def ttl_= (newVal: Int) = {
     _ttl = newVal
     if(_ttl == 0) {
-      this.kill()
+      this.dispose()
     }
   }
 
@@ -41,7 +42,7 @@ abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT,
   override def piercing_=(newVal: Int) = {
     this._piercing = newVal
     if(this._piercing <= 0) {
-      this.kill()
+      this.dispose()
     }
   }
 
@@ -56,7 +57,7 @@ abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT,
     for(i <- list) {
       if(i._1 == CollisionGroupNames.Wall) {
         // Need to kill the projectile
-        this.kill()
+        this.dispose()
       } else if(this.getCollisionGroup() == CollisionGroupNames.PlayerProjectile && i._1 == CollisionGroupNames.Enemy) {
         for(el <- i._2) {
           hitEntity(el.asInstanceOf[Entity])

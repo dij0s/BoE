@@ -11,6 +11,8 @@ class Wall(_position: Position,
 					 _height: Int,
 					 private val direction: Directions.Value) extends PhysicalObject(_position, _width, _height) {
 
+	override def selfInit: Boolean = false
+
 	private val rotationAngle: Float = direction match {
 		case Directions.TOP => 0f
 		case Directions.BOTTOM => 180f

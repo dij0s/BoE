@@ -38,7 +38,7 @@ class Rocket(emitter: Entity, target: Entity, emitterGroup: CollisionGroupNames 
     return newPos
   }
 
-  override def kill(): Unit = {
+  override protected def _dispose(): Unit = {
     if (exploding) return
     exploding = true
     val pos = getEntityCenter(this)
@@ -46,9 +46,9 @@ class Rocket(emitter: Entity, target: Entity, emitterGroup: CollisionGroupNames 
     pos.y -= Rocket.EXPLOSION_SIZE / 2
     val exp = new Explosion(pos, Rocket.EXPLOSION_SIZE, Rocket.EXPLOSION_SIZE, damage)
     Timeout(Rocket.EXPLOSION_LENGTH) {
-      exp.kill()
+      exp.dispose()
     }
-    super.kill()
+    super._dispose()
   }
 
   override def getCollisionGroup(): CollisionGroupNames = emitterGroup

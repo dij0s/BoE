@@ -40,6 +40,8 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   var size: Int = Player.SIZE_DEFAULT
   var fireRate: Double = Player.FIRE_RATE_DEFAULT
 
+  override def selfInit: Boolean = true
+
   override def speed = this._speed
   override def speed_=(newVal: Int) = {
     this._speed = newVal
@@ -72,6 +74,11 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
     }
     // hitbox
     super.draw(g)
+  }
+
+  override def _init(): Unit = {
+    println("Player inited")
+    super._init()
   }
 
   override def collision(obj: CollisionList) = {
@@ -221,8 +228,8 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
     position = newPos
   }
 
-  override def kill(): Unit = {
-    super.kill()
+  override protected def _dispose(): Unit = {
+    super._dispose()
     println("YOU LOSE !!!")
     // TODO: Implement death of player
   }

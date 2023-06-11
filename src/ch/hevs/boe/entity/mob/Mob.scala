@@ -10,6 +10,7 @@ import ch.hevs.boe.physics.{CollisionManager, Position}
 
 
 abstract class Mob(position: Position, width: Int, height: Int) extends Entity(position, width, height) {
+  var selfInit: Boolean = false
   protected val contactDamage: Int
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Enemy
@@ -30,8 +31,8 @@ abstract class Mob(position: Position, width: Int, height: Int) extends Entity(p
       }
     }
   }
-  override def kill(): Unit = {
-    super.kill()
+  override protected def _dispose(): Unit = {
+    super._dispose()
     println("A mob has been killed !!!")
   }
 }
