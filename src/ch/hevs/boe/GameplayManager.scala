@@ -14,7 +14,7 @@ object GameplayManager extends Initiable {
   private var _stage: Stage = null
 
   def stage = _stage
-  private def stage_=(newVal: Stage) = {
+  private def stage_=(newVal: Stage): Unit = {
     _stage = newVal
     if(_stage != null) {
       _stage.init()
@@ -43,7 +43,7 @@ object GameplayManager extends Initiable {
   override protected def _init(): Unit = {
     SpritesManager.init()
     _player = new Player(new Position(250, 250))
-    stage = ProceduralGeneration.generateStage(player)
+    stage = ProceduralGeneration.generateStage()
     player.init()
     DrawManager.init()
   }

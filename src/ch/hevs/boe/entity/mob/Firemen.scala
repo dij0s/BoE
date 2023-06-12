@@ -5,7 +5,7 @@ import ch.hevs.boe.entity.mob.Firemen.{DAMAGE_DEFAULT, SIZE_DEFAULT, SPEED_DEFAU
 import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.Position
-import ch.hevs.boe.projectile
+import ch.hevs.boe.{GameplayManager, projectile}
 import ch.hevs.boe.projectile.{DirectedProjectile, Rocket}
 import ch.hevs.boe.utils.time.Timeout
 
@@ -18,7 +18,6 @@ object Firemen extends DefaultEntityStatistics {
 }
 
 class Firemen(pos: Position,
-              private val player: Player,
               callbackOnKilled: (Mob) => Unit) extends Mob(pos, 15, (15*1.5).toInt, callbackOnKilled) {
   override protected var _hp: Int = Firemen.DEFAULT_HP
   override var fireRate: Double = Firemen.FIRE_RATE_DEFAULT
@@ -36,7 +35,7 @@ class Firemen(pos: Position,
   private def fireToPlayer(): Unit = {
     if(fireCooldown) return
     fireCooldown = true
-    new DirectedProjectile(this, player)
+    new DirectedProjectile(this, GameplayManager.player)
     Timeout((1000 / fireRate).toInt) {fireCooldown = false}
   }
 

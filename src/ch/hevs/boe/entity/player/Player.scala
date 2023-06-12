@@ -1,5 +1,6 @@
 package ch.hevs.boe.entity.player
 
+import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.GenStuff._
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
@@ -9,7 +10,7 @@ import ch.hevs.boe.entity.player.PlayerDirections.PlayerDirections
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.projectile.PlayerProjectile
-import ch.hevs.boe.stage.Directions
+import ch.hevs.boe.stage.{Directions, ProceduralGeneration}
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.utils.time.{Timeout, Timer}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
@@ -40,8 +41,8 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
 
   override def selfInit: Boolean = false
 
-  override def speed = this._speed
-  override def speed_=(newVal: Int) = {
+  override def speed: Int = this._speed
+  override def speed_=(newVal: Int): Unit = {
     this._speed = newVal
     this.diagonalMovementLength = getDiagonalLength()
   }
@@ -233,7 +234,9 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   override protected def _dispose(): Unit = {
     super._dispose()
     println("YOU LOSE !!!")
+
     // TODO: Implement death of player
+//    GameplayManager.stage = ProceduralGeneration.generateStage()
   }
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Player

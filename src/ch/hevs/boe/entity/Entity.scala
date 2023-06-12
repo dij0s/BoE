@@ -15,7 +15,7 @@ object Entity extends DefaultEntityStatistics {
 abstract class Entity(pos: Position, width: Int, height: Int) extends PhysicalObject(pos, width, height) with EntityStatistics {
   protected var _hp: Int
   override def hp: Int = _hp
-  override def hp_= (newVal: Int) = {
+  override def hp_= (newVal: Int): Unit = {
     _hp = newVal
     if(_hp <= 0) {
       this.dispose()
@@ -23,17 +23,17 @@ abstract class Entity(pos: Position, width: Int, height: Int) extends PhysicalOb
   }
 
   private var oldPos: Position = null
-  override def position_=(newPos: Position) = {
+  override def position_=(newPos: Position): Unit = {
     this.oldPos = position.clonePos()
     _position = newPos
   }
 
 
-  def damageEntity(amount: Int) = {
+  def damageEntity(amount: Int): Unit = {
     this.hp = this.hp - amount
   }
 
-  def restorePreviousPosition() = {
+  def restorePreviousPosition(): Unit = {
     if(oldPos != null) {
       this.position = oldPos
     }

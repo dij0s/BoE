@@ -5,12 +5,12 @@ import ch.hevs.boe.stage.room.predefined.{BossRoom, ItemRoom, MobRoom, SpawnRoom
 
 object Rooms extends Enumeration {
 	val BossRoom, ItemRoom, MobRoom, SpawnRoom = Value
-	def createRoom(roomType: Rooms.Value, playerEntity: Player): Room = {
+	def createRoom(roomType: Rooms.Value): Room = {
 		roomType match {
-			case Rooms.BossRoom => new BossRoom(playerEntity)
+			case Rooms.BossRoom => new BossRoom
 			case Rooms.ItemRoom => new ItemRoom
 			case Rooms.SpawnRoom => new SpawnRoom
-			case _ => new MobRoom(playerEntity)
+			case _ => new MobRoom
 		}
 	}
 }

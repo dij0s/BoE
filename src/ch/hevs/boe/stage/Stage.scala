@@ -1,5 +1,6 @@
 package ch.hevs.boe.stage
 
+import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.draw.{DrawManager, Drawable}
 import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.physics.Position
@@ -8,7 +9,7 @@ import ch.hevs.boe.stage.room.Room
 import ch.hevs.boe.utils.Initiable
 import ch.hevs.gdx2d.lib.GdxGraphics
 
-class Stage(private val _spawnRoom: Room, private var _next: Stage = null, player: Player) extends Drawable with Initiable{
+class Stage(private val _spawnRoom: Room, private var _next: Stage = null) extends Drawable with Initiable{
 
 	// field used to know which room of
 	// current stage we should be displaying
@@ -28,10 +29,10 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null, playe
 	}
 	def handleRoomExit(nextRoom: Room, newPosition: Position): Unit = {
 		currentRoom = nextRoom
-		player.position = newPosition
+		GameplayManager.player.position = newPosition
 		// This is a little hack to avoid the wall collision problem
 		// By setting player position two times, we ensure that the old position of the player is the same
-		player.position = newPosition
+		GameplayManager.player.position = newPosition
 	}
 	def spawnRoom: Room = _spawnRoom
 	def next: Stage = _next

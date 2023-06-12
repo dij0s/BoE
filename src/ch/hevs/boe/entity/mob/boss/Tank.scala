@@ -1,5 +1,6 @@
 package ch.hevs.boe.entity.mob.boss
 
+import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.entity.mob.Mob
 import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
@@ -22,7 +23,7 @@ object Tank extends DefaultEntityStatistics {
   private val EQUAL_MARGIN_DEFAULT: Int = 25
 }
 
-class Tank(pos: Position, player: Player, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tank.SIZE_DEFAULT, Tank.SIZE_DEFAULT, callbackOnKilled) {
+class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tank.SIZE_DEFAULT, Tank.SIZE_DEFAULT, callbackOnKilled) {
   override protected val contactDamage: Int = 1
   override var _hp = Tank.DEFAULT_HP
   override var damage: Int = 2
@@ -37,7 +38,7 @@ class Tank(pos: Position, player: Player, callbackOnKilled: (Mob) => Unit) exten
 
 
   def fireRocket(): Unit = {
-    new Rocket(this, player)
+    new Rocket(this, GameplayManager.player)
   }
   def rocketSalve(salveLength: Int = 5): Unit = {
     var index = 0
@@ -68,7 +69,7 @@ class Tank(pos: Position, player: Player, callbackOnKilled: (Mob) => Unit) exten
   }
 
   def move() = {
-    val t = player.position
+    val t = GameplayManager.player.position
     if(equalWithMargin(t.x, position.x, Tank.EQUAL_MARGIN_DEFAULT)) {
       // This means that we are on the same x as the player -> we need to change direction to move toward him
       if(t.y < position.y) {
