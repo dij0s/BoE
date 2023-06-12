@@ -2,15 +2,24 @@ package ch.hevs.boe.projectile
 
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
+import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 import ch.hevs.boe.utils.Utils.{getEntityCenter, getEntityCenterWithChild}
 import ch.hevs.boe.utils.time.Timeout
 import ch.hevs.boe.zIndex
+import ch.hevs.gdx2d.components.bitmaps.Spritesheet
+import ch.hevs.gdx2d.lib.GdxGraphics
 
 object Explosion {
   private val DEFAULT_SIZE = 75
   private val DEFAULT_LENGTH = 500
+
+  private var sprite: Spritesheet = null
+
+  private def initSprite(s: Spritesheet) = sprite = s
+
+  SpritesManager.addSprites(new SpritesheetModel("data/sprites/explosion.png", 32, 32), initSprite)
 }
 
 class Explosion(pos: Position, damage: Int, size: Int, length: Int,  colGroup: CollisionGroupNames) extends PhysicalObject(pos, size, size) {
@@ -55,6 +64,17 @@ class Explosion(pos: Position, damage: Int, size: Int, length: Int,  colGroup: C
         }
       }
     }
+  }
+
+  private var animationIndex = 0
+
+  override def draw(g: GdxGraphics): Unit = {
+    super.draw(g)
+
+    if(animationIndex < 7 * 4) {
+      g.draw(Explosion.sprite.sprites(0)((animationIndex - animationIndex % 4) / 4), position.x, g.getScreenHeight - position.y - height, this.size, this.size)
+    }
+    animationIndex += 1
   }
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.EnemyProjectile

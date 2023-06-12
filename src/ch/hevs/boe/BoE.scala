@@ -2,6 +2,7 @@ package ch.hevs.boe
 
 import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.draw.sprites.SpritesManager
+import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.mob.{Firemen, Mob}
 import ch.hevs.boe.entity.mob.boss.Tank
 import ch.hevs.boe.entity.player.Player
