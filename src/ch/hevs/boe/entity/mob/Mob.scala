@@ -35,6 +35,5 @@ abstract class Mob(position: Position, width: Int, height: Int, private val call
   override protected def _dispose(): Unit = {
     super._dispose()
     callbackOnKilled(this)
-    println("A mob has been killed !!!")
   }
 }

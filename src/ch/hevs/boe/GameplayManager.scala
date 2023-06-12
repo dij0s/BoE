@@ -55,7 +55,6 @@ object GameplayManager extends Initiable {
     player = null
     stage = null
     DrawManager.dispose()
-    SpritesManager.dispose()
   }
 
   def goToNextStage(): Unit = {

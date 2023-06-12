@@ -1,6 +1,6 @@
 package ch.hevs.boe.stage.room
 
-import ch.hevs.boe.draw.Drawable
+import ch.hevs.boe.draw.{DrawManager, Drawable}
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.mob.Mob
 import ch.hevs.boe.physics.{PhysicalObject, Position}
@@ -8,6 +8,7 @@ import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.stage.room.door.Door
 import ch.hevs.boe.utils.Initiable
+import ch.hevs.boe.zIndex
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 
@@ -28,7 +29,6 @@ object Room {
 	def initItemRoomSprite(s: Spritesheet) = itemRoomSprite = s
 
 
-	println("Sprite init")
 	SpritesManager.addSprites(SpritesheetModel("data/sprites/item_room.png", 278, 186), initItemRoomSprite)
 	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room.png", 278, 186), initRoomSprite)
 	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room_doors.png", 50, 34), initDoorSprite)
@@ -70,6 +70,8 @@ extends Drawable with Initiable {
 	private val subscribers: mutable.HashMap[Int, () => Unit] = new mutable.HashMap[Int, () => Unit]()
 	private var subsriberIndex: Int = 0
 	private val doorsPhysicalObjects: ListBuffer[Door] = ListBuffer.empty
+
+	private var drawManagerId: Int = -1
 
 	protected val mobs: ListBuffer[Mob] = ListBuffer.empty
 	private def handleExit(direction: Direction): Unit = if (mobs.isEmpty) {
@@ -130,14 +132,14 @@ extends Drawable with Initiable {
 
 
 	override protected def _init(): Unit = {
-		println("Init room")
+		drawManagerId = DrawManager.subscribe(draw, zIndex.BACKGROUND_Z_INDEX)
 		borders.values.foreach(_.init())
 		doorsPhysicalObjects.foreach(_.init())
 		mobs.foreach(_.init())
 	}
 	
 	override protected def _dispose(): Unit = {
-		println("Dispose room")
+		DrawManager.unsubscribe(drawManagerId)
 		_borders.values.foreach(_.dispose())
 		doorsPhysicalObjects.foreach(_.dispose())
 		mobs.foreach(_.dispose())

@@ -28,16 +28,6 @@ class Door(position: Position,
     case Directions.LEFT => 3
   }
 
-  override def _init(): Unit = {
-    println("Door initied")
-    super._init()
-  }
-
-  override def _dispose(): Unit = {
-    println("Door disposed")
-    super._dispose()
-  }
-
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
     val updatedY: Int = g.getScreenHeight - position.y - height

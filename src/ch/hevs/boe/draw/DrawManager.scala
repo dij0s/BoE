@@ -24,17 +24,13 @@ object DrawManager extends Initiable {
   private def insertIndex(elementId: Int, zi: Int): Unit = {
     val clone = orderedIndexes.clone
     for(i <- 0 until clone.length) {
-      println("Checking " + subscribers(clone(i)).zIndex + " with " + zi)
       if(subscribers(clone(i)).zIndex < zi) {
         // This means that we have to insert it to the previous place
         orderedIndexes.insert(i, elementId)
-        println("inserted index, new val ", orderedIndexes)
         return
       }
     }
-
     orderedIndexes.addOne(elementId)
-    println("inserted index last new val : ", orderedIndexes)
   }
 
   def unsubscribe(i: Int): Unit = {
@@ -63,13 +59,11 @@ object DrawManager extends Initiable {
 
   }
 
-//  def onDraw(g: GdxGraphics): Unit = subscribers.values.foreach(_(g))
-
   override protected def _init(): Unit = {
-    println("Init draw manager")
+
   }
 
   override protected def _dispose(): Unit = {
-    println("Dispose draw manager")
+
   }
 }

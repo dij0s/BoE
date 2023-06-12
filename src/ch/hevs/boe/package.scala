@@ -9,15 +9,15 @@ import scala.collection.mutable.ArrayBuffer
 
 package object zIndex {
   // Save here z indexes of draw methods
-  // Higher is in front
-  // Lower is in background
+  // Higher is rendered first (background)
+  // Lower is rendered last (foreground)
   val BACKGROUND_Z_INDEX = 10000
-  val WALL_Z_INDEX = 100
-  val DOOR_Z_INDEX = 150
-  val ITEM_Z_INDEX = 500
-  val MOB_Z_INDEX = 1000
-  val PLAYER_Z_INDEX = 1100
-  val PROJECTILE_Z_INDEX = 1500
+  val WALL_Z_INDEX = 5000
+  val DOOR_Z_INDEX = 4500
+  val ITEM_Z_INDEX = 4000
+  val MOB_Z_INDEX = 3000
+  val PLAYER_Z_INDEX = 2000
+  val PROJECTILE_Z_INDEX = 1000
 }
 
 package object GenStuff {

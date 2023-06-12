@@ -83,11 +83,6 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
     super.draw(g)
   }
 
-  override def _init(): Unit = {
-    println("Player inited")
-    super._init()
-  }
-
   override def collision(obj: CollisionList) = {
     for(v <- obj) {
       v._1 match {
