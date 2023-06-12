@@ -30,7 +30,11 @@ abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT,
   override var size: Int = Projectile.SIZE_DEFAULT
   override def selfInit: Boolean = true
   private val currentRoom = GameplayManager.stage.currentRoom
-  private val roomIndex = currentRoom.onDispose(this.dispose)
+  private val roomIndex = currentRoom.onDispose(this.roomDisposal)
+
+  private var _doDeathEffect: Boolean = true
+
+  protected def doDeathEffects: Boolean = _doDeathEffect
 
   override def ttl: Int = _ttl
   override def ttl_= (newVal: Int) = {
@@ -40,6 +44,11 @@ abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT,
     }
   }
 
+
+  final private def roomDisposal() = {
+    this._doDeathEffect = false
+    this.dispose()
+  }
 
   override def piercing = this._piercing
   override def piercing_=(newVal: Int) = {

@@ -39,7 +39,9 @@ class Rocket(emitter: Entity, target: Entity, emitterGroup: CollisionGroupNames 
   override protected def _dispose(): Unit = {
     if (exploding) return
     exploding = true
-    new Explosion(this, damage)
+    if(this.doDeathEffects) {
+      new Explosion(this, damage)
+    }
     super._dispose()
   }
 

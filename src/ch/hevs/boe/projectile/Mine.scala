@@ -30,6 +30,8 @@ class Mine(emitter: Entity, damage: Int, lifetime: Int = Mine.LIFETIME) extends 
 
   override def _dispose() = {
     super._dispose()
-    new Explosion(this, damage)
+    if(this.doDeathEffects) {
+      new Explosion(this, damage)
+    }
   }
 }
