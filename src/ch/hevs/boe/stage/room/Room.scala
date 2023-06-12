@@ -37,12 +37,14 @@ object Room {
 	}
 }
 
-abstract class Room(private val _spriteFilePath: String,
-										private var _borders: HashMap[Direction, PhysicalObject] = HashMap.empty,
+abstract class Room(private val _spriteFilePath: String = "data/sprites/cave_room.png",
+										private var _borders: HashMap[Direction, PhysicalObject] = HashMap(Directions.LEFT -> new Wall(new Position(0, 0), 100, 600, Directions.LEFT),
+											Directions.BOTTOM -> new Wall(new Position(100, 500), 700, 100, Directions.BOTTOM),
+											Directions.RIGHT -> new Wall(new Position(800, 0), 100, 600, Directions.RIGHT),
+											Directions.TOP -> new Wall(new Position(100, 0), 700, 100, Directions.TOP)),
                     private val _neighbors: HashMap[Direction, Room] = HashMap.empty)
 extends Drawable with Initiable {
 	var stageRoomExitCallback: (Room, Position) => Unit = null
-
 
 	private val subscribers: mutable.HashMap[Int, () => Unit] = new mutable.HashMap[Int, () => Unit]()
 	private var subsriberIndex: Int = 0
