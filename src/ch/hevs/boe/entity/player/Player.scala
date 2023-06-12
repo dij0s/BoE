@@ -10,7 +10,7 @@ import ch.hevs.boe.entity.player.PlayerDirections.PlayerDirections
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.projectile.PlayerProjectile
-import ch.hevs.boe.stage.{Directions, ProceduralGeneration}
+import ch.hevs.boe.stage.{Directions, ProceduralGeneration, Stage}
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.utils.time.{Timeout, Timer}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
@@ -66,8 +66,8 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   private def initPlayerSprite(sheet: Spritesheet): Unit = playerSprite = sheet
   private def initHudSprite(sheet: Spritesheet): Unit = hudSprite = sheet
   
-  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initPlayerSprite)
-  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite)
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initPlayerSprite, mustDispose = false)
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite, mustDispose = false)
 
   override def draw(g: GdxGraphics): Unit = {
     val updatedY: Int = g.getScreenHeight - _position.y - size
@@ -236,7 +236,16 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
     println("YOU LOSE !!!")
 
     // TODO: Implement death of player
-//    GameplayManager.stage = ProceduralGeneration.generateStage()
+    // dispose current stage and then restart the game
+//    GameplayManager.stage.dispose()
+//      val oldStage: Stage = GameplayManager.stage
+//      GameplayManager.stage = ProceduralGeneration.generateStage()
+
+//    GameplayManager.dispose()
+//    GameplayManager.init()
+
+//      oldStage.dispose()
+//    val timer = Timer(5000) { GameplayManager.stage = ProceduralGeneration.generateStage() }
   }
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Player

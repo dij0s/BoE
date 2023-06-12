@@ -130,9 +130,10 @@ extends Drawable with Initiable {
 		_borders.values.foreach(_.dispose())
 		doorsPhysicalObjects.foreach(_.dispose())
 		mobs.foreach(_.dispose())
-		// Trigerring all dispose callback
-		for(s <- subscribers.clone.values) {
-			s()
-		}
+		// Triggering all dispose callback
+//		for(s <- subscribers.clone.values) {
+//			s()
+//		}
+		subscribers.clone.values.foreach(_())
 	}
 }

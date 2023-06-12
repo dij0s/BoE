@@ -1,15 +1,15 @@
 package ch.hevs.boe.stage
 
 import ch.hevs.boe.GameplayManager
+import ch.hevs.boe.draw.sprites.SpritesManager
 import ch.hevs.boe.draw.{DrawManager, Drawable}
-import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.stage.room.Room
 import ch.hevs.boe.utils.Initiable
 import ch.hevs.gdx2d.lib.GdxGraphics
 
-class Stage(private val _spawnRoom: Room, private var _next: Stage = null) extends Drawable with Initiable{
+class Stage(private val _spawnRoom: Room, private val _depth: Int, private var _next: Stage = null) extends Drawable with Initiable{
 
 	// field used to know which room of
 	// current stage we should be displaying
@@ -37,6 +37,7 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null) exten
 	def spawnRoom: Room = _spawnRoom
 	def next: Stage = _next
 	def next_= (newStage: Stage): Unit = _next = newStage
+	def depth: Int = _depth
 	def draw(g: GdxGraphics): Unit = _currentRoom.draw(g)
 
 	// TODO : correctly implement following method so we can display a minimap
@@ -64,6 +65,7 @@ class Stage(private val _spawnRoom: Room, private var _next: Stage = null) exten
 	override protected def _dispose(): Unit = {
 		// We need to clear out all the instances correctly
 		DrawManager.unsubscribe(drawManagerId)
+		SpritesManager.dispose()
 		this.currentRoom.dispose()
 	}
 }

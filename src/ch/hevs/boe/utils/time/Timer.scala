@@ -1,8 +1,8 @@
 package ch.hevs.boe.utils.time
 
 protected class Timer(t: javax.swing.Timer) {
-  def start = t.start
-  def stop = t.stop
+  def start: Unit = t.start()
+  def stop: Unit = t.stop()
 }
 
 object Timer {
@@ -18,7 +18,7 @@ object Timer {
 }
 
 object Timeout {
-  def apply(ms: Int)(op: => Unit) = {
+  def apply(ms: Int)(op: => Unit): Timer = {
     Timer(ms, false) {op}
   }
 }

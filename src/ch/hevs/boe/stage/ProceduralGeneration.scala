@@ -3,7 +3,7 @@ package ch.hevs.boe.stage
 import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.stage.Directions.Direction
-import ch.hevs.boe.stage.room.predefined.{MobRoom, SpawnRoom}
+import ch.hevs.boe.stage.room.predefined.{BossRoom, MobRoom, SpawnRoom}
 import ch.hevs.boe.stage.room.{Room, Rooms}
 
 import scala.collection.immutable.HashMap
@@ -18,9 +18,9 @@ object ProceduralGeneration {
 		val scalingFunction = (x: Int) => 1/8 * math.pow(x,2)
 		// stocker la distance minimale depuis le spawn
 		val leafRoomsToGenerate: HashMap[Rooms.Value, Int] = HashMap[Rooms.Value, Int](
-			Rooms.BossRoom -> (3 + leafMobRoomFactor * scalingFunction(stageDepth)).toInt,
-			Rooms.MobRoom -> (4 + scalingFunction(stageDepth)).toInt,
-			Rooms.ItemRoom -> (1 + scalingFunction(stageDepth)).toInt
+			Rooms.BossRoom -> (0 + leafMobRoomFactor * scalingFunction(stageDepth)).toInt,
+//			Rooms.MobRoom -> (4 + scalingFunction(stageDepth)).toInt,
+//			Rooms.ItemRoom -> (1 + scalingFunction(stageDepth)).toInt
 		)
 
 		leafRoomsToGenerate.foreach(leafRoom => {
@@ -44,6 +44,6 @@ object ProceduralGeneration {
 
 		// TODO: create loops in graph ?
 
-		new Stage(spawnRoom)
+		new Stage(spawnRoom, stageDepth)
 	}
 }

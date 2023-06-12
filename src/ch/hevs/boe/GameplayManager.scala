@@ -13,8 +13,9 @@ object GameplayManager extends Initiable {
   private var _player: Player = null
   private var _stage: Stage = null
 
-  def stage = _stage
-  private def stage_=(newVal: Stage): Unit = {
+  def stage: Stage = _stage
+  def stage_= (newVal: Stage): Unit = {
+    if (_stage != null) _stage.dispose()
     _stage = newVal
     if(_stage != null) {
       _stage.init()
@@ -23,8 +24,9 @@ object GameplayManager extends Initiable {
     }
   }
 
-  def player = _player
-  private def player_=(newVal: Player) = {
+  def player: Player = _player
+  private def player_= (newVal: Player): Unit = {
+    if (_player != null) _player.dispose()
     _player = newVal
     if(_player != null) {
       _player.init()
@@ -33,18 +35,17 @@ object GameplayManager extends Initiable {
     }
   }
 
-
-  def gameTick(g: GdxGraphics) = {
+  def gameTick(g: GdxGraphics): Unit = {
     if(initiated) {
       DrawManager.onDraw(g)
     }
   }
 
   override protected def _init(): Unit = {
-    SpritesManager.init()
     _player = new Player(new Position(250, 250))
     stage = ProceduralGeneration.generateStage()
     player.init()
+    SpritesManager.init()
     DrawManager.init()
   }
 
