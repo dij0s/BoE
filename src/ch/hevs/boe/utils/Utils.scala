@@ -42,6 +42,15 @@ object Utils {
     return (stepX, stepY)
   }
 
+  def getAngleBetweenVectors(p1: Position, p2: Position): Int = {
+    // -> arccos( (p1.x))
+    val scalar: Double = p1.x * p2.x + p1.y * p2.y
+    val p1Norm:Double = Math.sqrt(Math.pow(p1.x, 2) + Math.pow(p1.y, 2))
+    val p2Norm: Double = Math.sqrt(Math.pow(p2.x, 2) + Math.pow(p2.y, 2))
+    val res: Double = Math.acos(scalar / (p1Norm * p2Norm))
+    return Math.round(res * 180 / Math.PI).toInt
+  }
+
   def equalWithMargin(x: Int, y: Int, margin: Int): Boolean = {
     val minX = x - margin
     val maxX = x + margin

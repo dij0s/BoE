@@ -1,6 +1,7 @@
 package ch.hevs.boe.entity.mob.boss
 
 import ch.hevs.boe.GameplayManager
+import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.mob.Mob
 import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
@@ -8,8 +9,10 @@ import ch.hevs.boe.physics.Position
 import ch.hevs.boe.projectile.{Mine, Rocket}
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.{Direction, getOpposite}
-import ch.hevs.boe.utils.Utils.equalWithMargin
+import ch.hevs.boe.utils.Utils.{equalWithMargin, getEntityCenter}
 import ch.hevs.boe.utils.time.Timeout
+import ch.hevs.gdx2d.components.bitmaps.Spritesheet
+import ch.hevs.gdx2d.lib.GdxGraphics
 
 import scala.util.Random
 
@@ -31,10 +34,13 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   override var size: Int = Tank.SIZE_DEFAULT
   override var fireRate: Double = 0.5
   private var onCooldown : Boolean = false
-
+  private var tankSprites: Spritesheet = null
   private var moveDirection: Direction = null
 
 
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/tank_movement.png", 56, 56), initTankSprites)
+
+  private def initTankSprites(sprite: Spritesheet): Unit = tankSprites = sprite
 
 
   def fireRocket(): Unit = {
@@ -122,6 +128,26 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
     // if we collide a wall -> change direction
     super.restorePreviousPosition()
     moveDirection = getOpposite(moveDirection)
+  }
+
+  private def getSpriteIndex() = {
+    this.moveDirection match {
+      case Directions.TOP => 3
+      case Directions.BOTTOM => 1
+      case Directions.RIGHT => 0
+      case Directions.LEFT => 2
+    }
+  }
+
+  private var animationIndex: Int = 0
+
+  override def draw(g: GdxGraphics): Unit = {
+    super.draw(g)
+    g.draw(tankSprites.sprites((animationIndex - animationIndex % 3) / 3)(getSpriteIndex()), position.x, g.getScreenHeight - position.y - height,  this.size, this.size)
+    animationIndex += 1
+    if(animationIndex == 4 * 3) {
+      animationIndex = 0
+    }
   }
 
   override def doGameplayTick(): Unit = {
