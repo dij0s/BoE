@@ -10,7 +10,9 @@ import ch.hevs.boe.stage.room.door.Door
 import ch.hevs.boe.utils.Initiable
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
-import scala.collection.mutable.{HashMap, ListBuffer}
+
+import scala.collection.mutable
+import scala.collection.mutable.{ArrayBuffer, HashMap, ListBuffer}
 
 object Room {
 	private def getDoorSize(direction: Direction): (Int, Int) = direction match {
@@ -41,6 +43,9 @@ abstract class Room(private val _spriteFilePath: String,
 extends Drawable with Initiable {
 	var stageRoomExitCallback: (Room, Position) => Unit = null
 
+
+	private val subscribers: mutable.HashMap[Int, () => Unit] = new mutable.HashMap[Int, () => Unit]()
+	private var subsriberIndex: Int = 0
 	private var roomSprite: Spritesheet = null
 	private var doorsSprite: Spritesheet = null
 	private val doorsPhysicalObjects: ListBuffer[Door] = ListBuffer.empty
@@ -77,6 +82,21 @@ extends Drawable with Initiable {
 	def getNeighborsDirection: Array[Direction] = _neighbors.keys.toArray
 	def getEmptyNeighborDirections: Array[Direction] = Directions.values.toArray.diff(_neighbors.keys.toSeq)
 
+	def onDispose(cb: () => Unit): Int = {
+		val oldIndex = subsriberIndex
+		subscribers.addOne(oldIndex, cb)
+		subsriberIndex += 1
+		return oldIndex
+	}
+
+	def offDispose(i: Int): Unit = {
+		if(subscribers.contains(i)) {
+			subscribers.remove(i)
+		} else {
+			println("Couldn't find subscriber in room dispose subscribers")
+		}
+	}
+
 	private def refreshDoors(): Unit = {
 		doorsPhysicalObjects.foreach(_.dispose())
 		doorsPhysicalObjects.clear()
@@ -110,5 +130,9 @@ extends Drawable with Initiable {
 		_borders.values.foreach(_.dispose())
 		doorsPhysicalObjects.foreach(_.dispose())
 		mobs.foreach(_.dispose())
+		// Trigerring all dispose callback
+		for(s <- subscribers.clone.values) {
+			s()
+		}
 	}
 }

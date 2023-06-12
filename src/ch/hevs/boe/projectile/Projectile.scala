@@ -1,5 +1,6 @@
 package ch.hevs.boe.projectile
 
+import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.draw.DrawManager
@@ -28,6 +29,8 @@ abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT,
   override var speed: Int = Projectile.SPEED_DEFAULT
   override var size: Int = Projectile.SIZE_DEFAULT
   override def selfInit: Boolean = true
+  private val currentRoom = GameplayManager.stage.currentRoom
+  private val roomIndex = currentRoom.onDispose(this.dispose)
 
   override def ttl: Int = _ttl
   override def ttl_= (newVal: Int) = {
@@ -70,6 +73,11 @@ abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT,
         }
       }
     }
+  }
+
+  override protected def _dispose(): Unit = {
+    super._dispose()
+    currentRoom.offDispose(roomIndex)
   }
 
   def getNewCoordinates(currentPos: Position): Position
