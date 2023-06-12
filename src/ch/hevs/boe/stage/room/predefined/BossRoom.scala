@@ -27,7 +27,7 @@ class BossRoom extends Room("data/sprites/cave_room.png") {
 		mobs.subtractOne(killedMob)
 		// TODO : implement a so-called 'animation'
 		// current's stage boss has been killed so we hence create a new one
-		Timeout(3500) { GameplayManager.stage = ProceduralGeneration.generateStage(GameplayManager.stage.depth + 1) }
+		Timeout(3500) {GameplayManager.stage = ProceduralGeneration.generateStage(GameplayManager.stage.depth + 1)}
 //		GameplayManager.stage = ProceduralGeneration.generateStage(GameplayManager.stage.depth + 1)
 	}
 
