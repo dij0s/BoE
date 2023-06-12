@@ -5,6 +5,7 @@ import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
+import ch.hevs.boe.zIndex
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 
@@ -50,4 +51,6 @@ class Door(position: Position,
       if (collisionGroup == CollisionGroupNames.Player) _cb(_direction)
     }
   }}
+
+  override protected def getZIndex: Int = zIndex.DOOR_Z_INDEX
 }

@@ -15,6 +15,27 @@ import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, HashMap, ListBuffer}
 
 object Room {
+	var roomSprite: Spritesheet = null
+	var doorSprite: Spritesheet = null
+	var itemRoomSprite: Spritesheet = null
+	var doorsSpritesInitiated: Boolean = false
+
+	def initRoomSprite(s: Spritesheet) = roomSprite = s
+	def initDoorSprite(s: Spritesheet) = {
+		doorSprite = s
+		doorsSpritesInitiated = true
+	}
+	def initItemRoomSprite(s: Spritesheet) = itemRoomSprite = s
+
+
+	println("Sprite init")
+	SpritesManager.addSprites(SpritesheetModel("data/sprites/item_room.png", 278, 186), initItemRoomSprite)
+	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room.png", 278, 186), initRoomSprite)
+	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room_doors.png", 50, 34), initDoorSprite)
+
+
+
+
 	private def getDoorSize(direction: Direction): (Int, Int) = direction match {
 		case Directions.TOP | Directions.BOTTOM => (100, 62)
 		case _ => (62, 100)
@@ -37,8 +58,8 @@ object Room {
 	}
 }
 
-abstract class Room(private val _spriteFilePath: String = "data/sprites/cave_room.png",
-										private var _borders: HashMap[Direction, PhysicalObject] = HashMap(Directions.LEFT -> new Wall(new Position(0, 0), 100, 600, Directions.LEFT),
+abstract class Room(private val _sprites:Spritesheet = Room.roomSprite,
+											private var _borders: HashMap[Direction, PhysicalObject] = HashMap(Directions.LEFT -> new Wall(new Position(0, 0), 100, 600, Directions.LEFT),
 											Directions.BOTTOM -> new Wall(new Position(100, 500), 700, 100, Directions.BOTTOM),
 											Directions.RIGHT -> new Wall(new Position(800, 0), 100, 600, Directions.RIGHT),
 											Directions.TOP -> new Wall(new Position(100, 0), 700, 100, Directions.TOP)),
@@ -48,30 +69,16 @@ extends Drawable with Initiable {
 
 	private val subscribers: mutable.HashMap[Int, () => Unit] = new mutable.HashMap[Int, () => Unit]()
 	private var subsriberIndex: Int = 0
-	private var roomSprite: Spritesheet = null
-	private var doorsSprite: Spritesheet = null
 	private val doorsPhysicalObjects: ListBuffer[Door] = ListBuffer.empty
-	private var doorsSpritesInitiated: Boolean = false
 
 	protected val mobs: ListBuffer[Mob] = ListBuffer.empty
-
-	private def initRoomSprite(sheet: Spritesheet): Unit = {
-		roomSprite = sheet
-	}
-	private def initDoorSprite(sheet: Spritesheet): Unit = {
-		doorsSprite = sheet
-		doorsSpritesInitiated = true
-		refreshDoors()
-	}
 	private def handleExit(direction: Direction): Unit = if (mobs.isEmpty) {
 		dispose()
 		val playerPosition: Position = Room.getPlayerPositionOnExit(direction)
 		if (stageRoomExitCallback != null) stageRoomExitCallback(getNeighborRoom(direction), playerPosition)
 	}
 
-	SpritesManager.addSprites(SpritesheetModel(_spriteFilePath, 278, 186), initRoomSprite)
-	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room_doors.png", 50, 34), initDoorSprite)
-	
+
 	def borders: HashMap[Direction, PhysicalObject] = _borders
 	def borders_= (newBorders: HashMap[Direction, PhysicalObject]): Unit = _borders = newBorders
 	def neighbors: HashMap[Direction, Room] = _neighbors
@@ -105,7 +112,7 @@ extends Drawable with Initiable {
 		_neighbors.foreach(neighbor => {
 			val doorPosition: Position = Room.getDoorPosition(neighbor._1)
 			val (doorWidth, doorHeight): (Int, Int) = Room.getDoorSize(neighbor._1)
-			val doorObject: Door = new Door(doorPosition, doorWidth, doorHeight, neighbor._1, doorsSprite, handleExit)
+			val doorObject: Door = new Door(doorPosition, doorWidth, doorHeight, neighbor._1, Room.doorSprite, handleExit)
 			// We only want to init the doors right away
 			// if the room's which is creating the doors is initiated.
 			// Else, the doors will be initiated in the room _init method
@@ -116,10 +123,12 @@ extends Drawable with Initiable {
 
 	def draw(g: GdxGraphics): Unit = {
 		// draws room
-		g.draw(roomSprite.sprites(0)(0), 0, 0, g.getScreenWidth, g.getScreenHeight)
+		g.draw(_sprites.sprites(0)(0), 0, 0, g.getScreenWidth, g.getScreenHeight)
 		doorsPhysicalObjects.foreach(_.closed =  mobs.nonEmpty)
 	}
-	
+
+
+
 	override protected def _init(): Unit = {
 		println("Init room")
 		borders.values.foreach(_.init())

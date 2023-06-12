@@ -27,8 +27,10 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
   private var drawManagerId = -1
 
 
+  protected def getZIndex: Int
+
   override protected def _init(): Unit = {
-    drawManagerId = DrawManager.subscribe(draw)
+    drawManagerId = DrawManager.subscribe(draw, getZIndex)
     CollisionManager.addObjectToGroup(getCollisionGroup, this, collision)
   }
 

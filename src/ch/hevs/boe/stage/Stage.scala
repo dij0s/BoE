@@ -1,6 +1,6 @@
 package ch.hevs.boe.stage
 
-import ch.hevs.boe.GameplayManager
+import ch.hevs.boe.{GameplayManager, zIndex}
 import ch.hevs.boe.draw.sprites.SpritesManager
 import ch.hevs.boe.draw.{DrawManager, Drawable}
 import ch.hevs.boe.physics.Position
@@ -58,14 +58,14 @@ class Stage(private val _spawnRoom: Room, private val _depth: Int, private var _
 
 	override protected def _init(): Unit = {
 		println("Init stage")
-		drawManagerId = DrawManager.subscribe(draw)
+		drawManagerId = DrawManager.subscribe(draw, zIndex.BACKGROUND_Z_INDEX)
 		this.currentRoom = spawnRoom
 	}
 
 	override protected def _dispose(): Unit = {
 		// We need to clear out all the instances correctly
 		DrawManager.unsubscribe(drawManagerId)
-		SpritesManager.dispose()
+		//SpritesManager.dispose()
 		this.currentRoom.dispose()
 	}
 }

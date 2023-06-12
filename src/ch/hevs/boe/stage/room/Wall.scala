@@ -5,6 +5,7 @@ import ch.hevs.boe.GenStuff.CollisionGroupNames
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 import ch.hevs.boe.stage.Directions
+import ch.hevs.boe.zIndex
 
 class Wall(_position: Position,
 					 _width: Int,
@@ -19,6 +20,8 @@ class Wall(_position: Position,
 		case Directions.LEFT => 90f
 		case Directions.RIGHT => 270f
 	}
+
+	override def getZIndex: Int = zIndex.WALL_Z_INDEX
 
 	override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Wall
 

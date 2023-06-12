@@ -12,27 +12,31 @@ import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import scala.util.Random
 
-class BossRoom extends Room {
-	private var isBossKilled: Boolean = false
+object BossRoom {
+
 	private var bossKilledSprite: Spritesheet = null
-	private val bossKilledSpriteVariations: Int = 4
-	private val bossKilledSpriteIndex: Int = Random.nextInt(bossKilledSpriteVariations)
 	def initAnimationSprite(sheet: Spritesheet): Unit = bossKilledSprite = sheet
 
 	SpritesManager.addSprites(new SpritesheetModel("data/sprites/boss_killed_animations.png", 900, 600), initAnimationSprite)
+}
+
+class BossRoom extends Room {
+	private var isBossKilled: Boolean = false
+	private val bossKilledSpriteVariations: Int = 4
+	private val bossKilledSpriteIndex: Int = Random.nextInt(bossKilledSpriteVariations)
+
+
 
 	private def onBossKilled(killedMob: Mob): Unit = {
 		isBossKilled = true
 		mobs.subtractOne(killedMob)
 		// TODO : implement a so-called 'animation'
-		// current's stage boss has been killed so we hence create a new one
-		Timeout(3500) {GameplayManager.stage = ProceduralGeneration.generateStage(GameplayManager.stage.depth + 1)}
-//		GameplayManager.stage = ProceduralGeneration.generateStage(GameplayManager.stage.depth + 1)
+		GameplayManager.goToNextStage()
 	}
 
 	override def draw(g: GdxGraphics): Unit = {
 		super.draw(g)
-		if (isBossKilled)	g.draw(bossKilledSprite.sprites(0)(bossKilledSpriteIndex), 0, 0, g.getScreenWidth, g.getScreenHeight)
+		if (isBossKilled)	g.draw(BossRoom.bossKilledSprite.sprites(0)(bossKilledSpriteIndex), 0, 0, g.getScreenWidth, g.getScreenHeight)
 	}
 
 	mobs.addOne(new Tank(new Position(700, 400), onBossKilled))

@@ -9,17 +9,19 @@ import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.stage.{ProceduralGeneration, Stage}
 import ch.hevs.boe.stage.room.predefined.SpawnRoom
 import ch.hevs.boe.utils.time.{Timeout, Timer}
+import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.desktop.PortableApplication
 import ch.hevs.gdx2d.lib.GdxGraphics
 
 class Game extends PortableApplication(900, 600) {
 
   // TODO: implement camera based on user position (inside Player class ig ?)
-  private val player: Player = new Player(new Position(250, 250))
-  private var startStage: Stage = null
-
+  private var roomSprite: Spritesheet = null
+  private var playerSprite: Spritesheet = null
   override def onInit(): Unit = {
     setTitle("The Binding of Elijah")
+    //roomSprite = new Spritesheet("data/sprites/item_room.png", 278, 176)
+    //playerSprite = new Spritesheet("data/sprites/elijah.png", 28, 43)
     GameplayManager.init()
   }
 

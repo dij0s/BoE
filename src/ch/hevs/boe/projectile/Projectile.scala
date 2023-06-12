@@ -1,6 +1,6 @@
 package ch.hevs.boe.projectile
 
-import ch.hevs.boe.GameplayManager
+import ch.hevs.boe.{GameplayManager, zIndex}
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.draw.DrawManager
@@ -84,6 +84,7 @@ abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT,
     }
   }
 
+  override def getZIndex: Int = zIndex.PROJECTILE_Z_INDEX
   override protected def _dispose(): Unit = {
     super._dispose()
     currentRoom.offDispose(roomIndex)

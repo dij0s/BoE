@@ -1,5 +1,6 @@
 package ch.hevs.boe.entity
 
+import ch.hevs.boe.zIndex
 import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.entity.statistics.{DefaultEntityStatistics, EntityStatistics}
 import ch.hevs.boe.physics.{PhysicalObject, Position}
@@ -21,6 +22,8 @@ abstract class Entity(pos: Position, width: Int, height: Int) extends PhysicalOb
       this.dispose()
     }
   }
+
+  override def getZIndex = zIndex.MOB_Z_INDEX
 
   private var oldPos: Position = null
   override def position_=(newPos: Position): Unit = {

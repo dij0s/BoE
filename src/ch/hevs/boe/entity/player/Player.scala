@@ -23,13 +23,24 @@ object PlayerDirections extends Enumeration {
 }
 
 object Player extends DefaultEntityStatistics{
-  override val DAMAGE_DEFAULT: Int = 2
+  override val DAMAGE_DEFAULT: Int = 200
   override val SPEED_DEFAULT: Int = 5
   override val SIZE_DEFAULT: Int = 50
   override val FIRE_RATE_DEFAULT: Double = 1.5
   override val DEFAULT_HP: Int = 5
   val SPRITE_VARIATIONS: Int = 10
   val IMMUNITY_LENGTH: Int = 500
+
+  private var playerSprite: Spritesheet = null
+  private var hudSprite: Spritesheet = null
+
+  def initPlayerSprite(s: Spritesheet) = {
+    playerSprite = s
+  }
+  def initHudSprite(s: Spritesheet) = hudSprite = s
+
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initPlayerSprite, mustDispose = false)
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite, mustDispose = false)
 }
 
 class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE_DEFAULT) {
@@ -55,25 +66,18 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   private var diagonalMovementLength = getDiagonalLength()
   private var immunityFrames: Boolean = false
   private var onFireCooldown: Boolean = false
-  private var playerSprite: Spritesheet = null
-  private var hudSprite: Spritesheet = null
 
   private var hideSprite: Boolean = false
 
   private var currentMovingDirection: PlayerDirections = null
   
   
-  private def initPlayerSprite(sheet: Spritesheet): Unit = playerSprite = sheet
-  private def initHudSprite(sheet: Spritesheet): Unit = hudSprite = sheet
-  
-  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initPlayerSprite, mustDispose = false)
-  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite, mustDispose = false)
 
   override def draw(g: GdxGraphics): Unit = {
     val updatedY: Int = g.getScreenHeight - _position.y - size
     if(!hideSprite) {
-      g.draw(playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, size)
-      g.draw(hudSprite.sprites(_hp-1)(0), 30, 30, 140, 26)
+      g.draw(Player.playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, size)
+      g.draw(Player.hudSprite.sprites(_hp-1)(0), 30, 30, 140, 26)
     }
     // hitbox
     super.draw(g)

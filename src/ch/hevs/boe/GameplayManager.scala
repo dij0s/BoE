@@ -12,6 +12,7 @@ import ch.hevs.gdx2d.lib.GdxGraphics
 object GameplayManager extends Initiable {
   private var _player: Player = null
   private var _stage: Stage = null
+  private var depth: Int = 0
 
   def stage: Stage = _stage
   def stage_= (newVal: Stage): Unit = {
@@ -42,10 +43,11 @@ object GameplayManager extends Initiable {
   }
 
   override protected def _init(): Unit = {
+    SpritesManager.init()
+
     _player = new Player(new Position(250, 250))
     stage = ProceduralGeneration.generateStage()
     player.init()
-    SpritesManager.init()
     DrawManager.init()
   }
 
@@ -54,5 +56,9 @@ object GameplayManager extends Initiable {
     stage = null
     DrawManager.dispose()
     SpritesManager.dispose()
+  }
+
+  def goToNextStage(): Unit = {
+    GameplayManager.stage = ProceduralGeneration.generateStage(GameplayManager.stage.depth + 1)
   }
 }

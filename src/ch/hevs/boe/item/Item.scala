@@ -5,6 +5,7 @@ import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.statistics.EntityStatistics
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
+import ch.hevs.boe.zIndex
 
 protected abstract class Item(position: Position,
                               width: Int,
@@ -30,6 +31,8 @@ protected abstract class Item(position: Position,
       }
     }
   }
+
+  override def getZIndex = zIndex.ITEM_Z_INDEX
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Item
 
