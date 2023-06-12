@@ -13,7 +13,6 @@ object GameplayManager extends Initiable {
   private var _player: Player = null
   private var _stage: Stage = null
 
-
   def stage = _stage
   private def stage_=(newVal: Stage) = {
     _stage = newVal
