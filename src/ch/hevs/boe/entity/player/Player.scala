@@ -25,7 +25,7 @@ object PlayerDirections extends Enumeration {
 object Player extends DefaultEntityStatistics{
   override val DAMAGE_DEFAULT: Int = 200
   override val SPEED_DEFAULT: Int = 5
-  override val SIZE_DEFAULT: Int = 35
+  override val SIZE_DEFAULT: Int = 40
   val HEIGHT_FACTOR: Double = 1.5
   override val FIRE_RATE_DEFAULT: Double = 1.5
   override val DEFAULT_HP: Int = 10
@@ -50,6 +50,8 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   var fireRate: Double = Player.FIRE_RATE_DEFAULT
   
   private var spriteMovementIndex: Int = 0
+  private var intermediateSpriteMovementIndex: Int = 1
+  private var spriteMovementDirectionIndex: Int = 0
   private var hideSprite: Boolean = false
   
   private var diagonalMovementLength = getDiagonalLength()
@@ -69,7 +71,7 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   override def draw(g: GdxGraphics): Unit = {
     val updatedY: Int = g.getScreenHeight - _position.y - (size * Player.HEIGHT_FACTOR).toInt
     if(!hideSprite) {
-      g.draw(Player.playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, (size*Player.HEIGHT_FACTOR).toInt)
+      g.draw(Player.playerSprite.sprites(spriteMovementDirectionIndex)(spriteMovementIndex), _position.x, updatedY, size, (size*Player.HEIGHT_FACTOR).toInt)
       val spriteIndex: Int = if (_hp - 1 >= 0) _hp - 1 else 3
       g.draw(Player.hudSprite.sprites(spriteIndex)(0), 30, 30, 140, 26)
     }
@@ -101,18 +103,18 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
     proj.damage = damage
   }
   
-  def handleSpriteVariation(): Unit = {
-    if ((spriteMovementIndex + 1) < SPRITE_VARIATIONS) spriteMovementIndex += 1
-    else spriteMovementIndex = 0
+  private def handleSpriteVariation(): Unit = {
+    if (intermediateSpriteMovementIndex % 4 == 0) {
+      if ((spriteMovementIndex + 1) < SPRITE_VARIATIONS) spriteMovementIndex += 1 else spriteMovementIndex = 0
+    }
+    intermediateSpriteMovementIndex += 1
   }
 
   /**
    * This methods compute the length of a component of the diagonal for the player movement
    * @return The length of a component of the diagonal
    */
-  private def getDiagonalLength() : Int = {
-    return Math.round(Math.sqrt(Math.pow(speed.toDouble, 2) / 2.0)).toInt
-  }
+  private def getDiagonalLength: Int = Math.round(Math.sqrt(Math.pow(speed.toDouble, 2) / 2.0)).toInt
 
   override def damageEntity(amount: Int): Unit = {
     if(immunityFrames) return
@@ -137,15 +139,19 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
     currentMovingDirection match {
       case PlayerDirections.TOP => {
         newPos.y -= speed
+        spriteMovementDirectionIndex = 2
       }
       case PlayerDirections.BOTTOM => {
         newPos.y += speed
+        spriteMovementDirectionIndex = 0
       }
       case PlayerDirections.LEFT => {
         newPos.x -= speed
+        spriteMovementDirectionIndex = 3
       }
       case PlayerDirections.RIGHT => {
         newPos.x += speed
+        spriteMovementDirectionIndex = 1
       }
       case PlayerDirections.TOP_LEFT => {
         newPos.x -= diagonalMovementLength
