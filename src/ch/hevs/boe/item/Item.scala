@@ -4,12 +4,15 @@ import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.statistics.EntityStatistics
-import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
+import ch.hevs.boe.physics.{PhysicalObject, Position}
 import ch.hevs.boe.zIndex
+import ch.hevs.gdx2d.components.bitmaps.Spritesheet
+import ch.hevs.gdx2d.lib.GdxGraphics
 
 protected abstract class Item(position: Position,
                               width: Int,
-                              height: Int) extends PhysicalObject(position, width, height) {
+                              height: Int,
+                              private val _sprite: Spritesheet) extends PhysicalObject(position, width, height) {
   val name: String
   val description: String
   val statEffect: Int
@@ -25,11 +28,14 @@ protected abstract class Item(position: Position,
             return
           }
         }
-        case _ => {
-          // Default case
-        }
+        case _ => return
       }
     }
+  }
+
+  override def draw(g: GdxGraphics): Unit = {
+    g.draw(_sprite.sprites(0)(0), 434, 284, 32, 32)
+    super.draw(g)
   }
 
   override def getZIndex = zIndex.ITEM_Z_INDEX

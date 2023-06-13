@@ -2,6 +2,7 @@ package ch.hevs.boe.stage.room
 
 import ch.hevs.boe.draw.{DrawManager, Drawable}
 import ch.hevs.boe.entity.mob.Mob
+import ch.hevs.boe.item.PassiveItem
 import ch.hevs.boe.physics.{PhysicalObject, Position}
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
@@ -10,14 +11,13 @@ import ch.hevs.boe.utils.Initiable
 import ch.hevs.boe.{GameplayManager, zIndex}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
-
 import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, HashMap, ListBuffer}
 import scala.util.Random
 
 object Room {
 	private val DEFAULT_CREDIT = 5
-	private val CREDIT_SCALE = 3
+	private val CREDIT_SCALE = 1.3
 	private val CREDIT_VARIANCE = 2
 
 
@@ -51,8 +51,7 @@ abstract class Room(private val _sprites:Spritesheet = Rooms.mobRoomSprite,
                     private val _neighbors: HashMap[Direction, Room] = HashMap.empty)
 extends Drawable with Initiable {
 	private val spawnedList: ArrayBuffer[(Position, Int, Int)] = new ArrayBuffer[(Position, Int, Int)]()
-	protected val credits = Room.DEFAULT_CREDIT + GameplayManager.depth * Room.CREDIT_SCALE + Random.nextInt(Room.CREDIT_VARIANCE)
-
+	protected val credits = (Room.DEFAULT_CREDIT + GameplayManager.depth * Room.CREDIT_SCALE + Random.nextInt(Room.CREDIT_VARIANCE)).toInt
 
 	var stageRoomExitCallback: (Room, Position) => Unit = null
 
@@ -63,6 +62,9 @@ extends Drawable with Initiable {
 	private var drawManagerId: Int = -1
 
 	protected val mobs: ListBuffer[Mob] = getMobs(credits)
+
+	var item: PassiveItem = null
+
 	private def handleExit(direction: Direction): Unit = if (mobs.isEmpty) {
 		dispose()
 		val playerPosition: Position = Room.getPlayerPositionOnExit(direction)
@@ -89,8 +91,6 @@ extends Drawable with Initiable {
 		oldIndex
 	}
 
-
-
 	def getMobPosition(mob: Mob): Position = {
 		val width = mob.width
 		val height = mob.height
@@ -109,14 +109,14 @@ extends Drawable with Initiable {
 			currentTry = randPosition()
 			posValid = false
 		}
-		println("Position found was : " + currentTry.x + " | " + currentTry.y)
 
 		// Safe zone without walls is from
 
 		spawnedList.addOne(currentTry, width, height)
-		return currentTry
+		currentTry
 	}
 
+	protected def getMobs(credit: Int): ListBuffer[Mob] = ListBuffer.empty[Mob]
 	def offDispose(i: Int): Unit = {
 		if(subscribers.contains(i)) {
 			subscribers.remove(i)
@@ -143,25 +143,23 @@ extends Drawable with Initiable {
 	def draw(g: GdxGraphics): Unit = {
 		// draws room
 		g.draw(_sprites.sprites(0)(0), 0, 0, g.getScreenWidth, g.getScreenHeight)
-		doorsPhysicalObjects.foreach(_.closed =  mobs.nonEmpty)
+		doorsPhysicalObjects.foreach(_.closed = mobs.nonEmpty)
 	}
-
-
 
 	override protected def _init(): Unit = {
 		drawManagerId = DrawManager.subscribe(draw, zIndex.BACKGROUND_Z_INDEX)
 		borders.values.foreach(_.init())
 		doorsPhysicalObjects.foreach(_.init())
 		mobs.foreach(_.init())
+		if (item != null) item.init()
 	}
-
-	protected def getMobs(credit: Int): ListBuffer[Mob]
 
 	override protected def _dispose(): Unit = {
 		DrawManager.unsubscribe(drawManagerId)
 		_borders.values.foreach(_.dispose())
 		doorsPhysicalObjects.foreach(_.dispose())
 		mobs.clone.foreach(_.dispose())
+		if (item != null) item.dispose()
 		// Triggering all dispose callback
 		subscribers.clone.values.foreach(_())
 	}

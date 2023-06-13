@@ -15,19 +15,15 @@ object Rooms extends Enumeration {
 	var doorsSpritesInitiated: Boolean = false
 	var doorSprite: Spritesheet = null
 	
-	private def initSpawnRoomSprite(s: Spritesheet): Unit = spawnRoomSprite = s
-	private def initMobRoomSprite(s: Spritesheet): Unit = mobRoomSprite = s
-	private def initItemRoomSprite(s: Spritesheet): Unit = itemRoomSprite = s
-	private def initBossRoomSprite(s: Spritesheet): Unit = bossRoomSprite = s
 	private def initDoorSprite(s: Spritesheet): Unit = {
 		doorSprite = s
 		doorsSpritesInitiated = true
 	}
 	
-	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room_spawn.png", 278, 186), initSpawnRoomSprite)
-	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room.png", 278, 186), initMobRoomSprite)
-	SpritesManager.addSprites(SpritesheetModel("data/sprites/item_room.png", 278, 186), initItemRoomSprite)
-	SpritesManager.addSprites(SpritesheetModel("data/sprites/boss_room.png", 278, 186), initBossRoomSprite)
+	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room_spawn.png", 278, 186), (sheet) => spawnRoomSprite = sheet)
+	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room.png", 278, 186), (sheet) => mobRoomSprite = sheet)
+	SpritesManager.addSprites(SpritesheetModel("data/sprites/item_room.png", 278, 186), (sheet) => itemRoomSprite = sheet)
+	SpritesManager.addSprites(SpritesheetModel("data/sprites/boss_room.png", 278, 186), (sheet) => bossRoomSprite = sheet)
 	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room_doors.png", 50, 34), initDoorSprite)
 	
 	def createRoom(roomType: Rooms.Value): Room = {

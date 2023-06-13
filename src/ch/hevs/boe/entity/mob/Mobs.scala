@@ -1,11 +1,10 @@
 package ch.hevs.boe.entity.mob
 
-import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.entity.mob.boss.Tank
+import ch.hevs.boe.entity.mob.predefined.{Bat, Fly}
 import ch.hevs.boe.physics.Position
-
-import scala.collection.mutable
 import scala.collection.mutable.HashMap
+
 object Mobs extends Enumeration {
   type Mobs = Value
   val Fly, Tank, TeddyBear, Bat = Value
@@ -19,6 +18,8 @@ object Mobs extends Enumeration {
     }
     res
   }
+
+//  def getHighestMob(cred: Int): Mobs = mobCreditCost.filter(_._2 <= cred).maxBy(_._2)._1
 
   val mobCreditCost: HashMap[Mobs, Int] = HashMap[Mobs, Int](
     Mobs.Fly -> 1,

@@ -1,12 +1,11 @@
-package ch.hevs.boe.entity.mob
+package ch.hevs.boe.entity.mob.predefined
 
-import ch.hevs.boe.entity.Entity
-import ch.hevs.boe.entity.mob.Firemen.{DAMAGE_DEFAULT, SIZE_DEFAULT, SPEED_DEFAULT}
-import ch.hevs.boe.entity.player.Player
+import ch.hevs.boe.GameplayManager
+import ch.hevs.boe.entity.mob.Mob
+import ch.hevs.boe.entity.mob.predefined.Firemen.{DAMAGE_DEFAULT, SIZE_DEFAULT, SPEED_DEFAULT}
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.Position
-import ch.hevs.boe.{GameplayManager, projectile}
-import ch.hevs.boe.projectile.{DirectedProjectile, Rocket}
+import ch.hevs.boe.projectile.DirectedProjectile
 import ch.hevs.boe.utils.time.Timeout
 
 object Firemen extends DefaultEntityStatistics {

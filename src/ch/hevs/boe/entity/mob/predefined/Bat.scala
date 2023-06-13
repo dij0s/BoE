@@ -1,7 +1,7 @@
-package ch.hevs.boe.entity.mob
+package ch.hevs.boe.entity.mob.predefined
 
-import ch.hevs.boe.entity.player.Player
-import ch.hevs.boe.entity.statistics.{DefaultEntityStatistics, EntityStatistics}
+import ch.hevs.boe.entity.mob.Mob
+import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.Position
 
 object Bat extends DefaultEntityStatistics {

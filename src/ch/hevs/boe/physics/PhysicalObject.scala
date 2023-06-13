@@ -25,8 +25,6 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
   def position_=(newVal: Position): Unit = this._position = newVal
 
   private var drawManagerId = -1
-
-
   protected def getZIndex: Int
 
   override protected def _init(): Unit = {

@@ -1,9 +1,7 @@
 package ch.hevs.boe.stage
 
-import ch.hevs.boe.GameplayManager
-import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.stage.Directions.Direction
-import ch.hevs.boe.stage.room.predefined.{BossRoom, MobRoom, SpawnRoom}
+import ch.hevs.boe.stage.room.predefined.{MobRoom, SpawnRoom}
 import ch.hevs.boe.stage.room.{Room, Rooms}
 
 import scala.collection.immutable.HashMap

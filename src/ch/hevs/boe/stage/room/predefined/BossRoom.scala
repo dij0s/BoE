@@ -25,8 +25,6 @@ class BossRoom extends Room(Rooms.bossRoomSprite) {
 	private val bossKilledSpriteVariations: Int = 4
 	private val bossKilledSpriteIndex: Int = Random.nextInt(bossKilledSpriteVariations)
 
-
-
 	private def onBossKilled(killedMob: Mob): Unit = {
 		isBossKilled = true
 		mobs.subtractOne(killedMob)

@@ -5,7 +5,7 @@ import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.player.Player
-import ch.hevs.boe.physics.{CollisionManager, Position}
+import ch.hevs.boe.physics.Position
 
 
 abstract class Mob(position: Position, width: Int, height: Int, private val callbackOnKilled: (Mob) => Unit) extends Entity(position, width, height) {
