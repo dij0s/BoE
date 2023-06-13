@@ -14,9 +14,7 @@ class DirectedProjectile(emitter: Entity, target: Entity) extends BaseProjectile
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.EnemyProjectile
 
-  override def getNewCoordinates(currentPos: Position): Position = {
-    return new Position(currentPos.x + step.x, currentPos.y + step.y)
-  }
+  override def getNewCoordinates(currentPos: Position): Position = new Position(currentPos.x + step.x, currentPos.y + step.y)
 
 
 

@@ -43,11 +43,15 @@ object GameplayManager extends Initiable {
       DrawManager.onDraw(g)
     }
   }
+  
+  private def restartGame(): Unit = {
+//    this.dispose()
+//    this.init()
+  }
 
   override protected def _init(): Unit = {
     SpritesManager.init()
-
-    _player = new Player(new Position(250, 250))
+    _player = new Player(new Position(250, 250), restartGame)
     stage = ProceduralGeneration.generateStage()
     _depth = 0
     player.init()
