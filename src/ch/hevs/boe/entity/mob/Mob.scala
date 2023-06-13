@@ -1,5 +1,6 @@
 package ch.hevs.boe.entity.mob
 
+import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.entity.Entity
@@ -8,6 +9,7 @@ import ch.hevs.boe.physics.{CollisionManager, Position}
 
 
 abstract class Mob(position: Position, width: Int, height: Int, private val callbackOnKilled: (Mob) => Unit) extends Entity(position, width, height) {
+  final protected def player: Player = GameplayManager.player
   var selfInit: Boolean = false
   protected val contactDamage: Int
 

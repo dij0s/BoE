@@ -1,5 +1,10 @@
 package ch.hevs.boe.stage.room.predefined
 
+import ch.hevs.boe.entity.mob.Mob
 import ch.hevs.boe.stage.room.{Room, Rooms}
 
-class ItemRoom extends Room(Rooms.itemRoomSprite) {}
+import scala.collection.mutable.ListBuffer
+
+class ItemRoom extends Room(Rooms.itemRoomSprite) {
+  override protected def getMobs(credit: Int): ListBuffer[Mob] = ListBuffer.empty
+}

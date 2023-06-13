@@ -3,11 +3,14 @@ package ch.hevs.boe.stage.room.predefined
 import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.mob.Mob
-import ch.hevs.boe.entity.mob.boss.Tank
+import ch.hevs.boe.entity.mob.boss.{Bosses, Tank}
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.stage.room.Room
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
+
+import scala.collection.mutable
+import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
 object BossRoom {
@@ -36,6 +39,7 @@ class BossRoom extends Room {
 		super.draw(g)
 		if (isBossKilled)	g.draw(BossRoom.bossKilledSprite.sprites(0)(bossKilledSpriteIndex), 0, 0, g.getScreenWidth, g.getScreenHeight)
 	}
-
-	mobs.addOne(new Tank(new Position(400, 200), onBossKilled))
+	override protected def getMobs(credit: Int): ListBuffer[Mob] = {
+		ListBuffer[Mob](Bosses.factory(Bosses.getRandom(), new Position(450, 300), onBossKilled))
+	}
 }

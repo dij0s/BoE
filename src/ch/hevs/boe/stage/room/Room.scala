@@ -7,13 +7,20 @@ import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.stage.room.door.Door
 import ch.hevs.boe.utils.Initiable
-import ch.hevs.boe.zIndex
+import ch.hevs.boe.{GameplayManager, zIndex}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
+
 import scala.collection.mutable
-import scala.collection.mutable.{HashMap, ListBuffer}
+import scala.collection.mutable.{ArrayBuffer, HashMap, ListBuffer}
+import scala.util.Random
 
 object Room {
+	private val DEFAULT_CREDIT = 5
+	private val CREDIT_SCALE = 3
+	private val CREDIT_VARIANCE = 2
+
+
 	private def getDoorSize(direction: Direction): (Int, Int) = direction match {
 		case Directions.TOP | Directions.BOTTOM => (100, 62)
 		case _ => (62, 100)
@@ -43,6 +50,10 @@ abstract class Room(private val _sprites:Spritesheet = Rooms.roomSprite,
 											Directions.TOP -> new Wall(new Position(100, 0), 700, 100, Directions.TOP)),
                     private val _neighbors: HashMap[Direction, Room] = HashMap.empty)
 extends Drawable with Initiable {
+	private val spawnedList: ArrayBuffer[(Position, Int, Int)] = new ArrayBuffer[(Position, Int, Int)]()
+	protected val credits = Room.DEFAULT_CREDIT + GameplayManager.depth * Room.CREDIT_SCALE + Random.nextInt(Room.CREDIT_VARIANCE)
+
+
 	var stageRoomExitCallback: (Room, Position) => Unit = null
 
 	private val subscribers: mutable.HashMap[Int, () => Unit] = new mutable.HashMap[Int, () => Unit]()
@@ -51,7 +62,7 @@ extends Drawable with Initiable {
 
 	private var drawManagerId: Int = -1
 
-	protected val mobs: ListBuffer[Mob] = ListBuffer.empty
+	protected val mobs: ListBuffer[Mob] = getMobs(credits)
 	private def handleExit(direction: Direction): Unit = if (mobs.isEmpty) {
 		dispose()
 		val playerPosition: Position = Room.getPlayerPositionOnExit(direction)
@@ -76,6 +87,34 @@ extends Drawable with Initiable {
 		subscribers.addOne(oldIndex, cb)
 		subscriberIndex += 1
 		return oldIndex
+	}
+
+
+
+	def getMobPosition(mob: Mob): Position = {
+		val width = mob.width
+		val height = mob.height
+		// We need to find random position in acceptable position
+		// In order to do that, we have to define a safe zone (removing walls and player possible spawn from screen)
+		// Then we have to keep a trace of what we have spawned
+		def randPosition(): Position = {
+			val newX = Random.nextInt(GameplayManager.screenSize._1 - 200 - mob.width) + 100
+			val newY = Random.nextInt(GameplayManager.screenSize._2 - 200 - mob.height) + 100
+			new Position(newX, newY)
+		}
+
+		var posValid: Boolean = true
+		var currentTry: Position = null
+		while (posValid) {
+			currentTry = randPosition()
+			posValid = false
+		}
+		println("Position found was : " + currentTry.x + " | " + currentTry.y)
+
+		// Safe zone without walls is from
+
+		spawnedList.addOne(currentTry, width, height)
+		return currentTry
 	}
 
 	def offDispose(i: Int): Unit = {
@@ -115,7 +154,9 @@ extends Drawable with Initiable {
 		doorsPhysicalObjects.foreach(_.init())
 		mobs.foreach(_.init())
 	}
-	
+
+	protected def getMobs(credit: Int): ListBuffer[Mob]
+
 	override protected def _dispose(): Unit = {
 		DrawManager.unsubscribe(drawManagerId)
 		_borders.values.foreach(_.dispose())

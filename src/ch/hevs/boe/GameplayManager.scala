@@ -10,6 +10,9 @@ import ch.hevs.boe.utils.time.Timeout
 import ch.hevs.gdx2d.lib.GdxGraphics
 
 object GameplayManager extends Initiable {
+  val screenSize: (Int, Int) = (900, 600)
+
+
   private var _player: Player = null
   private var _stage: Stage = null
   private var _depth: Int = 0
