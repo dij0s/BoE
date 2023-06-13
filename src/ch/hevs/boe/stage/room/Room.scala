@@ -1,7 +1,6 @@
 package ch.hevs.boe.stage.room
 
 import ch.hevs.boe.draw.{DrawManager, Drawable}
-import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.mob.Mob
 import ch.hevs.boe.physics.{PhysicalObject, Position}
 import ch.hevs.boe.stage.Directions
@@ -11,31 +10,10 @@ import ch.hevs.boe.utils.Initiable
 import ch.hevs.boe.zIndex
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
-
 import scala.collection.mutable
-import scala.collection.mutable.{ArrayBuffer, HashMap, ListBuffer}
+import scala.collection.mutable.{HashMap, ListBuffer}
 
 object Room {
-	var roomSprite: Spritesheet = null
-	var doorSprite: Spritesheet = null
-	var itemRoomSprite: Spritesheet = null
-	var doorsSpritesInitiated: Boolean = false
-
-	def initRoomSprite(s: Spritesheet) = roomSprite = s
-	def initDoorSprite(s: Spritesheet) = {
-		doorSprite = s
-		doorsSpritesInitiated = true
-	}
-	def initItemRoomSprite(s: Spritesheet) = itemRoomSprite = s
-
-
-	SpritesManager.addSprites(SpritesheetModel("data/sprites/item_room.png", 278, 186), initItemRoomSprite)
-	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room.png", 278, 186), initRoomSprite)
-	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room_doors.png", 50, 34), initDoorSprite)
-
-
-
-
 	private def getDoorSize(direction: Direction): (Int, Int) = direction match {
 		case Directions.TOP | Directions.BOTTOM => (100, 62)
 		case _ => (62, 100)
@@ -58,7 +36,7 @@ object Room {
 	}
 }
 
-abstract class Room(private val _sprites:Spritesheet = Room.roomSprite,
+abstract class Room(private val _sprites:Spritesheet = Rooms.roomSprite,
 											private var _borders: HashMap[Direction, PhysicalObject] = HashMap(Directions.LEFT -> new Wall(new Position(0, 0), 100, 600, Directions.LEFT),
 											Directions.BOTTOM -> new Wall(new Position(100, 500), 700, 100, Directions.BOTTOM),
 											Directions.RIGHT -> new Wall(new Position(800, 0), 100, 600, Directions.RIGHT),
@@ -68,7 +46,7 @@ extends Drawable with Initiable {
 	var stageRoomExitCallback: (Room, Position) => Unit = null
 
 	private val subscribers: mutable.HashMap[Int, () => Unit] = new mutable.HashMap[Int, () => Unit]()
-	private var subsriberIndex: Int = 0
+	private var subscriberIndex: Int = 0
 	private val doorsPhysicalObjects: ListBuffer[Door] = ListBuffer.empty
 
 	private var drawManagerId: Int = -1
@@ -94,9 +72,9 @@ extends Drawable with Initiable {
 	def getEmptyNeighborDirections: Array[Direction] = Directions.values.toArray.diff(_neighbors.keys.toSeq)
 
 	def onDispose(cb: () => Unit): Int = {
-		val oldIndex = subsriberIndex
+		val oldIndex = subscriberIndex
 		subscribers.addOne(oldIndex, cb)
-		subsriberIndex += 1
+		subscriberIndex += 1
 		return oldIndex
 	}
 
@@ -114,7 +92,7 @@ extends Drawable with Initiable {
 		_neighbors.foreach(neighbor => {
 			val doorPosition: Position = Room.getDoorPosition(neighbor._1)
 			val (doorWidth, doorHeight): (Int, Int) = Room.getDoorSize(neighbor._1)
-			val doorObject: Door = new Door(doorPosition, doorWidth, doorHeight, neighbor._1, Room.doorSprite, handleExit)
+			val doorObject: Door = new Door(doorPosition, doorWidth, doorHeight, neighbor._1, Rooms.doorSprite, handleExit)
 			// We only want to init the doors right away
 			// if the room's which is creating the doors is initiated.
 			// Else, the doors will be initiated in the room _init method
@@ -144,9 +122,6 @@ extends Drawable with Initiable {
 		doorsPhysicalObjects.foreach(_.dispose())
 		mobs.foreach(_.dispose())
 		// Triggering all dispose callback
-//		for(s <- subscribers.clone.values) {
-//			s()
-//		}
 		subscribers.clone.values.foreach(_())
 	}
 }
