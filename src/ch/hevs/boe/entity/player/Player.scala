@@ -54,7 +54,7 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   private var spriteMovementDirectionIndex: Int = 0
   private var hideSprite: Boolean = false
   
-  private var diagonalMovementLength = getDiagonalLength()
+  private var diagonalMovementLength = getDiagonalLength
   private var immunityFrames: Boolean = false
   private var onFireCooldown: Boolean = false
   
@@ -65,7 +65,7 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   override def speed: Int = this._speed
   override def speed_=(newVal: Int): Unit = {
     this._speed = newVal
-    this.diagonalMovementLength = getDiagonalLength()
+    this.diagonalMovementLength = getDiagonalLength
   }
 
   override def draw(g: GdxGraphics): Unit = {

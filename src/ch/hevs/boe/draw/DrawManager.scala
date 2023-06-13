@@ -16,8 +16,8 @@ object DrawManager extends Initiable {
   def subscribe(cb: DrawManagerCallback, zIndex:Int): Int = {
     val old = currentIndex
     currentIndex += 1
-    this.subscribers.addOne(currentIndex, DrawManagerObject(cb, zIndex))
-    insertIndex(currentIndex, zIndex)
+    this.subscribers.addOne(old, DrawManagerObject(cb, zIndex))
+    insertIndex(old, zIndex)
     old
   }
 
