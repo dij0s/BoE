@@ -41,7 +41,7 @@ object Player extends DefaultEntityStatistics{
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite)
 }
 
-class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE_DEFAULT) {
+class Player(pos: Position, onPlayerKilled: () => Unit) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE_DEFAULT) {
   override var _hp = Player.DEFAULT_HP
   var damage: Int = Player.DAMAGE_DEFAULT
   private var _speed: Int = Player.SPEED_DEFAULT
@@ -81,7 +81,7 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
     super.draw(g)
   }
 
-  override def collision(obj: CollisionList) = {
+  override def collision(obj: CollisionList): Unit = {
     for(v <- obj) {
       v._1 match {
         case CollisionGroupNames.Wall => {
@@ -230,19 +230,7 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
 
   override protected def _dispose(): Unit = {
     super._dispose()
-    println("YOU LOSE !!!")
-
-    // TODO: Implement death of player
-    // dispose current stage and then restart the game
-//    GameplayManager.stage.dispose()
-//      val oldStage: Stage = GameplayManager.stage
-//      GameplayManager.stage = ProceduralGeneration.generateStage()
-
-//    GameplayManager.dispose()
-//    GameplayManager.init()
-
-//      oldStage.dispose()
-//    val timer = Timer(5000) { GameplayManager.stage = ProceduralGeneration.generateStage() }
+    onPlayerKilled()
   }
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Player

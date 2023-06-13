@@ -23,7 +23,7 @@ abstract class Entity(pos: Position, width: Int, height: Int) extends PhysicalOb
     }
   }
 
-  override def getZIndex = zIndex.MOB_Z_INDEX
+  override def getZIndex: Int = zIndex.MOB_Z_INDEX
 
   private var oldPos: Position = null
   override def position_=(newPos: Position): Unit = {

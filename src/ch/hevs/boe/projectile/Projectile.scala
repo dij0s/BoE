@@ -25,7 +25,7 @@ abstract class Projectile(emitter: Entity, width: Int = Projectile.SIZE_DEFAULT,
 
   protected var _ttl: Int = Projectile.TTL_DEFAULT
   var _piercing: Int = Projectile.PIERCING_DEFAULT
-  override var damage: Int = Projectile.DAMAGE_DEFAULT
+  override var damage: Int = emitter.damage
   override var speed: Int = Projectile.SPEED_DEFAULT
   override var size: Int = Projectile.SIZE_DEFAULT
   override def selfInit: Boolean = true
