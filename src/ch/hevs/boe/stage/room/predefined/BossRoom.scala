@@ -5,9 +5,7 @@ import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.mob.Mob
 import ch.hevs.boe.entity.mob.boss.Tank
 import ch.hevs.boe.physics.Position
-import ch.hevs.boe.stage.ProceduralGeneration
 import ch.hevs.boe.stage.room.Room
-import ch.hevs.boe.utils.time.Timeout
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import scala.util.Random
@@ -17,7 +15,7 @@ object BossRoom {
 	private var bossKilledSprite: Spritesheet = null
 	def initAnimationSprite(sheet: Spritesheet): Unit = bossKilledSprite = sheet
 
-	SpritesManager.addSprites(new SpritesheetModel("data/sprites/boss_killed_animations.png", 900, 600), initAnimationSprite)
+	SpritesManager.addSprites(SpritesheetModel("data/sprites/boss_killed_animations.png", 900, 600), initAnimationSprite)
 }
 
 class BossRoom extends Room {

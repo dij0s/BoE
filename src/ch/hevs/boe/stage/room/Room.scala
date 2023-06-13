@@ -33,9 +33,7 @@ object Room {
 	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room.png", 278, 186), initRoomSprite)
 	SpritesManager.addSprites(SpritesheetModel("data/sprites/cave_room_doors.png", 50, 34), initDoorSprite)
 
-
-
-
+	
 	private def getDoorSize(direction: Direction): (Int, Int) = direction match {
 		case Directions.TOP | Directions.BOTTOM => (100, 62)
 		case _ => (62, 100)
@@ -68,7 +66,7 @@ extends Drawable with Initiable {
 	var stageRoomExitCallback: (Room, Position) => Unit = null
 
 	private val subscribers: mutable.HashMap[Int, () => Unit] = new mutable.HashMap[Int, () => Unit]()
-	private var subsriberIndex: Int = 0
+	private var subscriberIndex: Int = 0
 	private val doorsPhysicalObjects: ListBuffer[Door] = ListBuffer.empty
 
 	private var drawManagerId: Int = -1
@@ -94,9 +92,9 @@ extends Drawable with Initiable {
 	def getEmptyNeighborDirections: Array[Direction] = Directions.values.toArray.diff(_neighbors.keys.toSeq)
 
 	def onDispose(cb: () => Unit): Int = {
-		val oldIndex = subsriberIndex
+		val oldIndex = subscriberIndex
 		subscribers.addOne(oldIndex, cb)
-		subsriberIndex += 1
+		subscriberIndex += 1
 		return oldIndex
 	}
 
@@ -144,9 +142,6 @@ extends Drawable with Initiable {
 		doorsPhysicalObjects.foreach(_.dispose())
 		mobs.foreach(_.dispose())
 		// Triggering all dispose callback
-//		for(s <- subscribers.clone.values) {
-//			s()
-//		}
 		subscribers.clone.values.foreach(_())
 	}
 }

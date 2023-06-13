@@ -39,8 +39,8 @@ object Player extends DefaultEntityStatistics{
   }
   def initHudSprite(s: Spritesheet) = hudSprite = s
 
-  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initPlayerSprite, mustDispose = false)
-  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite, mustDispose = false)
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initPlayerSprite)
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite)
 }
 
 class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE_DEFAULT) {
@@ -76,7 +76,7 @@ class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE
   override def draw(g: GdxGraphics): Unit = {
     val updatedY: Int = g.getScreenHeight - _position.y - size
     if(!hideSprite) {
-      g.draw(Player.playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, size)
+      g.draw(Player.playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, size*2)
       g.draw(Player.hudSprite.sprites(_hp-1)(0), 30, 30, 140, 26)
     }
     // hitbox

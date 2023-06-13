@@ -12,7 +12,7 @@ import ch.hevs.gdx2d.lib.GdxGraphics
 object GameplayManager extends Initiable {
   private var _player: Player = null
   private var _stage: Stage = null
-  private var depth: Int = 0
+  private var _depth: Int = 0
 
   def stage: Stage = _stage
   def stage_= (newVal: Stage): Unit = {
@@ -36,6 +36,8 @@ object GameplayManager extends Initiable {
     }
   }
 
+  def depth: Int = _depth
+  
   def gameTick(g: GdxGraphics): Unit = {
     if(initiated) {
       DrawManager.onDraw(g)
@@ -47,6 +49,7 @@ object GameplayManager extends Initiable {
 
     _player = new Player(new Position(250, 250))
     stage = ProceduralGeneration.generateStage()
+    _depth = 0
     player.init()
     DrawManager.init()
   }
@@ -58,6 +61,7 @@ object GameplayManager extends Initiable {
   }
 
   def goToNextStage(): Unit = {
-    GameplayManager.stage = ProceduralGeneration.generateStage(GameplayManager.stage.depth + 1)
+    _depth += 1
+    GameplayManager.stage = ProceduralGeneration.generateStage(GameplayManager.depth)
   }
 }

@@ -23,7 +23,7 @@ object DrawManager extends Initiable {
 
   private def insertIndex(elementId: Int, zi: Int): Unit = {
     val clone = orderedIndexes.clone
-    for(i <- 0 until clone.length) {
+    for(i <- clone.indices) {
       if(subscribers(clone(i)).zIndex < zi) {
         // This means that we have to insert it to the previous place
         orderedIndexes.insert(i, elementId)
@@ -37,7 +37,7 @@ object DrawManager extends Initiable {
     if(subscribers.contains(i)) {
       subscribers.remove(i)
       val clone = orderedIndexes.clone
-      for(j <- 0 until clone.length) {
+      for(j <- clone.indices) {
         if(clone(j) == i) {
           orderedIndexes.remove(j)
         }

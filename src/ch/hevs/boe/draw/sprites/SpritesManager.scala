@@ -6,14 +6,14 @@ import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import scala.collection.mutable.ListBuffer
 
 case class SpritesheetModel(file: String, tileWidth: Int, tileHeight: Int)
-case class SpritesheetCreator(model: SpritesheetModel, callback: (Spritesheet) => Unit, mustDispose: Boolean)
+case class SpritesheetCreator(model: SpritesheetModel, callback: (Spritesheet) => Unit)
 
 object SpritesManager extends Initiable {
 	private val spritesBatch: ListBuffer[SpritesheetCreator] = ListBuffer.empty
 
-	def addSprites(sheet: SpritesheetModel, cb: (Spritesheet) => Unit, mustDispose: Boolean = true): Unit = {
+	def addSprites(sheet: SpritesheetModel, cb: (Spritesheet) => Unit): Unit = {
 		if(!initiated) {
-			spritesBatch.addOne(SpritesheetCreator(sheet, cb, mustDispose))
+			spritesBatch.addOne(SpritesheetCreator(sheet, cb))
 		} else {
 			val createdSprite: Spritesheet = new Spritesheet(sheet.file, sheet.tileWidth, sheet.tileHeight)
 			cb(createdSprite)
