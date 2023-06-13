@@ -9,12 +9,16 @@ import ch.hevs.boe.stage.room.Room
 import ch.hevs.boe.utils.Initiable
 import ch.hevs.gdx2d.lib.GdxGraphics
 
-class Stage(private val _spawnRoom: Room, private val _depth: Int, private var _next: Stage = null) extends Initiable{
+class Stage(private val _spawnRoom: Room, private val _depth: Int) extends Initiable{
 
 	// field used to know which room of
 	// current stage we should be displaying
 	private var drawManagerId: Int = -1
 	private var _currentRoom: Room = null
+	// we store currentRoom in addition to _spawnRoom
+	// so we can later modify the data structure to handle
+	// 'LinkedStages' which could allow us to implement
+	// some funny stuff like going back to the previous stage
 	def currentRoom: Room = _currentRoom
 	private def currentRoom_= (newRoom: Room): Unit = {
 		if(currentRoom != null) {
@@ -35,8 +39,6 @@ class Stage(private val _spawnRoom: Room, private val _depth: Int, private var _
 		GameplayManager.player.position = newPosition
 	}
 	def spawnRoom: Room = _spawnRoom
-	def next: Stage = _next
-	def next_= (newStage: Stage): Unit = _next = newStage
 	def depth: Int = _depth
 
 	// TODO : correctly implement following method so we can display a minimap

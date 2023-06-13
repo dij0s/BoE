@@ -20,7 +20,6 @@ object Room {
 	private val CREDIT_SCALE = 1.3
 	private val CREDIT_VARIANCE = 2
 
-
 	private def getDoorSize(direction: Direction): (Int, Int) = direction match {
 		case Directions.TOP | Directions.BOTTOM => (100, 62)
 		case _ => (62, 100)
