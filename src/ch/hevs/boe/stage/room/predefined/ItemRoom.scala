@@ -1,6 +1,5 @@
 package ch.hevs.boe.stage.room.predefined
 
-import ch.hevs.boe.stage.room.Room
-import ch.hevs.gdx2d.lib.GdxGraphics
+import ch.hevs.boe.stage.room.{Room, Rooms}
 
-class ItemRoom extends Room(Room.itemRoomSprite) {}
+class ItemRoom extends Room(Rooms.itemRoomSprite) {}

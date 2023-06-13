@@ -28,9 +28,7 @@ class Firemen(pos: Position,
 
   private var fireCooldown = false
 
-  override def doGameplayTick(): Unit = {
-    fireToPlayer()
-  }
+  override def doGameplayTick(): Unit = fireToPlayer()
 
   private def fireToPlayer(): Unit = {
     if(fireCooldown) return

@@ -27,17 +27,15 @@ object Player extends DefaultEntityStatistics{
   override val SPEED_DEFAULT: Int = 5
   override val SIZE_DEFAULT: Int = 50
   override val FIRE_RATE_DEFAULT: Double = 1.5
-  override val DEFAULT_HP: Int = 5
+  override val DEFAULT_HP: Int = 10
   val SPRITE_VARIATIONS: Int = 10
   val IMMUNITY_LENGTH: Int = 500
 
   private var playerSprite: Spritesheet = null
   private var hudSprite: Spritesheet = null
 
-  def initPlayerSprite(s: Spritesheet) = {
-    playerSprite = s
-  }
-  def initHudSprite(s: Spritesheet) = hudSprite = s
+  def initPlayerSprite(s: Spritesheet): Unit = playerSprite = s
+  def initHudSprite(s: Spritesheet): Unit = hudSprite = s
 
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initPlayerSprite)
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite)
