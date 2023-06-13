@@ -42,7 +42,7 @@ object CollisionManager {
       val group = groupsClone(name)
       val groupsToCheck = groups.clone()
       groupsToCheck.remove(name)
-      for(current <- group) {
+      for(current <- group.clone) {
         for(toCheck <- groupsToCheck; g <- toCheck._2) {
           if(current.rect.checkCollision(g.rect)) {
             // This means that we have a collision between current and to check

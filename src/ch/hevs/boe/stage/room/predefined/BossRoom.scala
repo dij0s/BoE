@@ -39,5 +39,5 @@ class BossRoom extends Room {
 		if (isBossKilled)	g.draw(BossRoom.bossKilledSprite.sprites(0)(bossKilledSpriteIndex), 0, 0, g.getScreenWidth, g.getScreenHeight)
 	}
 
-	mobs.addOne(new Tank(new Position(700, 400), onBossKilled))
+	mobs.addOne(new Tank(new Position(400, 200), onBossKilled))
 }

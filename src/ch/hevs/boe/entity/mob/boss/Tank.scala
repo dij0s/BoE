@@ -22,7 +22,7 @@ object Tank extends DefaultEntityStatistics {
   override val DEFAULT_HP: Int = 20
   override val DAMAGE_DEFAULT: Int = 20
   override val SPEED_DEFAULT: Int = 1
-  override val SIZE_DEFAULT: Int = 50
+  override val SIZE_DEFAULT: Int = 100
   private val EQUAL_MARGIN_DEFAULT: Int = 25
 }
 
@@ -36,6 +36,14 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   private var onCooldown : Boolean = false
   private var tankSprites: Spritesheet = null
   private var moveDirection: Direction = null
+  private val salveSpeed: Int = 6
+
+  private var currentSalveIndex: Int = 0
+  private var salveLength: Int = 15
+  if(GameplayManager.stage != null && GameplayManager.stage.depth != null) {
+    salveLength += 2 * GameplayManager.stage.depth
+  }
+
 
 
   SpritesManager.addSprites(SpritesheetModel("data/sprites/tank_movement.png", 56, 56), initTankSprites)
@@ -43,34 +51,24 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   private def initTankSprites(sprite: Spritesheet): Unit = tankSprites = sprite
 
 
-  def fireRocket(): Unit = {
-    new Rocket(this, GameplayManager.player)
+  def fireRocket(homing: Boolean): Unit = {
+    new Rocket(this, GameplayManager.player, homing)
   }
-  def rocketSalve(salveLength: Int = 5): Unit = {
-    var index = 0
-    def fct(): Unit = {
-      fireRocket()
-      if(index < salveLength) {
-        index += 1
-        Timeout(500) {
-          fct()
-        }
-      }
-    }
-    fct()
-  }
+
+  private var salveActive: Boolean = false
+
   def placeMine(): Unit = {
     new Mine(this, damage)
   }
 
   def doAction() = {
     val rnd = Random.nextDouble()
-    if(rnd <= 0.1) {
-      rocketSalve()
-    } else if (rnd <= 0.4) {
+    if(rnd <= 0.3) {
+      salveActive = true
+    } else if (rnd <= 0.6) {
       placeMine()
     } else {
-      fireRocket()
+      fireRocket(true)
     }
   }
 
@@ -140,6 +138,7 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   }
 
   private var animationIndex: Int = 0
+  private var currentSalveNbr: Int = 0
 
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
@@ -148,11 +147,29 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
     if(animationIndex == 4 * 3) {
       animationIndex = 0
     }
+
+    // Rocket salve
+    if(salveActive) {
+      if(currentSalveIndex % salveSpeed == 0)  {
+        // This mean we have to fire a rocket
+        fireRocket(false)
+        currentSalveNbr += 1
+        if(currentSalveNbr == salveLength) {
+          // This means that we have fired all rockets from salve
+          // We need to reset all vars
+          salveActive = false
+          currentSalveIndex = 0
+          currentSalveNbr = 0
+        }
+      }
+      currentSalveIndex += 1
+    }
   }
 
   override def doGameplayTick(): Unit = {
     super.doGameplayTick()
     move()
+
     if(onCooldown) return
     onCooldown = true
     doAction()

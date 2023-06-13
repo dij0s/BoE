@@ -20,7 +20,6 @@ abstract class Mob(position: Position, width: Int, height: Int, private val call
           for(p <- g._2) {
             val pl: Player = p.asInstanceOf[Player]
             pl.damageEntity(contactDamage)
-            pl.restorePreviousPosition()
           }
         }
         case CollisionGroupNames.Wall => {

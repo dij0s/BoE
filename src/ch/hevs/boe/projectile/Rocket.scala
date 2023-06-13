@@ -1,5 +1,6 @@
 package ch.hevs.boe.projectile
 
+import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.GenStuff.CollisionGroupNames
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
@@ -25,7 +26,16 @@ object Rocket {
 }
 
 
-class Rocket(emitter: Entity, target: Entity, emitterGroup: CollisionGroupNames = CollisionGroupNames.EnemyProjectile) extends Projectile(emitter, Rocket.WIDTH, Rocket.HEIGHT) {
+class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: CollisionGroupNames = CollisionGroupNames.EnemyProjectile) extends Projectile(emitter, Rocket.WIDTH, Rocket.HEIGHT) {
+
+  private var homingLength: Int = 20 // Nbr of frames during the rocket will home
+  if(GameplayManager.stage != null && GameplayManager.stage.depth != null) {
+    homingLength += 1 * GameplayManager.stage.depth
+    if(homingLength  > 60) {
+      homingIndex = 60
+    }
+  }
+
 
   private var exploding: Boolean = false
 
@@ -33,12 +43,22 @@ class Rocket(emitter: Entity, target: Entity, emitterGroup: CollisionGroupNames 
 
   private var index: Double = Rocket.START_VALUE
 
-  private val step = getStepTowardEntity(emitter, target)
+  private var step = getStepTowardEntity(getEntityCenter(emitter), getEntityCenter(target))
 
 
-  private var rocketAngle: Int = getAngleBetweenVectors(new Position(0, 1), new Position((step._1 * 100).toInt, (step._2 * 100).toInt))
-  if(emitter.position.x > target.position.x) {
-    rocketAngle = 360 - rocketAngle
+  private var rocketAngle: Int = -1
+  refreshSpriteAngle()
+
+  def refreshSpriteAngle() = {
+    rocketAngle = getAngleBetweenVectors(new Position(0, 1), new Position((step._1 * 100).toInt, (step._2 * 100).toInt))
+    if (emitter.position.x > target.position.x) {
+      rocketAngle = 360 - rocketAngle
+    }
+  }
+
+  def homeIn() = {
+    step = getStepTowardEntity(getEntityCenter(this), getEntityCenter(target))
+    refreshSpriteAngle()
   }
 
   private def easeInQuint(x: Double): Double = {
@@ -62,9 +82,14 @@ class Rocket(emitter: Entity, target: Entity, emitterGroup: CollisionGroupNames 
   }
 
   private var animationIndex = 0
+  private var homingIndex = 0
 
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
+    if(homing && homingIndex < 30) {
+      homingIndex += 1
+      homeIn()
+    }
     g.draw(Rocket.rocketSprite.sprites(0)((animationIndex - animationIndex % 3) / 3),
       position.x, g.getScreenHeight - position.y - height, width / 2, height / 2, width, height, 1, 1, rocketAngle, true)
     animationIndex += 1

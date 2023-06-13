@@ -5,10 +5,10 @@ import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.utils.Utils
-import ch.hevs.boe.utils.Utils.getStepTowardEntity
+import ch.hevs.boe.utils.Utils.{getEntityCenter, getStepTowardEntity}
 
 class DirectedProjectile(emitter: Entity, target: Entity) extends Projectile(emitter) {
-  val res = getStepTowardEntity(emitter, target)
+  val res = getStepTowardEntity(getEntityCenter(emitter), getEntityCenter(target))
 
   private val step: Position = new Position((res._1 * speed).toInt, (res._2 * speed).toInt)
 

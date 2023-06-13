@@ -32,9 +32,7 @@ object Utils {
     return center
   }
 
-  def getStepTowardEntity(emitter: Entity, target: Entity): (Double, Double) = {
-    val targetCenter: Position = Utils.getEntityCenter(target)
-    val emitterCenter: Position = Utils.getEntityCenter(emitter)
+  def getStepTowardEntity(emitterCenter: Position, targetCenter: Position): (Double, Double) = {
     val posDiff = new Position(targetCenter.x - emitterCenter.x, targetCenter.y - emitterCenter.y)
     val norme = Utils.getVectorLength(posDiff)
     val stepX = posDiff.x.toDouble / norme
