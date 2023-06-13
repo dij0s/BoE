@@ -120,7 +120,7 @@ extends Drawable with Initiable {
 		DrawManager.unsubscribe(drawManagerId)
 		_borders.values.foreach(_.dispose())
 		doorsPhysicalObjects.foreach(_.dispose())
-		mobs.foreach(_.dispose())
+		mobs.clone.foreach(_.dispose())
 		// Triggering all dispose callback
 		subscribers.clone.values.foreach(_())
 	}
