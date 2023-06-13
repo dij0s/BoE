@@ -26,7 +26,7 @@ object Player extends DefaultEntityStatistics{
   override val DAMAGE_DEFAULT: Int = 200
   override val SPEED_DEFAULT: Int = 5
   override val SIZE_DEFAULT: Int = 35
-  val HEIGHT_FACTOR: Int = 2
+  val HEIGHT_FACTOR: Double = 1.5
   override val FIRE_RATE_DEFAULT: Double = 1.5
   override val DEFAULT_HP: Int = 10
   val SPRITE_VARIATIONS: Int = 10
@@ -42,7 +42,7 @@ object Player extends DefaultEntityStatistics{
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite)
 }
 
-class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Player.SIZE_DEFAULT, Player.SIZE_DEFAULT * Player.HEIGHT_FACTOR) {
+class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Player.SIZE_DEFAULT, (Player.SIZE_DEFAULT * Player.HEIGHT_FACTOR).toInt) {
   override var _hp = Player.DEFAULT_HP
   var damage: Int = Player.DAMAGE_DEFAULT
   private var _speed: Int = Player.SPEED_DEFAULT
@@ -73,9 +73,9 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   
 
   override def draw(g: GdxGraphics): Unit = {
-    val updatedY: Int = g.getScreenHeight - _position.y - size * Player.HEIGHT_FACTOR
+    val updatedY: Int = g.getScreenHeight - _position.y - (size * Player.HEIGHT_FACTOR).toInt
     if(!hideSprite) {
-      g.draw(Player.playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, size*Player.HEIGHT_FACTOR)
+      g.draw(Player.playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, (size*Player.HEIGHT_FACTOR).toInt)
       g.draw(Player.hudSprite.sprites(_hp-1)(0), 30, 30, 140, 26)
     }
     // hitbox
