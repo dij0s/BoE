@@ -7,7 +7,7 @@ import ch.hevs.boe.physics.Position
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
 
-class PlayerProjectile(player: Entity, direction: Direction) extends Projectile(player) {
+class PlayerProjectile(player: Entity, direction: Direction) extends BaseProjectile(player) {
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.PlayerProjectile
   override def getNewCoordinates(currentPos: Position): Position = {

@@ -28,7 +28,7 @@ object Room {
 
 	private def getPlayerPositionOnExit(direction: Direction): Position = {
 		direction match {
-			case Directions.TOP => new Position(435, 440)
+			case Directions.TOP => new Position(435, 430)
 			case Directions.RIGHT => new Position(110, 269)
 			case Directions.BOTTOM => new Position(425, 110)
 			case Directions.LEFT => new Position(740, 275)

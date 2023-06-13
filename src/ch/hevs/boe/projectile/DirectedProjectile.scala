@@ -7,7 +7,7 @@ import ch.hevs.boe.physics.Position
 import ch.hevs.boe.utils.Utils
 import ch.hevs.boe.utils.Utils.{getEntityCenter, getStepTowardEntity}
 
-class DirectedProjectile(emitter: Entity, target: Entity) extends Projectile(emitter) {
+class DirectedProjectile(emitter: Entity, target: Entity) extends BaseProjectile(emitter) {
   val res = getStepTowardEntity(getEntityCenter(emitter), getEntityCenter(target))
 
   private val step: Position = new Position((res._1 * speed).toInt, (res._2 * speed).toInt)

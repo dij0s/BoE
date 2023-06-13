@@ -3,14 +3,11 @@ package ch.hevs.boe.projectile
 import ch.hevs.boe.{GameplayManager, zIndex}
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
-import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.entity.Entity
-import ch.hevs.boe.entity.statistics.{DefaultProjectileStatistic, DefaultStatistics, ProjectileStatistics, Statistic}
-import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
-import ch.hevs.boe.stage.Directions
-import ch.hevs.boe.stage.Directions.Direction
+import ch.hevs.boe.entity.statistics.{DefaultProjectileStatistic, ProjectileStatistics}
+import ch.hevs.boe.physics.{PhysicalObject, Position}
 import ch.hevs.boe.utils.Utils
-import ch.hevs.gdx2d.lib.GdxGraphics
+
 
 object Projectile extends DefaultProjectileStatistic {
   override val TTL_DEFAULT: Int = 50

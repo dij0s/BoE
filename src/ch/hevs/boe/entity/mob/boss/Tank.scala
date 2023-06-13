@@ -36,7 +36,7 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   private var onCooldown : Boolean = false
   private var tankSprites: Spritesheet = null
   private var moveDirection: Direction = null
-  private val salveSpeed: Int = 6
+  private val salveSpeed: Int = 12
 
   private var currentSalveIndex: Int = 0
   private var salveLength: Int = 15
