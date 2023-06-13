@@ -7,9 +7,10 @@ import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.stage.room.door.Door
 import ch.hevs.boe.utils.Initiable
-import ch.hevs.boe.zIndex
+import ch.hevs.boe.{GameplayManager, zIndex}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
+
 import scala.collection.mutable
 import scala.collection.mutable.{HashMap, ListBuffer}
 
@@ -36,7 +37,7 @@ object Room {
 	}
 }
 
-abstract class Room(private val _sprites:Spritesheet = Rooms.roomSprite,
+abstract class Room(private val _sprites:Spritesheet = Rooms.mobRoomSprite,
 											private var _borders: HashMap[Direction, PhysicalObject] = HashMap(Directions.LEFT -> new Wall(new Position(0, 0), 100, 600, Directions.LEFT),
 											Directions.BOTTOM -> new Wall(new Position(100, 500), 700, 100, Directions.BOTTOM),
 											Directions.RIGHT -> new Wall(new Position(800, 0), 100, 600, Directions.RIGHT),
@@ -75,9 +76,9 @@ extends Drawable with Initiable {
 		val oldIndex = subscriberIndex
 		subscribers.addOne(oldIndex, cb)
 		subscriberIndex += 1
-		return oldIndex
+		oldIndex
 	}
-
+	
 	def offDispose(i: Int): Unit = {
 		if(subscribers.contains(i)) {
 			subscribers.remove(i)

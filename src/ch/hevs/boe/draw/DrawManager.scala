@@ -14,11 +14,11 @@ object DrawManager extends Initiable {
   private val orderedIndexes: ArrayBuffer[Int] = new ArrayBuffer[Int]()
   private var currentIndex = 0
   def subscribe(cb: DrawManagerCallback, zIndex:Int): Int = {
-    this.subscribers.addOne(currentIndex, DrawManagerObject(cb, zIndex))
-    insertIndex(currentIndex, zIndex)
     val old = currentIndex
     currentIndex += 1
-    return old
+    this.subscribers.addOne(currentIndex, DrawManagerObject(cb, zIndex))
+    insertIndex(currentIndex, zIndex)
+    old
   }
 
   private def insertIndex(elementId: Int, zi: Int): Unit = {
@@ -56,7 +56,6 @@ object DrawManager extends Initiable {
       sclone(i).cb(g)
     }
     g.drawFPS()
-
   }
 
   override protected def _init(): Unit = {
