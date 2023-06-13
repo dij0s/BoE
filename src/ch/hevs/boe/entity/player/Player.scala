@@ -8,9 +8,9 @@ import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.player.Player.SPRITE_VARIATIONS
 import ch.hevs.boe.entity.player.PlayerDirections.PlayerDirections
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
-import ch.hevs.boe.physics.{CollisionManager, Position}
+import ch.hevs.boe.physics.Position
 import ch.hevs.boe.projectile.PlayerProjectile
-import ch.hevs.boe.stage.{Directions, ProceduralGeneration, Stage}
+import ch.hevs.boe.stage.{Directions, ProceduralGeneration}
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.utils.time.{Timeout, Timer}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
@@ -30,13 +30,13 @@ object Player extends DefaultEntityStatistics{
   override val FIRE_RATE_DEFAULT: Double = 1.5
   override val DEFAULT_HP: Int = 10
   val SPRITE_VARIATIONS: Int = 10
-  val IMMUNITY_LENGTH: Int = 500
+  private val IMMUNITY_LENGTH: Int = 500
 
   private var playerSprite: Spritesheet = null
   private var hudSprite: Spritesheet = null
 
-  def initPlayerSprite(s: Spritesheet): Unit = playerSprite = s
-  def initHudSprite(s: Spritesheet): Unit = hudSprite = s
+  private def initPlayerSprite(s: Spritesheet): Unit = playerSprite = s
+  private def initHudSprite(s: Spritesheet): Unit = hudSprite = s
 
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initPlayerSprite)
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite)
@@ -48,7 +48,16 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   private var _speed: Int = Player.SPEED_DEFAULT
   var size: Int = Player.SIZE_DEFAULT
   var fireRate: Double = Player.FIRE_RATE_DEFAULT
-
+  
+  private var spriteMovementIndex: Int = 0
+  private var hideSprite: Boolean = false
+  
+  private var diagonalMovementLength = getDiagonalLength()
+  private var immunityFrames: Boolean = false
+  private var onFireCooldown: Boolean = false
+  
+  private var currentMovingDirection: PlayerDirections = null
+  
   override def selfInit: Boolean = false
 
   override def speed: Int = this._speed
@@ -57,26 +66,12 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
     this.diagonalMovementLength = getDiagonalLength()
   }
 
-
-  private var spriteMovementIndex: Int = 0
-
-  this._hp = Player.DEFAULT_HP
-
-  private var diagonalMovementLength = getDiagonalLength()
-  private var immunityFrames: Boolean = false
-  private var onFireCooldown: Boolean = false
-
-  private var hideSprite: Boolean = false
-
-  private var currentMovingDirection: PlayerDirections = null
-  
-  
-
   override def draw(g: GdxGraphics): Unit = {
     val updatedY: Int = g.getScreenHeight - _position.y - size * Player.HEIGHT_FACTOR
     if(!hideSprite) {
       g.draw(Player.playerSprite.sprites(0)(spriteMovementIndex), _position.x, updatedY, size, size*Player.HEIGHT_FACTOR)
-      g.draw(Player.hudSprite.sprites(_hp-1)(0), 30, 30, 140, 26)
+      val spriteIndex: Int = if (_hp - 1 >= 0) _hp - 1 else 3
+      g.draw(Player.hudSprite.sprites(spriteIndex)(0), 30, 30, 140, 26)
     }
     // hitbox
     super.draw(g)
@@ -105,12 +100,11 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
     val proj = new PlayerProjectile(this, direction)
     proj.damage = damage
   }
-
+  
   def handleSpriteVariation(): Unit = {
     if ((spriteMovementIndex + 1) < SPRITE_VARIATIONS) spriteMovementIndex += 1
     else spriteMovementIndex = 0
   }
-
 
   /**
    * This methods compute the length of a component of the diagonal for the player movement
@@ -181,7 +175,7 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
     return newPos
   }
 
-  override def doGameplayTick() = {
+  override def doGameplayTick(): Unit = {
 
 
     if(Gdx.input.isKeyPressed(Input.Keys.W)) {
@@ -231,7 +225,11 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
 
   override protected def _dispose(): Unit = {
     super._dispose()
-    onPlayerKilled()
+    // we must first dispose the stage else room
+    // where we died won't get disposed
+    GameplayManager.stage.dispose()
+    GameplayManager.dispose()
+    GameplayManager.init()
   }
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Player

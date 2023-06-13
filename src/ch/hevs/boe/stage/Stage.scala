@@ -56,7 +56,6 @@ class Stage(private val _spawnRoom: Room, private val _depth: Int, private var _
 
 	override protected def _dispose(): Unit = {
 		// We need to clear out all the instances correctly
-		//SpritesManager.dispose()
 		this.currentRoom.dispose()
 	}
 
