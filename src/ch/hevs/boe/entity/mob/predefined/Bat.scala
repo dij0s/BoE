@@ -1,8 +1,11 @@
 package ch.hevs.boe.entity.mob.predefined
 
+import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.entity.mob.Mob
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.Position
+import ch.hevs.boe.projectile.DirectedProjectile
+import ch.hevs.boe.utils.time.Timeout
 
 object Bat extends DefaultEntityStatistics {
   override val FIRE_RATE_DEFAULT: Double = 0
@@ -19,4 +22,17 @@ class Bat(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Bat.SIZE_DEFAULT, B
   override var damage: Int = Bat.DAMAGE_DEFAULT
   override var speed: Int = Bat.SPEED_DEFAULT
   override var size: Int = Bat.SIZE_DEFAULT
+  
+  private var fireCooldown = false
+  
+  override def doGameplayTick(): Unit = fireToPlayer()
+  
+  private def fireToPlayer(): Unit = {
+    if (fireCooldown) return
+    fireCooldown = true
+    new DirectedProjectile(this, GameplayManager.player)
+    Timeout((1000 / fireRate).toInt) {
+      fireCooldown = false
+    }
+  }
 }
