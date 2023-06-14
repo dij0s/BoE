@@ -3,10 +3,10 @@ package ch.hevs.boe
 import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.draw.sprites.SpritesManager
 import ch.hevs.boe.entity.player.Player
-import ch.hevs.boe.physics.Position
+import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.stage.{ProceduralGeneration, Stage}
 import ch.hevs.boe.utils.Initiable
-import ch.hevs.boe.utils.time.Timeout
+import ch.hevs.boe.utils.time.Timer
 import ch.hevs.gdx2d.lib.GdxGraphics
 
 object GameplayManager extends Initiable {
@@ -45,6 +45,8 @@ object GameplayManager extends Initiable {
     if(initiated) {
       DrawManager.onDraw(g)
     }
+    CollisionManager.checkCollisions()
+    Timer.tick()
   }
   
   private def restartGame(): Unit = {

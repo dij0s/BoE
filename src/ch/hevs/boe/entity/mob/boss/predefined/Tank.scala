@@ -10,7 +10,7 @@ import ch.hevs.boe.projectile.{Mine, Rocket}
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.{Direction, getOpposite}
 import ch.hevs.boe.utils.Utils.equalWithMargin
-import ch.hevs.boe.utils.time.Timeout
+import ch.hevs.boe.utils.time.Timer
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 
@@ -173,9 +173,9 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
     if(onCooldown) return
     onCooldown = true
     doAction()
-    Timeout((1000.0 / fireRate).toInt) {
+    Timer.in((1000.0 / fireRate).toInt, () => {
       onCooldown = false
-    }
+    })
 
   }
 }
