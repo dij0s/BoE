@@ -6,7 +6,7 @@ import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.stage.{ProceduralGeneration, Stage}
 import ch.hevs.boe.utils.Initiable
-import ch.hevs.boe.utils.time.Timeout
+import ch.hevs.boe.utils.time.Timer
 import ch.hevs.gdx2d.lib.GdxGraphics
 
 object GameplayManager extends Initiable {
@@ -46,6 +46,7 @@ object GameplayManager extends Initiable {
       DrawManager.onDraw(g)
     }
     CollisionManager.checkCollisions()
+    Timer.tick()
   }
   
   private def restartGame(): Unit = {

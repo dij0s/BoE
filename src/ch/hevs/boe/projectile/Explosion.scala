@@ -6,7 +6,7 @@ import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
 import ch.hevs.boe.utils.Utils.{getEntityCenter, getEntityCenterWithChild}
-import ch.hevs.boe.utils.time.Timeout
+import ch.hevs.boe.utils.time.Timer
 import ch.hevs.boe.zIndex
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
@@ -33,9 +33,9 @@ class Explosion(pos: Position, damage: Int, size: Int, length: Int,  colGroup: C
 
   override def _init(): Unit = {
     super._init()
-    Timeout(length) {
+    Timer.in(length, () => {
       this._dispose()
-    }
+    })
   }
 
   def damageEntity(e: Entity) = {

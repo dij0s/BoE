@@ -4,7 +4,7 @@ import ch.hevs.boe.GenStuff.CollisionGroupNames
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.Position
-import ch.hevs.boe.utils.time.Timeout
+import ch.hevs.boe.utils.time.Timer
 
 object Mine {
   val LIFETIME = 10000
@@ -19,9 +19,9 @@ class Mine(emitter: Entity, damage: Int, lifetime: Int = Mine.LIFETIME) extends 
 
   override def _init(): Unit = {
     super._init()
-    Timeout(Mine.LIFETIME) {
+    Timer.in(Mine.LIFETIME, () => {
       this.dispose()
-    }
+    })
   }
 
 

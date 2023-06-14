@@ -1,24 +1,47 @@
 package ch.hevs.boe.utils.time
 
-protected class Timer(t: javax.swing.Timer) {
-  def start: Unit = t.start()
-  def stop: Unit = t.stop()
-}
+import scala.collection.mutable.{ArrayBuffer, HashMap}
 
 object Timer {
-  def apply(ms: Int, repeat: Boolean = true)(op: => Unit): Timer = {
-    val timeOut = new javax.swing.AbstractAction() {
-      def actionPerformed(e: java.awt.event.ActionEvent) = op
-    }
-    val t = new javax.swing.Timer(ms, timeOut)
-    t.setRepeats(repeat)
-    t.start()
-    return new Timer(t)
-  }
-}
+  private var currentFrames: Int = 0
 
-object Timeout {
-  def apply(ms: Int)(op: => Unit): Timer = {
-    Timer(ms, false) {op}
+  private val toTrigger: HashMap[Int, ArrayBuffer[() => Unit]] = new HashMap[Int, ArrayBuffer[() => Unit]]()
+
+
+  def tick() = {
+    currentFrames += 1
+    if(toTrigger.contains(currentFrames)) {
+      for(c <- toTrigger(currentFrames)) {
+        c()
+      }
+    }
+  }
+
+  def in(frames: Int, cb: () => Unit) = {
+    addCbTrigger(frames, cb)
+  }
+
+  private def addCbTrigger(frames: Int, cb: () => Unit) = {
+    val target: Int = currentFrames + frames
+    if (!toTrigger.contains(target)) {
+      toTrigger.addOne(target, new ArrayBuffer[() => Unit]())
+    }
+    toTrigger(target).addOne(cb)
+  }
+
+  def every(frames: Int, cb: () => Unit): () => Unit = {
+    var active = true
+    def addTrigger: Unit = {
+      addCbTrigger(frames, () => {
+        if(active) {
+          cb()
+          addTrigger
+        }
+      })
+    }
+    addTrigger
+    return () => {
+      active = false
+    }
   }
 }
