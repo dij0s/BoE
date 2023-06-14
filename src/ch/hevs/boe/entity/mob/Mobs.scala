@@ -14,8 +14,10 @@ object Mobs extends Enumeration {
   
   var batSprite: Spritesheet = null
   var flySprite: Spritesheet = null
+  var teddyBearSprite: Spritesheet = null
   SpritesManager.addSprites(SpritesheetModel("data/sprites/mobs/bat.png", 64, 64), (sheet) => batSprite = sheet)
   SpritesManager.addSprites(SpritesheetModel("data/sprites/mobs/fly.png", 64, 64), (sheet) => flySprite = sheet)
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/bosses/teddybear.png", 162, 195), (sheet) => teddyBearSprite = sheet)
   
   def getHighestMob(cred: Int): Mobs = {
     var res: Mobs = null
