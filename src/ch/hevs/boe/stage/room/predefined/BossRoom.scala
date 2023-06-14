@@ -37,6 +37,6 @@ class BossRoom extends Room(Rooms.bossRoomSprite) {
 		if (isBossKilled)	g.draw(BossRoom.bossKilledSprite.sprites(0)(bossKilledSpriteIndex), 0, 0, g.getScreenWidth, g.getScreenHeight)
 	}
 	override protected def getMobs(credit: Int): ListBuffer[Mob] = {
-		ListBuffer[Mob](Bosses.factory(Bosses.getRandom(), new Position(450, 300), onBossKilled))
+		ListBuffer[Mob](Bosses.getRandom(new Position(450, 300), onBossKilled))
 	}
 }

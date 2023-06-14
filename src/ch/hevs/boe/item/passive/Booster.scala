@@ -12,7 +12,7 @@ class Booster extends PassiveItem(new Position(436, 286), Sarm.ITEM_SIZE, Sarm.I
   override val isMultiplier: Boolean = true
   override val name: String = "A strange pill"
   override val description: String = "JE COURS VIIIIIITE"
-  override val statEffect: Int = 2
+  override val statEffect: Double = 1.2
 
-  override def applyItem(target: EntityStatistics): Unit = target.speed = target.speed * this.statEffect
+  override def applyItem(target: EntityStatistics): Unit = target.speed = (target.speed * this.statEffect).toInt
 }

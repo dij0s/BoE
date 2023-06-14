@@ -1,14 +1,22 @@
 package ch.hevs.boe.entity.mob
 
+import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.mob.boss.Tank
 import ch.hevs.boe.entity.mob.predefined.{Bat, Fly}
 import ch.hevs.boe.physics.Position
+import ch.hevs.gdx2d.components.bitmaps.Spritesheet
+
 import scala.collection.mutable.HashMap
 
 object Mobs extends Enumeration {
   type Mobs = Value
   val Fly, Tank, TeddyBear, Bat = Value
-
+  
+  var batSprite: Spritesheet = null
+  var flySprite: Spritesheet = null
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/mobs/bat.png", 64, 64), (sheet) => batSprite = sheet)
+  SpritesManager.addSprites(SpritesheetModel("data/sprites/mobs/fly.png", 64, 64), (sheet) => flySprite = sheet)
+  
   def getHighestMob(cred: Int): Mobs = {
     var res: Mobs = null
     for(v <- mobCreditCost) {

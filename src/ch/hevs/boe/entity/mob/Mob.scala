@@ -6,15 +6,25 @@ import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.physics.Position
+import ch.hevs.gdx2d.components.bitmaps.Spritesheet
+import ch.hevs.gdx2d.lib.GdxGraphics
 
 
-abstract class Mob(position: Position, width: Int, height: Int, private val callbackOnKilled: (Mob) => Unit) extends Entity(position, width, height) {
+abstract class Mob(pos: Position, width: Int, height: Int, private val callbackOnKilled: (Mob) => Unit, private val sheet: Spritesheet = null) extends Entity(pos, width, height) {
   final protected def player: Player = GameplayManager.player
   var selfInit: Boolean = false
   protected val contactDamage: Int
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Enemy
-
+  
+  override def draw(g: GdxGraphics): Unit = {
+    // must make use of parent PhysicalObject's
+    // position because only this one is modified
+    val updatedY: Int = g.getScreenHeight - position.y - height
+    if (sheet != null) g.draw(sheet.sprites(0)(0), position.x, updatedY, width, height)
+    super.draw(g)
+  }
+  
   override def collision(list: CollisionList) = {
     for(g <- list) {
       g._1 match {

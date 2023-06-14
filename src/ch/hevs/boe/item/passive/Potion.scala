@@ -13,10 +13,10 @@ class Potion extends PassiveItem(new Position(436, 286), Potion.ITEM_SIZE, Potio
   override val isMultiplier: Boolean = false
   override val name: String = "Une potion magique"
   override val description: String = "Augmente vos points de vie"
-  override val statEffect: Int = 2
+  override val statEffect: Double = 2
 
   override def applyItem(target: EntityStatistics): Unit = {
-    if ((target.hp + this.statEffect) <= Player.DEFAULT_HP) target.hp = target.hp + this.statEffect
+    if ((target.hp + this.statEffect).toInt <= Player.DEFAULT_HP) target.hp = (target.hp + this.statEffect).toInt
     else target.hp = Player.DEFAULT_HP
   }
 }

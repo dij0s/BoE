@@ -12,10 +12,10 @@ import ch.hevs.gdx2d.lib.GdxGraphics
 protected abstract class Item(position: Position,
                               width: Int,
                               height: Int,
-                              private val _sprite: Spritesheet) extends PhysicalObject(position, width, height) {
+                              private val sheet: Spritesheet) extends PhysicalObject(position, width, height) {
   val name: String
   val description: String
-  val statEffect: Int
+  val statEffect: Double
   var selfInit: Boolean = false
 
   def collision(list: CollisionList): Unit = {
@@ -34,7 +34,7 @@ protected abstract class Item(position: Position,
   }
 
   override def draw(g: GdxGraphics): Unit = {
-    g.draw(_sprite.sprites(0)(0), 434, 284, 32, 32)
+    g.draw(sheet.sprites(0)(0), 434, 284, 32, 32)
     super.draw(g)
   }
 

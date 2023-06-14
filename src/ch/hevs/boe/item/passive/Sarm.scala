@@ -12,7 +12,7 @@ class Sarm extends PassiveItem(new Position(436, 286), Sarm.ITEM_SIZE, Sarm.ITEM
   override val isMultiplier: Boolean = true
   override val name: String = "A syringe of SARMS"
   override val description: String = "I'm on steroids !"
-  override val statEffect: Int = 2
+  override val statEffect: Double = 1.4
 
-  override def applyItem(target: EntityStatistics): Unit = target.damage = target.damage * this.statEffect
+  override def applyItem(target: EntityStatistics): Unit = target.fireRate = target.fireRate * statEffect
 }
