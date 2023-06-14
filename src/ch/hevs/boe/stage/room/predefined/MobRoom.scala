@@ -1,10 +1,8 @@
 package ch.hevs.boe.stage.room.predefined
 
-import ch.hevs.boe.entity.mob.predefined.Firemen
 import ch.hevs.boe.entity.mob.{Mob, Mobs}
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.stage.room.Room
-
 import scala.collection.mutable.ListBuffer
 
 class MobRoom extends Room {

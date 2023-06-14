@@ -6,7 +6,6 @@ import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.projectile.DirectedProjectile
 import ch.hevs.boe.utils.Utils
-import ch.hevs.boe.utils.time.Timeout
 import ch.hevs.gdx2d.lib.GdxGraphics
 
 import scala.util.Random
@@ -33,7 +32,7 @@ class Bat(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Bat.SIZE_DEFAULT, B
   
   private var fireCooldown = true
   private val timeoutInMs: Int = Random.between(600, 1001)
-  Timeout((timeoutInMs / fireRate).toInt) { fireCooldown = false }
+//  Timeout((timeoutInMs / fireRate).toInt) { fireCooldown = false }
   
   override def doGameplayTick(): Unit = {
     fireToPlayer()
@@ -55,9 +54,9 @@ class Bat(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Bat.SIZE_DEFAULT, B
     if (fireCooldown) return
     fireCooldown = true
     new DirectedProjectile(this, GameplayManager.player)
-    Timeout((timeoutInMs / fireRate).toInt) {
-      fireCooldown = false
-    }
+//    Timeout((timeoutInMs / fireRate).toInt) {
+//      fireCooldown = false
+//    }
   }
   
   private def moveTowardsPlayer(): Unit = {

@@ -21,7 +21,6 @@ abstract class Mob(pos: Position, width: Int, height: Int, private val callbackO
     // must make use of parent PhysicalObject's
     // position because only this one is modified
     val updatedY: Int = g.getScreenHeight - position.y - height
-    println(sheet)
     if (sheet != null) g.draw(sheet.sprites(0)(0), position.x, updatedY, width, height)
     super.draw(g)
   }

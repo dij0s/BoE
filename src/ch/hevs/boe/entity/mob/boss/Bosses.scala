@@ -12,13 +12,12 @@ object Bosses extends Enumeration {
 
   def getRandom(position: Position, cb: (Mob) => Unit): Boss = {
     val bossesCollection: Array[Bosses] = Bosses.values.toArray
-    println(bossesCollection.mkString(","))
     val bossType: Bosses = bossesCollection(Random.nextInt(bossesCollection.length))
-    println(bossType)
-    
+
     bossType match {
       case Tank => new Tank(position, cb)
-      case TeddyBear => new TeddyBear(position, cb)
+      // hardcoded position so it spawns in the center
+      case TeddyBear => new TeddyBear(new Position(425, 275), cb)
       case _ => new Tank(position, cb)
     }
   }

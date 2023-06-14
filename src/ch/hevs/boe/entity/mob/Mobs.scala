@@ -1,7 +1,7 @@
 package ch.hevs.boe.entity.mob
 
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
-import ch.hevs.boe.entity.mob.boss.predefined.Tank
+import ch.hevs.boe.entity.mob.boss.predefined.{Tank, TeddyBear}
 import ch.hevs.boe.entity.mob.predefined.{Bat, Fly}
 import ch.hevs.boe.physics.Position
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
@@ -14,11 +14,9 @@ object Mobs extends Enumeration {
   
   var batSprite: Spritesheet = null
   var flySprite: Spritesheet = null
-  var teddyBearSprite: Spritesheet = null
   SpritesManager.addSprites(SpritesheetModel("data/sprites/mobs/bat.png", 64, 64), (sheet) => batSprite = sheet)
   SpritesManager.addSprites(SpritesheetModel("data/sprites/mobs/fly.png", 64, 64), (sheet) => flySprite = sheet)
-  SpritesManager.addSprites(SpritesheetModel("data/sprites/bosses/teddybear.png", 162, 195), (sheet) => teddyBearSprite = sheet)
-  
+
   def getHighestMob(cred: Int): Mobs = {
     var res: Mobs = null
     for(v <- mobCreditCost) {
@@ -48,6 +46,9 @@ object Mobs extends Enumeration {
       }
       case Mobs.Tank => {
         new Tank(pos, cb)
+      }
+      case Mobs.TeddyBear => {
+        new TeddyBear(pos, cb)
       }
       case _ => {
         println("Not implemented yet")
