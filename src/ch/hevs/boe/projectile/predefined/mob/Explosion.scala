@@ -13,7 +13,7 @@ import ch.hevs.gdx2d.lib.GdxGraphics
 
 object Explosion {
   private val DEFAULT_SIZE = 75
-  private val DEFAULT_LENGTH = 500
+  private val DEFAULT_LENGTH = 30
 
   private var sprite: Spritesheet = null
 
