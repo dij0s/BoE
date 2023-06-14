@@ -1,7 +1,7 @@
 package ch.hevs.boe.entity.mob
 
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
-import ch.hevs.boe.entity.mob.boss.Tank
+import ch.hevs.boe.entity.mob.boss.predefined.Tank
 import ch.hevs.boe.entity.mob.predefined.{Bat, Fly}
 import ch.hevs.boe.physics.Position
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
@@ -32,7 +32,7 @@ object Mobs extends Enumeration {
   val mobCreditCost: HashMap[Mobs, Int] = HashMap[Mobs, Int](
     Mobs.Fly -> 1,
     Mobs.Tank -> 25,
-    Mobs.TeddyBear -> 5,
+    Mobs.TeddyBear -> 22,
     Mobs.Bat -> 3
   )
 

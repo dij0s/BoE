@@ -1,15 +1,15 @@
-package ch.hevs.boe.entity.mob.boss
+package ch.hevs.boe.entity.mob.boss.predefined
 
 import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.mob.Mob
-import ch.hevs.boe.entity.player.Player
+import ch.hevs.boe.entity.mob.boss.Boss
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.projectile.{Mine, Rocket}
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.{Direction, getOpposite}
-import ch.hevs.boe.utils.Utils.{equalWithMargin, getEntityCenter}
+import ch.hevs.boe.utils.Utils.equalWithMargin
 import ch.hevs.boe.utils.time.Timeout
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics

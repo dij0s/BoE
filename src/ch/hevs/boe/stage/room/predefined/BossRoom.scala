@@ -3,7 +3,8 @@ package ch.hevs.boe.stage.room.predefined
 import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.mob.Mob
-import ch.hevs.boe.entity.mob.boss.{Bosses, Tank}
+import ch.hevs.boe.entity.mob.boss.Bosses
+import ch.hevs.boe.entity.mob.boss.predefined.Tank
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.stage.room.{Room, Rooms}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet

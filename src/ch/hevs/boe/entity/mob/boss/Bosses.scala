@@ -1,7 +1,9 @@
 package ch.hevs.boe.entity.mob.boss
 
 import ch.hevs.boe.entity.mob.Mob
+import ch.hevs.boe.entity.mob.boss.predefined.Tank
 import ch.hevs.boe.physics.Position
+
 import scala.util.Random
 
 object Bosses extends Enumeration {

@@ -4,7 +4,7 @@ import ch.hevs.boe.draw.DrawManager
 import ch.hevs.boe.draw.sprites.SpritesManager
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.mob.Mob
-import ch.hevs.boe.entity.mob.boss.Tank
+import ch.hevs.boe.entity.mob.boss.predefined.Tank
 import ch.hevs.boe.entity.mob.predefined.Firemen
 import ch.hevs.boe.entity.player.Player
 import ch.hevs.boe.physics.{CollisionManager, Position}
