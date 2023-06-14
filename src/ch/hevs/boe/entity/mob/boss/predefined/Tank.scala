@@ -6,7 +6,7 @@ import ch.hevs.boe.entity.mob.Mob
 import ch.hevs.boe.entity.mob.boss.Boss
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.Position
-import ch.hevs.boe.projectile.{Mine, Rocket}
+import ch.hevs.boe.projectile.predefined.mob.{Mine, Rocket}
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.{Direction, getOpposite}
 import ch.hevs.boe.utils.Utils.equalWithMargin
@@ -167,9 +167,7 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   }
 
   override def doGameplayTick(): Unit = {
-    super.doGameplayTick()
     move()
-
     if(onCooldown) return
     onCooldown = true
     doAction()

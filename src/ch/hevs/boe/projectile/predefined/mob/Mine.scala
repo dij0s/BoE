@@ -1,9 +1,10 @@
-package ch.hevs.boe.projectile
+package ch.hevs.boe.projectile.predefined.mob
 
 import ch.hevs.boe.GenStuff.CollisionGroupNames
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.Position
+import ch.hevs.boe.projectile.Projectile
 import ch.hevs.boe.utils.time.Timer
 
 object Mine {

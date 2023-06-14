@@ -1,9 +1,10 @@
-package ch.hevs.boe.projectile
+package ch.hevs.boe.projectile.predefined.player
 
 import ch.hevs.boe.GenStuff.CollisionGroupNames
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.Position
+import ch.hevs.boe.projectile.predefined.mob.BaseProjectile
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
 

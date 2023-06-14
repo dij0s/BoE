@@ -1,11 +1,11 @@
-package ch.hevs.boe.projectile
+package ch.hevs.boe.projectile.predefined.mob
 
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.Entity
-import ch.hevs.boe.physics.{CollisionManager, PhysicalObject, Position}
-import ch.hevs.boe.utils.Utils.{getEntityCenter, getEntityCenterWithChild}
+import ch.hevs.boe.physics.{PhysicalObject, Position}
+import ch.hevs.boe.utils.Utils.getEntityCenterWithChild
 import ch.hevs.boe.utils.time.Timer
 import ch.hevs.boe.zIndex
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet

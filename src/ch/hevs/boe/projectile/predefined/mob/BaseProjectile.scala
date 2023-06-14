@@ -1,8 +1,9 @@
-package ch.hevs.boe.projectile
+package ch.hevs.boe.projectile.predefined.mob
 
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.Position
-import ch.hevs.boe.utils.Utils.{drawPhysicalObject, getEntityCenter}
+import ch.hevs.boe.projectile.Projectile
+import ch.hevs.boe.utils.Utils.getEntityCenter
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.graphics.Color
 

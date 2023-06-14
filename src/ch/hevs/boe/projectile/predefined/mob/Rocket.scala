@@ -1,4 +1,4 @@
-package ch.hevs.boe.projectile
+package ch.hevs.boe.projectile.predefined.mob
 
 import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.GenStuff.CollisionGroupNames
@@ -6,9 +6,8 @@ import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.Position
-import ch.hevs.boe.projectile.Rocket.rocketSprite
+import ch.hevs.boe.projectile.Projectile
 import ch.hevs.boe.utils.Utils.{getAngleBetweenVectors, getEntityCenter, getStepTowardEntity}
-import ch.hevs.boe.utils.time.Timeout
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 
@@ -46,7 +45,7 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
   private var step = getStepTowardEntity(getEntityCenter(emitter), getEntityCenter(target))
 
 
-  private var rocketAngle: Int = -1
+  protected var rocketAngle: Int = -1
   refreshSpriteAngle()
 
   def refreshSpriteAngle() = {

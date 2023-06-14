@@ -9,7 +9,7 @@ import ch.hevs.boe.entity.player.Player.SPRITE_VARIATIONS
 import ch.hevs.boe.entity.player.PlayerDirections.PlayerDirections
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.Position
-import ch.hevs.boe.projectile.PlayerProjectile
+import ch.hevs.boe.projectile.predefined.player.PlayerProjectile
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.utils.time.Timer
