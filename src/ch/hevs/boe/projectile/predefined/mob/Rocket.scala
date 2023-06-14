@@ -55,12 +55,12 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
     }
   }
 
-  def homeIn() = {
+  private def homeIn() = {
     step = getStepTowardEntity(getEntityCenter(this), getEntityCenter(target))
     refreshSpriteAngle()
   }
 
-  private def easeInQuint(x: Double): Double = {
+  protected def easeInQuint(x: Double): Double = {
     Math.pow(x, 4)
   }
 
@@ -68,7 +68,7 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
     val factor = easeInQuint(index)
     val newPos = new Position(currentPos.x + Math.round(factor * step._1).toInt, currentPos.y + Math.round(factor * step._2).toInt)
     index += Rocket.STEP_INDEX
-    return newPos
+    newPos
   }
 
   override protected def _dispose(): Unit = {
