@@ -36,11 +36,16 @@ object DrawManager extends Initiable {
   def unsubscribe(i: Int): Unit = {
     if(subscribers.contains(i)) {
       subscribers.remove(i)
+      var found = false
       val clone = orderedIndexes.clone
       for(j <- clone.indices) {
         if(clone(j) == i) {
+          found = true
           orderedIndexes.remove(j)
         }
+      }
+      if(!found) {
+        println("!!!! Key not found in ordered index")
       }
     } else {
       println("Subscriber not found !")
@@ -53,7 +58,9 @@ object DrawManager extends Initiable {
     val clone = orderedIndexes.clone
     val sclone = subscribers.clone
     for(i <- clone) {
-      sclone(i).cb(g)
+      if(sclone.contains(i)) {
+        sclone(i).cb(g)
+      }
     }
     g.drawFPS()
   }

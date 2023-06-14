@@ -12,7 +12,7 @@ import ch.hevs.boe.physics.Position
 import ch.hevs.boe.projectile.PlayerProjectile
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
-import ch.hevs.boe.utils.time.{Timeout, Timer}
+import ch.hevs.boe.utils.time.Timer
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.{Gdx, Input}
@@ -30,7 +30,7 @@ object Player extends DefaultEntityStatistics{
   override val FIRE_RATE_DEFAULT: Double = 1.5
   override val DEFAULT_HP: Int = 10
   val SPRITE_VARIATIONS: Int = 10
-  private val IMMUNITY_LENGTH: Int = 500
+  private val IMMUNITY_LENGTH: Int = 30
 
   private var playerSprite: Spritesheet = null
   private var hudSprite: Spritesheet = null
@@ -98,7 +98,7 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   def fire(direction: Direction): Unit = {
     if(onFireCooldown) return
     onFireCooldown = true
-    Timeout(Math.round(1000.0 / fireRate).toInt) {onFireCooldown = false}
+    Timer.in(Math.round(60.0 / fireRate).toInt, () => {onFireCooldown = false})
     val proj = new PlayerProjectile(this, direction)
     proj.damage = damage
   }
@@ -122,14 +122,14 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
     this.hp = hp - amount
     if(amount > 0) {
       immunityFrames = true
-      val timer = Timer(100) {
+      val timerStopper = Timer.every(6, () => {
         hideSprite = !hideSprite
-      }
-      Timeout(Player.IMMUNITY_LENGTH) {
+      })
+      Timer.in(Player.IMMUNITY_LENGTH, () => {
         immunityFrames = false
         hideSprite = false
-        timer.stop
-      }
+        timerStopper()
+      })
     }
   }
 
