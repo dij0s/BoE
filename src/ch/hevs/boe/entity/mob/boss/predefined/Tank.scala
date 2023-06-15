@@ -64,7 +64,7 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   def doAction() = {
     val rnd = Random.nextDouble()
     if(rnd <= 0.3) {
-      salveActive = true
+      fireSalve()
     } else if (rnd <= 0.6) {
       placeMine()
     } else {
@@ -140,29 +140,25 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   private var animationIndex: Int = 0
   private var currentSalveNbr: Int = 0
 
+
+  private var salveTimer: () => Unit = null
+
+  def fireSalve() = {
+    salveTimer = Timer.every(salveSpeed, () => {
+      fireRocket(false)
+      currentSalveNbr += 1
+      if (currentSalveNbr == salveLength) {
+        salveTimer()
+      }
+    })
+  }
+
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
     g.draw(tankSprites.sprites((animationIndex - animationIndex % 3) / 3)(getSpriteIndex()), position.x, g.getScreenHeight - position.y - height,  this.size, this.size)
     animationIndex += 1
     if(animationIndex == 4 * 3) {
       animationIndex = 0
-    }
-
-    // Rocket salve
-    if(salveActive) {
-      if(currentSalveIndex % salveSpeed == 0)  {
-        // This mean we have to fire a rocket
-        fireRocket(false)
-        currentSalveNbr += 1
-        if(currentSalveNbr == salveLength) {
-          // This means that we have fired all rockets from salve
-          // We need to reset all vars
-          salveActive = false
-          currentSalveIndex = 0
-          currentSalveNbr = 0
-        }
-      }
-      currentSalveIndex += 1
     }
   }
 
