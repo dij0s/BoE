@@ -5,7 +5,7 @@ import ch.hevs.boe.GenStuff.{CollisionGroupNames, CollisionList}
 import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.statistics.EntityStatistics
 import ch.hevs.boe.physics.{PhysicalObject, Position}
-import ch.hevs.boe.zIndex
+import ch.hevs.boe.{Notification, zIndex}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 
@@ -17,13 +17,15 @@ protected abstract class Item(position: Position,
   val description: String
   val statEffect: Double
   var selfInit: Boolean = false
+  private var g: GdxGraphics = null
+
 
   def collision(list: CollisionList): Unit = {
     for(i <- list) {
       i._1 match {
         case CollisionGroupNames.Player => {
           for(p <- i._2) {
-            
+            Notification.printNotification(g, this.name, this.description)
             this.applyItem(p.asInstanceOf[Entity])
             this.dispose()
             return
@@ -35,6 +37,9 @@ protected abstract class Item(position: Position,
   }
 
   override def draw(g: GdxGraphics): Unit = {
+    if(this.g == null) {
+      this.g = g
+    }
     g.draw(sheet.sprites(0)(0), 434, 284, 32, 32)
     super.draw(g)
   }

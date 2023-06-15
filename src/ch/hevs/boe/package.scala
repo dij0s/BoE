@@ -2,7 +2,9 @@ package ch.hevs.boe
 
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.physics.PhysicalObject
+import ch.hevs.boe.utils.time.Timer
 import ch.hevs.gdx2d.lib.GdxGraphics
+import com.badlogic.gdx.Gdx
 
 import scala.collection.mutable.HashMap
 import scala.collection.mutable.ArrayBuffer
@@ -18,6 +20,21 @@ package object zIndex {
   val ITEM_Z_INDEX = 3000
   val PROJECTILE_Z_INDEX = 1000
   val ANIMATION_Z_INDEX = 500
+}
+
+package object Notification {
+
+  def printNotification(g:GdxGraphics , title: String, content: String = ""): Unit  = {
+    val dispose = Timer.every(1, () => {
+      g.drawStringCentered(g.getScreenHeight - 50, title, GameplayManager.titleFont)
+      if (content != "") {
+        g.drawStringCentered(g.getScreenHeight - 100, content, GameplayManager.descriptionFont)
+      }
+    })
+    Timer.in(120, () => {
+      dispose()
+    })
+  }
 }
 
 package object GenStuff {

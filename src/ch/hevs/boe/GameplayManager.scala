@@ -15,15 +15,20 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter
 
 object GameplayManager extends Initiable {
+  val debugMode = false
+
+
   val screenSize: (Int, Int) = (900, 600)
   
-  private var _defaultFont: BitmapFont = null
+  private var _titleFont: BitmapFont = null
+  private var _descriptionFont: BitmapFont = null
 
   private var _player: Player = null
   private var _stage: Stage = null
   private var _depth: Int = 0
-  
-  def defaultFont: BitmapFont = _defaultFont
+
+  def descriptionFont: BitmapFont = _descriptionFont
+  def titleFont: BitmapFont = _titleFont
 
   def stage: Stage = _stage
   def stage_= (newVal: Stage): Unit = {
@@ -65,11 +70,13 @@ object GameplayManager extends Initiable {
   }
 
   override protected def _init(): Unit = {
-    val karmaticSource: FileHandle = Gdx.files.internal("data/fonts/karmatic-arcade.ttf")
+    val karmaticSource: FileHandle = Gdx.files.internal("data/fonts/ARCADE_N.TTF")
     val fontGenerator: FreeTypeFontGenerator = new FreeTypeFontGenerator(karmaticSource)
     val fontParameters: FreeTypeFontParameter = new FreeTypeFontParameter()
-    fontParameters.size = 32
-    _defaultFont = fontGenerator.generateFont(fontParameters)
+    fontParameters.size = 26
+    _titleFont = fontGenerator.generateFont(fontParameters)
+    fontParameters.size = 14
+    _descriptionFont = fontGenerator.generateFont(fontParameters)
     fontGenerator.dispose()
     SpritesManager.init()
     _player = new Player(new Position(250, 250), () => {})

@@ -15,7 +15,7 @@ object Fly extends DefaultEntityStatistics {
   override val DEFAULT_HP: Int = 2
   override val DAMAGE_DEFAULT: Int = 1
   override val SPEED_DEFAULT: Int = 2
-  override val SIZE_DEFAULT: Int = 25
+  override val SIZE_DEFAULT: Int = 45
 }
 
 class Fly(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Fly.SIZE_DEFAULT, Fly.SIZE_DEFAULT, cb) {

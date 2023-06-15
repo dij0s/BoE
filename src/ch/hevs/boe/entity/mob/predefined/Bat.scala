@@ -16,7 +16,7 @@ object Bat extends DefaultEntityStatistics {
   override val DEFAULT_HP: Int = 5
   override val DAMAGE_DEFAULT: Int = 1
   override val SPEED_DEFAULT: Int = 2
-  override val SIZE_DEFAULT: Int = 30
+  override val SIZE_DEFAULT: Int = 50
 }
 
 class Bat(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Bat.SIZE_DEFAULT, Bat.SIZE_DEFAULT, cb) {

@@ -1,5 +1,6 @@
 package ch.hevs.boe.physics
 
+import ch.hevs.boe.GameplayManager
 import ch.hevs.boe.GenStuff.CollisionGroupNames.CollisionGroupNames
 import ch.hevs.boe.GenStuff.CollisionList
 import ch.hevs.boe.draw.{DrawManager, Drawable}
@@ -33,7 +34,9 @@ abstract class PhysicalObject(protected var _position: Position, protected var _
   }
 
   override def draw(g: GdxGraphics): Unit = {
-    Utils.drawPhysicalObject(this, g)
+    if(GameplayManager.debugMode) {
+      Utils.drawPhysicalObject(this, g)
+    }
     doGameplayTick()
   }
 
