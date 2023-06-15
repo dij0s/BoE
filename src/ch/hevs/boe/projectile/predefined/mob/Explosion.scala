@@ -8,6 +8,7 @@ import ch.hevs.boe.physics.{PhysicalObject, Position}
 import ch.hevs.boe.utils.Utils.getEntityCenterWithChild
 import ch.hevs.boe.utils.time.Timer
 import ch.hevs.boe.zIndex
+import ch.hevs.gdx2d.components.audio.MusicPlayer
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 
@@ -16,6 +17,8 @@ object Explosion {
   private val DEFAULT_LENGTH = 30
 
   private var sprite: Spritesheet = null
+
+  private val explosionSound = new MusicPlayer("data/music/explosion.mp3")
 
   private def initSprite(s: Spritesheet) = sprite = s
 
@@ -32,6 +35,7 @@ class Explosion(pos: Position, damage: Int, size: Int, length: Int,  colGroup: C
   }
 
   override def _init(): Unit = {
+    Explosion.explosionSound.play()
     super._init()
     Timer.in(length, () => {
       this._dispose()
