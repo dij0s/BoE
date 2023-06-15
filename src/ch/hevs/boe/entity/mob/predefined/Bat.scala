@@ -44,8 +44,14 @@ class Bat(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Bat.SIZE_DEFAULT, B
     }
   }
 
+  private var disposeAnimationTimer: () => Unit = null
+
   override def _init(): Unit = {
     super._init()
+    disposeAnimationTimer = Timer.every(8, () => {
+      spriteVariationIndex += 1
+      if(spriteVariationIndex == spriteVariations) spriteVariationIndex = 0
+    })
     moving = true
     def setMovingTimer(): Unit = {
       Timer.in(240 + Random.nextInt(120), () => {
@@ -63,16 +69,13 @@ class Bat(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Bat.SIZE_DEFAULT, B
 
   override def _dispose(): Unit = {
     super._dispose()
+    disposeAnimationTimer()
   }
 
   override def draw(g: GdxGraphics): Unit = {
-    if (spriteIntermediateIndex % 8 == 0) {
-      if ((spriteVariationIndex + 1) < spriteVariations) spriteVariationIndex += 1 else spriteVariationIndex = 0
-    }
     val updatedY: Int = g.getScreenHeight - position.y - height
     g.draw(Mobs.batSprite.sprites(0)(spriteVariationIndex), position.x, updatedY, size, size)
     super.draw(g)
-    spriteIntermediateIndex += 1
   }
   
   private def fireToPlayer(): Unit = {

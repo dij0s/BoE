@@ -164,7 +164,9 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   override def _dispose(): Unit = {
     super._dispose()
     disposeAnimationTimer()
-    salveTimer()
+    if(salveTimer != null) {
+      salveTimer()
+    }
   }
 
   override def draw(g: GdxGraphics): Unit = {
