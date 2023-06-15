@@ -45,6 +45,9 @@ object Player extends DefaultEntityStatistics{
 }
 
 class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Player.SIZE_DEFAULT, (Player.SIZE_DEFAULT * Player.HEIGHT_FACTOR).toInt) {
+
+  println("Created player")
+
   override var _hp = Player.DEFAULT_HP
   var damage: Int = Player.DAMAGE_DEFAULT
   private var _speed: Int = Player.SPEED_DEFAULT
@@ -63,7 +66,12 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   private var currentMovingDirection: PlayerDirections = null
 
   private var isAnimating: Boolean = false
-  
+
+  override def _init(): Unit = {
+    super._init()
+    println("Init player")
+  }
+
   override def hp_=(newVal: Int): Unit = {
     if (isAnimating) return
     
@@ -76,7 +84,6 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
       isAnimating = true
       StageTransitionAnimation.start(Animations.playerKilledSprite)
       Timer.in(StageTransitionAnimation.easeInAnimationLength, () => {
-//        dispose()
         GameplayManager.restartGame()
         isAnimating = false
       })
@@ -142,6 +149,7 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   override def damageEntity(amount: Int): Unit = {
     if(immunityFrames) return
     if(amount == 0) return
+    if(this.hp <= 0) return
     this.hp = hp - amount
     if(amount > 0) {
       immunityFrames = true

@@ -15,6 +15,13 @@ abstract class Mob(pos: Position, width: Int, height: Int, private val callbackO
   var selfInit: Boolean = false
   protected val contactDamage: Int
 
+  override def hp_=(newVal: Int): Unit = {
+    if(newVal == 0) {
+      callbackOnKilled(this)
+    }
+    super.hp_=(newVal)
+  }
+
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Enemy
   
   override def draw(g: GdxGraphics): Unit = {
@@ -45,6 +52,5 @@ abstract class Mob(pos: Position, width: Int, height: Int, private val callbackO
   }
   override protected def _dispose(): Unit = {
     super._dispose()
-    callbackOnKilled(this)
   }
 }

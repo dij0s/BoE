@@ -14,7 +14,6 @@ class BossRoom extends Room(Rooms.bossRoomSprite) {
 	private var isBossKilled: Boolean = false
 	
 	private def onBossKilled(killedMob: Mob): Unit = {
-		isBossKilled = true
 		mobs.subtractOne(killedMob)
 		StageTransitionAnimation.start(Animations.bossKilledSprite)
 		// generate stage after ease in animation
