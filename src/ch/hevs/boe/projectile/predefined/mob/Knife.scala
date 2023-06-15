@@ -2,9 +2,7 @@ package ch.hevs.boe.projectile.predefined.mob
 
 import ch.hevs.boe.draw.sprites.{SpritesManager, SpritesheetModel}
 import ch.hevs.boe.entity.Entity
-import ch.hevs.boe.physics.Position
 import ch.hevs.boe.projectile.predefined.mob.Knife.knifeSprite
-import ch.hevs.boe.utils.Utils.{getEntityCenter, getStepTowardEntity}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 

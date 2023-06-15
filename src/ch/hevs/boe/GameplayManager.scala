@@ -70,8 +70,8 @@ object GameplayManager extends Initiable {
   }
 
   override protected def _init(): Unit = {
-    val karmaticSource: FileHandle = Gdx.files.internal("data/fonts/ARCADE_N.TTF")
-    val fontGenerator: FreeTypeFontGenerator = new FreeTypeFontGenerator(karmaticSource)
+    val arcadeSource: FileHandle = Gdx.files.internal("data/fonts/ARCADE_N.TTF")
+    val fontGenerator: FreeTypeFontGenerator = new FreeTypeFontGenerator(arcadeSource)
     val fontParameters: FreeTypeFontParameter = new FreeTypeFontParameter()
     fontParameters.size = 26
     _titleFont = fontGenerator.generateFont(fontParameters)
