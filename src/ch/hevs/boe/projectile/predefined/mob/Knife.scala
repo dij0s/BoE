@@ -12,14 +12,13 @@ object Knife {
 }
 
 class Knife(emitter: Entity, target: Entity) extends Rocket(emitter, target, true) {
-  private var homingIndex = 0
 
   override def draw(g: GdxGraphics): Unit = {
+    super.doGameplayTick()
     if (homingIndex < 30) {
       homingIndex += 1
       homeIn()
     }
-    println(super.position.x, super.position.y)
     g.draw(knifeSprite.sprites(0)(0), position.x, g.getScreenHeight - position.y - height, width, height, width*2, height*2, 1, 1, rocketAngle, true)
   }
 }

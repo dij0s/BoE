@@ -27,7 +27,7 @@ object Rocket {
 
 class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: CollisionGroupNames = CollisionGroupNames.EnemyProjectile) extends Projectile(emitter, Rocket.WIDTH, Rocket.HEIGHT) {
 
-  private var homingLength: Int = 20 // Nbr of frames during the rocket will home
+  protected var homingLength: Int = 20 // Nbr of frames during the rocket will home
   if(GameplayManager.stage != null && GameplayManager.stage.depth != null) {
     homingLength += 1 * GameplayManager.stage.depth
     if(homingLength  > 60) {
@@ -80,8 +80,8 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
     super._dispose()
   }
 
-  private var animationIndex = 0
-  private var homingIndex = 0
+  protected var animationIndex = 0
+  protected var homingIndex = 0
 
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
