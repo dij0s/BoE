@@ -23,6 +23,7 @@ protected abstract class Item(position: Position,
       i._1 match {
         case CollisionGroupNames.Player => {
           for(p <- i._2) {
+            
             this.applyItem(p.asInstanceOf[Entity])
             this.dispose()
             return

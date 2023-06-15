@@ -8,14 +8,22 @@ import ch.hevs.boe.stage.{ProceduralGeneration, Stage}
 import ch.hevs.boe.utils.Initiable
 import ch.hevs.boe.utils.time.Timer
 import ch.hevs.gdx2d.lib.GdxGraphics
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.files.FileHandle
+import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter
 
 object GameplayManager extends Initiable {
   val screenSize: (Int, Int) = (900, 600)
-
+  
+  private var _defaultFont: BitmapFont = null
 
   private var _player: Player = null
   private var _stage: Stage = null
   private var _depth: Int = 0
+  
+  def defaultFont: BitmapFont = _defaultFont
 
   def stage: Stage = _stage
   def stage_= (newVal: Stage): Unit = {
@@ -55,6 +63,12 @@ object GameplayManager extends Initiable {
   }
 
   override protected def _init(): Unit = {
+    val karmaticSource: FileHandle = Gdx.files.internal("data/fonts/karmatic-arcade.ttf")
+    val fontGenerator: FreeTypeFontGenerator = new FreeTypeFontGenerator(karmaticSource)
+    val fontParameters: FreeTypeFontParameter = new FreeTypeFontParameter()
+    fontParameters.size = 32
+    _defaultFont = fontGenerator.generateFont(fontParameters)
+    fontGenerator.dispose()
     SpritesManager.init()
     _player = new Player(new Position(250, 250), restartGame)
     stage = ProceduralGeneration.generateStage()

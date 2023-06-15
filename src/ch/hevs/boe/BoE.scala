@@ -5,7 +5,6 @@ import ch.hevs.gdx2d.lib.GdxGraphics
 
 class Game extends PortableApplication(900, 600) {
 
-  // TODO: implement camera based on user position (inside Player class ig ?)
   override def onInit(): Unit = {
     setTitle("The Binding of Elijah")
     GameplayManager.init()
