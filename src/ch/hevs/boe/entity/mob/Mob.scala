@@ -16,7 +16,7 @@ abstract class Mob(pos: Position, width: Int, height: Int, private val callbackO
   protected val contactDamage: Int
 
   override def hp_=(newVal: Int): Unit = {
-    if(newVal == 0) {
+    if(newVal <= 0) {
       callbackOnKilled(this)
     }
     super.hp_=(newVal)
