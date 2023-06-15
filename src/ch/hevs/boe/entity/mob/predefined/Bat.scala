@@ -15,7 +15,7 @@ object Bat extends DefaultEntityStatistics {
   override val FIRE_RATE_DEFAULT: Double = .75
   override val DEFAULT_HP: Int = 5
   override val DAMAGE_DEFAULT: Int = 1
-  override val SPEED_DEFAULT: Int = 1
+  override val SPEED_DEFAULT: Int = 2
   override val SIZE_DEFAULT: Int = 30
 }
 
@@ -30,15 +30,41 @@ class Bat(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Bat.SIZE_DEFAULT, B
   private val spriteVariations: Int = 3
   private var spriteVariationIndex: Int = 0
   private var spriteIntermediateIndex: Int = 1
-  
+
+
+  private var moving = false
   private var fireCooldown = false
   private val fireTimeoutInFrames: Int = Random.between(30, 61)
 
   override def doGameplayTick(): Unit = {
+    if(!moving) return
     fireToPlayer()
-    moveTowardsPlayer()
+    if(Timer.frame % 2 == 0) {
+      moveTowardsPlayer()
+    }
   }
-  
+
+  override def _init(): Unit = {
+    super._init()
+    moving = true
+    def setMovingTimer(): Unit = {
+      Timer.in(240 + Random.nextInt(120), () => {
+        moving = false
+        Timer.in(90, () => {
+          moving = true
+          if(initiated) {
+            setMovingTimer()
+          }
+        })
+      })
+    }
+    setMovingTimer
+  }
+
+  override def _dispose(): Unit = {
+    super._dispose()
+  }
+
   override def draw(g: GdxGraphics): Unit = {
     if (spriteIntermediateIndex % 8 == 0) {
       if ((spriteVariationIndex + 1) < spriteVariations) spriteVariationIndex += 1 else spriteVariationIndex = 0
@@ -60,6 +86,6 @@ class Bat(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Bat.SIZE_DEFAULT, B
     val batCenteredPosition: Position = Utils.getEntityCenter(this)
     val playerCenteredPosition: Position = Utils.getEntityCenter(GameplayManager.player)
     val (stepX, stepY): (Double, Double) = Utils.getStepTowardEntity(batCenteredPosition, playerCenteredPosition)
-    position = new Position((position.x + stepX*speed).toInt, (position.y + stepY*speed).toInt)
+    position = new Position(Math.round(position.x + stepX*speed).toInt, Math.round(position.y + stepY*speed).toInt)
   }
 }

@@ -5,6 +5,8 @@ import scala.collection.mutable.{ArrayBuffer, HashMap}
 object Timer {
   private var currentFrames: Int = 0
 
+  def frame: Int  = currentFrames
+
   private val toTrigger: HashMap[Int, ArrayBuffer[() => Unit]] = new HashMap[Int, ArrayBuffer[() => Unit]]()
 
 
