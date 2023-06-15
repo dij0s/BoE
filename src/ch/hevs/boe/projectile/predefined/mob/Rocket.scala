@@ -27,7 +27,7 @@ object Rocket {
 
 class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: CollisionGroupNames = CollisionGroupNames.EnemyProjectile) extends Projectile(emitter, Rocket.WIDTH, Rocket.HEIGHT) {
 
-  private var homingLength: Int = 20 // Nbr of frames during the rocket will home
+  protected var homingLength: Int = 20 // Nbr of frames during the rocket will home
   if(GameplayManager.stage != null && GameplayManager.stage.depth != null) {
     homingLength += 1 * GameplayManager.stage.depth
     if(homingLength  > 60) {
@@ -36,7 +36,7 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
   }
 
 
-  private var exploding: Boolean = false
+  protected var exploding: Boolean = false
 
   override def ttl_=(newVal: Int): Unit = return
 
@@ -80,20 +80,24 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
     super._dispose()
   }
 
-  private var animationIndex = 0
-  private var homingIndex = 0
+  protected var animationIndex = 0
+  protected var homingIndex = 0
 
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
-    if(homing && homingIndex < 30) {
-      homingIndex += 1
-      homeIn()
-    }
     g.draw(Rocket.rocketSprite.sprites(0)((animationIndex - animationIndex % 3) / 3),
       position.x, g.getScreenHeight - position.y - height, width / 2, height / 2, width, height, 1, 1, rocketAngle, true)
     animationIndex += 1
     if(animationIndex == 5) {
       animationIndex = 0
+    }
+  }
+
+  override def doGameplayTick(): Unit = {
+    super.doGameplayTick()
+    if (homing && homingIndex < 30) {
+      homingIndex += 1
+      homeIn()
     }
   }
 

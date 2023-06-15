@@ -17,28 +17,11 @@ object Knife {
 }
 
 class Knife(emitter: Entity, target: Entity) extends Rocket(emitter, target, true) {
-  private var homingIndex = 0
-  private var index: Double = Knife.START_VALUE
-  private var step = getStepTowardEntity(getEntityCenter(emitter), getEntityCenter(target))
 
-  protected def homeIn() = {
-    step = getStepTowardEntity(getEntityCenter(this), getEntityCenter(target))
-    refreshSpriteAngle()
-  }
-
-  override def getNewCoordinates(currentPos: Position): Position = {
-    println("test")
-    val factor: Double = easeInQuint(index)
-    val newPos: Position = new Position(currentPos.x + Math.round(factor * step._1).toInt, currentPos.y + Math.round(factor * step._2).toInt)
-    index += Knife.STEP_INDEX
-    newPos
-  }
+  exploding = true // Little dirty trick to make knife not exploding
 
   override def draw(g: GdxGraphics): Unit = {
-    if (homingIndex < 30) {
-      homingIndex += 1
-      homeIn()
-    }
-    g.draw(knifeSprite.sprites(0)(0), position.x, g.getScreenHeight - position.y - height, width, height, width*2, height*2, 1, 1, rocketAngle, true)
+    super.doGameplayTick()
+    g.draw(knifeSprite.sprites(0)(0), position.x, g.getScreenHeight - position.y - height, width, height, width*2, height*2, 1, 1, rocketAngle - 90, true)
   }
 }
