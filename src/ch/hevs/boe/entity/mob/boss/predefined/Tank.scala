@@ -37,8 +37,6 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   private var tankSprites: Spritesheet = null
   private var moveDirection: Direction = null
   private val salveSpeed: Int = 12
-
-  private var currentSalveIndex: Int = 0
   private var salveLength: Int = 15
   if(GameplayManager.stage != null && GameplayManager.stage.depth != null) {
     salveLength += 2 * GameplayManager.stage.depth
@@ -54,8 +52,6 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   def fireRocket(homing: Boolean): Unit = {
     new Rocket(this, GameplayManager.player, homing)
   }
-
-  private var salveActive: Boolean = false
 
   def placeMine(): Unit = {
     new Mine(this, damage)
@@ -137,7 +133,7 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
     }
   }
 
-  private var animationIndex: Int = 0
+  private var spriteIndex: Int = 0
   private var currentSalveNbr: Int = 0
 
 
@@ -153,13 +149,27 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
     })
   }
 
+
+  private var disposeAnimationTimer: () => Unit = null
+  override def _init(): Unit = {
+    super._init()
+    disposeAnimationTimer = Timer.every(3, () => {
+      spriteIndex += 1
+      if (spriteIndex == 4) {
+        spriteIndex = 0
+      }
+    })
+  }
+
+  override def _dispose(): Unit = {
+    super._dispose()
+    disposeAnimationTimer()
+    salveTimer()
+  }
+
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
-    g.draw(tankSprites.sprites((animationIndex - animationIndex % 3) / 3)(getSpriteIndex()), position.x, g.getScreenHeight - position.y - height,  this.size, this.size)
-    animationIndex += 1
-    if(animationIndex == 4 * 3) {
-      animationIndex = 0
-    }
+    g.draw(tankSprites.sprites(spriteIndex)(getSpriteIndex()), position.x, g.getScreenHeight - position.y - height,  this.size, this.size)
   }
 
   override def doGameplayTick(): Unit = {
@@ -167,7 +177,7 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
     if(onCooldown) return
     onCooldown = true
     doAction()
-    Timer.in((1000.0 / fireRate).toInt, () => {
+    Timer.in((60 / fireRate).toInt, () => {
       onCooldown = false
     })
 

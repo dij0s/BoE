@@ -5,6 +5,7 @@ import ch.hevs.boe.entity.mob.{Mob, Mobs}
 import ch.hevs.boe.entity.statistics.DefaultEntityStatistics
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.utils.Utils
+import ch.hevs.boe.utils.time.Timer
 import ch.hevs.gdx2d.lib.GdxGraphics
 
 import scala.util.Random
@@ -27,18 +28,30 @@ class Fly(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Fly.SIZE_DEFAULT, F
   
   private val spriteVariations: Int = 2
   private var spriteVariationIndex: Int = 0
-  private var spriteIntermediateIndex: Int = 1
-  
+
   override def doGameplayTick(): Unit = moveTowardsPlayer()
-  
+
+
+  private var disposeAnimationTimer: () => Unit = null
+  override def _init(): Unit = {
+    super._init()
+    disposeAnimationTimer = Timer.every(8, () => {
+      spriteVariationIndex += 1
+      if(spriteVariationIndex == spriteVariations) {
+        spriteVariationIndex = 0
+      }
+    })
+  }
+
+  override def _dispose(): Unit = {
+    super._dispose()
+    disposeAnimationTimer()
+  }
+
   override def draw(g: GdxGraphics): Unit = {
-    if (spriteIntermediateIndex % 8 == 0) {
-      if ((spriteVariationIndex + 1) < spriteVariations) spriteVariationIndex += 1 else spriteVariationIndex = 0
-    }
     val updatedY: Int = g.getScreenHeight - position.y - height
     g.draw(Mobs.flySprite.sprites(0)(spriteVariationIndex), position.x, updatedY, size, size)
     super.draw(g)
-    spriteIntermediateIndex += 1
   }
   
   private def moveTowardsPlayer(): Unit = {
