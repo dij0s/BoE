@@ -57,9 +57,11 @@ object GameplayManager extends Initiable {
     Timer.tick()
   }
   
-  private def restartGame(): Unit = {
-//    this.dispose()
-//    this.init()
+  def restartGame(): Unit = {
+//    GameplayManager.stage.dispose()
+    player = new Player(new Position(250, 250), () => {})
+    player.init()
+    stage = ProceduralGeneration.generateStage()
   }
 
   override protected def _init(): Unit = {
@@ -70,7 +72,7 @@ object GameplayManager extends Initiable {
     _defaultFont = fontGenerator.generateFont(fontParameters)
     fontGenerator.dispose()
     SpritesManager.init()
-    _player = new Player(new Position(250, 250), restartGame)
+    _player = new Player(new Position(250, 250), () => {})
     stage = ProceduralGeneration.generateStage()
     _depth = 0
     player.init()

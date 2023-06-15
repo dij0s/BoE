@@ -12,6 +12,8 @@ import ch.hevs.boe.physics.Position
 import ch.hevs.boe.projectile.predefined.player.PlayerProjectile
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
+import ch.hevs.boe.utils.animations.Animations
+import ch.hevs.boe.utils.animations.predefined.StageTransitionAnimation
 import ch.hevs.boe.utils.time.Timer
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
@@ -43,6 +45,9 @@ object Player extends DefaultEntityStatistics{
 }
 
 class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Player.SIZE_DEFAULT, (Player.SIZE_DEFAULT * Player.HEIGHT_FACTOR).toInt) {
+
+  println("Created player")
+
   override var _hp = Player.DEFAULT_HP
   var damage: Int = Player.DAMAGE_DEFAULT
   private var _speed: Int = Player.SPEED_DEFAULT
@@ -60,12 +65,29 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   
   private var currentMovingDirection: PlayerDirections = null
 
+  private var isAnimating: Boolean = false
+
+  override def _init(): Unit = {
+    super._init()
+    println("Init player")
+  }
+
   override def hp_=(newVal: Int): Unit = {
+    if (isAnimating) return
+    
     var value = newVal
     if(value > Player.MAX_HP) {
       value = Player.MAX_HP
     }
-    super.hp_=(value)
+    _hp = value
+    if (value <= 0) {
+      isAnimating = true
+      StageTransitionAnimation.start(Animations.playerKilledSprite)
+      Timer.in(StageTransitionAnimation.easeInAnimationLength, () => {
+        GameplayManager.restartGame()
+        isAnimating = false
+      })
+    }
   }
 
   override def selfInit: Boolean = false
@@ -127,6 +149,7 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   override def damageEntity(amount: Int): Unit = {
     if(immunityFrames) return
     if(amount == 0) return
+    if(this.hp <= 0) return
     this.hp = hp - amount
     if(amount > 0) {
       immunityFrames = true
@@ -186,12 +209,10 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
     } else {
       spriteMovementIndex = 0
     }
-    return newPos
+    newPos
   }
 
   override def doGameplayTick(): Unit = {
-
-
     if(Gdx.input.isKeyPressed(Input.Keys.W)) {
       if(Gdx.input.isKeyPressed(Input.Keys.A)) {
         // TOP LEFT
@@ -241,9 +262,6 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
     super._dispose()
     // we must first dispose the stage else room
     // where we died won't get disposed
-    GameplayManager.stage.dispose()
-    GameplayManager.dispose()
-    GameplayManager.init()
   }
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Player
