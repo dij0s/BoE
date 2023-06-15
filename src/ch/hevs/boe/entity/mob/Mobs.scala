@@ -5,7 +5,6 @@ import ch.hevs.boe.entity.mob.boss.predefined.{Tank, TeddyBear}
 import ch.hevs.boe.entity.mob.predefined.{Bat, Fly}
 import ch.hevs.boe.physics.Position
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
-
 import scala.collection.mutable.HashMap
 
 object Mobs extends Enumeration {
