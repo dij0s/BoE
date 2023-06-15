@@ -16,8 +16,8 @@ package object zIndex {
   val DOOR_Z_INDEX = 4500
   val MOB_Z_INDEX = 4000
   val ITEM_Z_INDEX = 3000
-  val PLAYER_Z_INDEX = 2000
   val PROJECTILE_Z_INDEX = 1000
+  val ANIMATION_Z_INDEX = 500
 }
 
 package object GenStuff {

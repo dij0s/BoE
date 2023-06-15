@@ -3,8 +3,6 @@ package ch.hevs.boe.draw
 import ch.hevs.boe.GenStuff._
 import ch.hevs.boe.utils.Initiable
 import ch.hevs.gdx2d.lib.GdxGraphics
-
-import scala.collection.mutable
 import scala.collection.mutable.{ArrayBuffer, HashMap}
 
 case class DrawManagerObject(cb: DrawManagerCallback, zIndex: Int)

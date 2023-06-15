@@ -12,6 +12,8 @@ import ch.hevs.boe.physics.Position
 import ch.hevs.boe.projectile.predefined.player.PlayerProjectile
 import ch.hevs.boe.stage.Directions
 import ch.hevs.boe.stage.Directions.Direction
+import ch.hevs.boe.utils.animations.Animations
+import ch.hevs.boe.utils.animations.predefined.StageTransitionAnimation
 import ch.hevs.boe.utils.time.Timer
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
@@ -60,12 +62,25 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   
   private var currentMovingDirection: PlayerDirections = null
 
+  private var isAnimating: Boolean = false
+  
   override def hp_=(newVal: Int): Unit = {
+    if (isAnimating) return
+    
     var value = newVal
     if(value > Player.MAX_HP) {
       value = Player.MAX_HP
     }
-    super.hp_=(value)
+    _hp = value
+    if (value <= 0) {
+      isAnimating = true
+      StageTransitionAnimation.start(Animations.playerKilledSprite)
+      Timer.in(StageTransitionAnimation.easeInAnimationLength, () => {
+//        dispose()
+        GameplayManager.restartGame()
+        isAnimating = false
+      })
+    }
   }
 
   override def selfInit: Boolean = false
@@ -186,12 +201,10 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
     } else {
       spriteMovementIndex = 0
     }
-    return newPos
+    newPos
   }
 
   override def doGameplayTick(): Unit = {
-
-
     if(Gdx.input.isKeyPressed(Input.Keys.W)) {
       if(Gdx.input.isKeyPressed(Input.Keys.A)) {
         // TOP LEFT
@@ -241,9 +254,6 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
     super._dispose()
     // we must first dispose the stage else room
     // where we died won't get disposed
-    GameplayManager.stage.dispose()
-    GameplayManager.dispose()
-    GameplayManager.init()
   }
 
   override def getCollisionGroup(): CollisionGroupNames = CollisionGroupNames.Player

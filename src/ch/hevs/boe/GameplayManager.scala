@@ -49,9 +49,10 @@ object GameplayManager extends Initiable {
     Timer.tick()
   }
   
-  private def restartGame(): Unit = {
-//    this.dispose()
-//    this.init()
+  def restartGame(): Unit = {
+//    GameplayManager.stage.dispose()
+    GameplayManager.dispose()
+    GameplayManager.init()
   }
 
   override protected def _init(): Unit = {
