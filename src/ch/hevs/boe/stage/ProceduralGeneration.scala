@@ -16,9 +16,9 @@ object ProceduralGeneration {
 		val scalingFunction = (x: Int) => 1/8 * math.pow(x,2)
 		// stocker la distance minimale depuis le spawn
 		val leafRoomsToGenerate: HashMap[Rooms.Value, Int] = HashMap[Rooms.Value, Int](
-			Rooms.BossRoom -> (3 + leafMobRoomFactor * scalingFunction(stageDepth)).toInt,
-			Rooms.MobRoom -> (4 + scalingFunction(stageDepth)).toInt,
-			Rooms.ItemRoom -> (1 + scalingFunction(stageDepth)).toInt
+			Rooms.BossRoom -> Math.round(3 + leafMobRoomFactor * scalingFunction(stageDepth)).toInt,
+			Rooms.MobRoom -> Math.round(4 + scalingFunction(stageDepth)).toInt,
+			Rooms.ItemRoom -> Math.round(1 + scalingFunction(stageDepth)).toInt
 		)
 
 		leafRoomsToGenerate.foreach(leafRoom => {
@@ -30,6 +30,7 @@ object ProceduralGeneration {
 			// 'to' so we also handle leaf room in here
 			(0 to leafRoomDistance).foreach(i => {
 				// add next room in random empty direction
+				// because one is already assigned
 				val emptyDirections: Array[Direction] = currentRoom.getEmptyNeighborDirections
 				directionToAddRoom = emptyDirections(Random.nextInt(emptyDirections.length))
 				val newRoom: Room = if (i < leafRoomDistance) new MobRoom else Rooms.createRoom(leafRoomType)
