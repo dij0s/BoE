@@ -15,7 +15,7 @@ import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.utils.animations.Animations
 import ch.hevs.boe.utils.animations.predefined.StageTransitionAnimation
 import ch.hevs.boe.utils.time.Timer
-import ch.hevs.gdx2d.components.audio.{MusicPlayer, SoundSample}
+import ch.hevs.gdx2d.components.audio.SoundSample
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.{Gdx, Input}
@@ -35,13 +35,15 @@ object Player extends DefaultEntityStatistics{
   override val DEFAULT_HP: Int = Player.MAX_HP
   val SPRITE_VARIATIONS: Int = 10
   private val IMMUNITY_LENGTH: Int = 30
+  
   private var playerSprite: Spritesheet = null
   private var hudSprite: Spritesheet = null
+  
+  private def initPlayerSprite(s: Spritesheet): Unit = playerSprite = s
+  private def initHudSprite(s: Spritesheet): Unit = hudSprite = s
 
   private val dieSound = new SoundSample("data/music/player_die.mp3")
   private val hurtSound = new SoundSample("data/music/player_hurt.mp3")
-  private def initPlayerSprite(s: Spritesheet): Unit = playerSprite = s
-  private def initHudSprite(s: Spritesheet): Unit = hudSprite = s
 
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah.png", 28, 43), initPlayerSprite)
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite)

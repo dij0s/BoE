@@ -24,7 +24,6 @@ protected abstract class Item(position: Position,
   var selfInit: Boolean = false
   private var g: GdxGraphics = null
 
-
   def collision(list: CollisionList): Unit = {
     for(i <- list) {
       i._1 match {

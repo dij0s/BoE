@@ -5,7 +5,6 @@ import ch.hevs.boe.entity.mob.boss.predefined.{Tank, TeddyBear}
 import ch.hevs.boe.entity.mob.predefined.{Bat, Fly}
 import ch.hevs.boe.physics.Position
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
-
 import scala.collection.mutable.HashMap
 
 object Mobs extends Enumeration {
@@ -32,8 +31,8 @@ object Mobs extends Enumeration {
   val mobCreditCost: HashMap[Mobs, Int] = HashMap[Mobs, Int](
     Mobs.Fly -> 1,
     Mobs.Tank -> 25,
-    Mobs.TeddyBear -> 22,
-    Mobs.Bat -> 3
+    Mobs.TeddyBear -> 18,
+    Mobs.Bat -> 4
   )
 
   def factory(mobType: Mobs, pos: Position, cb: (Mob) => Unit = (m: Mob) => {}): Mob = {
