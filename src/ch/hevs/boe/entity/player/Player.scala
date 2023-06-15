@@ -15,6 +15,7 @@ import ch.hevs.boe.stage.Directions.Direction
 import ch.hevs.boe.utils.animations.Animations
 import ch.hevs.boe.utils.animations.predefined.StageTransitionAnimation
 import ch.hevs.boe.utils.time.Timer
+import ch.hevs.gdx2d.components.audio.{MusicPlayer, SoundSample}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.{Gdx, Input}
@@ -37,6 +38,8 @@ object Player extends DefaultEntityStatistics{
   private var playerSprite: Spritesheet = null
   private var hudSprite: Spritesheet = null
 
+  private val dieSound = new SoundSample("data/music/player_die.mp3")
+  private val hurtSound = new SoundSample("data/music/player_hurt.mp3")
   private def initPlayerSprite(s: Spritesheet): Unit = playerSprite = s
   private def initHudSprite(s: Spritesheet): Unit = hudSprite = s
 
@@ -74,7 +77,9 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
 
   override def hp_=(newVal: Int): Unit = {
     if (isAnimating) return
-    
+    if(newVal < _hp) {
+      Player.hurtSound.play()
+    }
     var value = newVal
     if(value > Player.MAX_HP) {
       value = Player.MAX_HP
@@ -82,6 +87,7 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
     _hp = value
     if (value <= 0) {
       isAnimating = true
+      Player.dieSound.play()
       StageTransitionAnimation.start(Animations.playerKilledSprite)
       Timer.in(StageTransitionAnimation.easeInAnimationLength, () => {
         GameplayManager.restartGame()

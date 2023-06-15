@@ -8,6 +8,7 @@ import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.projectile.Projectile
 import ch.hevs.boe.utils.Utils.{getAngleBetweenVectors, getEntityCenter, getStepTowardEntity}
+import ch.hevs.gdx2d.components.audio.{MusicPlayer, SoundSample}
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
 
@@ -18,6 +19,8 @@ object Rocket {
   private val HEIGHT: Int = 25
 
   private var rocketSprite: Spritesheet = null
+
+  private val rocketSound = new SoundSample("data/music/rocket_launch.mp3")
 
   private def initRocketSprites(s: Spritesheet) = rocketSprite = s
 
@@ -47,6 +50,13 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
 
   protected var rocketAngle: Int = -1
   refreshSpriteAngle()
+
+  override def _init(): Unit = {
+    super._init()
+    if(!exploding) {
+      Rocket.rocketSound.play()
+    }
+  }
 
   def refreshSpriteAngle() = {
     rocketAngle = getAngleBetweenVectors(new Position(0, 1), new Position((step._1 * 100).toInt, (step._2 * 100).toInt))

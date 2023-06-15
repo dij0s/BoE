@@ -86,7 +86,7 @@ object GameplayManager extends Initiable {
     _depth = 0
     player.init()
     DrawManager.init()
-    backgroundMusicPlayer.loop()
+    //backgroundMusicPlayer.loop()
   }
 
   override protected def _dispose(): Unit = {
