@@ -36,7 +36,7 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
   }
 
 
-  private var exploding: Boolean = false
+  protected var exploding: Boolean = false
 
   override def ttl_=(newVal: Int): Unit = return
 

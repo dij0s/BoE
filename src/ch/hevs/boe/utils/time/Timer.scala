@@ -16,6 +16,7 @@ object Timer {
       for(c <- toTrigger(currentFrames)) {
         c()
       }
+      toTrigger.remove(currentFrames)
     }
   }
 
