@@ -16,7 +16,6 @@ class Potion extends PassiveItem(new Position(436, 286), Potion.ITEM_SIZE, Potio
   override val statEffect: Double = 2
 
   override def applyItem(target: EntityStatistics): Unit = {
-    if ((target.hp + this.statEffect).toInt <= Player.DEFAULT_HP) target.hp = (target.hp + this.statEffect).toInt
-    else target.hp = Player.DEFAULT_HP
+    target.hp += this.statEffect.toInt
   }
 }

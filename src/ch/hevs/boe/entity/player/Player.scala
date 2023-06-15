@@ -28,10 +28,10 @@ object Player extends DefaultEntityStatistics{
   override val SIZE_DEFAULT: Int = 40
   val HEIGHT_FACTOR: Double = 1.5
   override val FIRE_RATE_DEFAULT: Double = 1.5
-  override val DEFAULT_HP: Int = 10
+  private val MAX_HP = 10
+  override val DEFAULT_HP: Int = Player.MAX_HP
   val SPRITE_VARIATIONS: Int = 10
   private val IMMUNITY_LENGTH: Int = 30
-
   private var playerSprite: Spritesheet = null
   private var hudSprite: Spritesheet = null
 
@@ -59,7 +59,15 @@ class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Pla
   private var onFireCooldown: Boolean = false
   
   private var currentMovingDirection: PlayerDirections = null
-  
+
+  override def hp_=(newVal: Int): Unit = {
+    var value = newVal
+    if(value > Player.MAX_HP) {
+      value = Player.MAX_HP
+    }
+    super.hp_=(value)
+  }
+
   override def selfInit: Boolean = false
 
   override def speed: Int = this._speed
