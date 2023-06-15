@@ -32,8 +32,8 @@ object Mobs extends Enumeration {
   val mobCreditCost: HashMap[Mobs, Int] = HashMap[Mobs, Int](
     Mobs.Fly -> 1,
     Mobs.Tank -> 25,
-    Mobs.TeddyBear -> 22,
-    Mobs.Bat -> 3
+    Mobs.TeddyBear -> 18,
+    Mobs.Bat -> 4
   )
 
   def factory(mobType: Mobs, pos: Position, cb: (Mob) => Unit = (m: Mob) => {}): Mob = {
