@@ -59,9 +59,9 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
 
   def doAction() = {
     val rnd = Random.nextDouble()
-    if(rnd <= 0.3) {
+    if(rnd <= 0.2) {
       fireSalve()
-    } else if (rnd <= 0.6) {
+    } else if (rnd <= 0.5) {
       placeMine()
     } else {
       fireRocket(true)

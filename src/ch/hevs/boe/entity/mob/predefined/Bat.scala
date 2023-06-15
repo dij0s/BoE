@@ -33,7 +33,10 @@ class Bat(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Bat.SIZE_DEFAULT, B
 
 
   private var moving = false
-  private var fireCooldown = false
+  private var fireCooldown = true
+  Timer.in(60 + Random.nextInt(30), () => {
+    fireCooldown = false
+  })
   private val fireTimeoutInFrames: Int = Random.between(30, 61)
 
   override def doGameplayTick(): Unit = {

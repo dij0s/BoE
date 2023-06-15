@@ -6,8 +6,13 @@ import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.entity.statistics.EntityStatistics
 import ch.hevs.boe.physics.{PhysicalObject, Position}
 import ch.hevs.boe.{Notification, zIndex}
+import ch.hevs.gdx2d.components.audio.SoundSample
 import ch.hevs.gdx2d.components.bitmaps.Spritesheet
 import ch.hevs.gdx2d.lib.GdxGraphics
+
+object Item {
+  private val explosionSound = new SoundSample("data/music/item_pickup.mp3")
+}
 
 protected abstract class Item(position: Position,
                               width: Int,
@@ -26,6 +31,7 @@ protected abstract class Item(position: Position,
         case CollisionGroupNames.Player => {
           for(p <- i._2) {
             Notification.printNotification(g, this.name, this.description)
+            Item.explosionSound.play()
             this.applyItem(p.asInstanceOf[Entity])
             this.dispose()
             return

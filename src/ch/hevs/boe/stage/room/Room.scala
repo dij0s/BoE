@@ -97,8 +97,8 @@ extends Drawable with Initiable {
 		// In order to do that, we have to define a safe zone (removing walls and player possible spawn from screen)
 		// Then we have to keep a trace of what we have spawned
 		def randPosition(): Position = {
-			val newX = Random.nextInt(GameplayManager.screenSize._1 - 200 - mob.width) + 100
-			val newY = Random.nextInt(GameplayManager.screenSize._2 - 200 - mob.height) + 100
+			val newX = Random.nextInt(GameplayManager.screenSize._1 - 400 - mob.width) + 200
+			val newY = Random.nextInt(GameplayManager.screenSize._2 - 400 - mob.height) + 200
 			new Position(newX, newY)
 		}
 

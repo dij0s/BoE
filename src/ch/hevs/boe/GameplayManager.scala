@@ -7,6 +7,7 @@ import ch.hevs.boe.physics.{CollisionManager, Position}
 import ch.hevs.boe.stage.{ProceduralGeneration, Stage}
 import ch.hevs.boe.utils.Initiable
 import ch.hevs.boe.utils.time.Timer
+import ch.hevs.gdx2d.components.audio.MusicPlayer
 import ch.hevs.gdx2d.lib.GdxGraphics
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.files.FileHandle
@@ -22,6 +23,7 @@ object GameplayManager extends Initiable {
   
   private var _titleFont: BitmapFont = null
   private var _descriptionFont: BitmapFont = null
+  private val backgroundMusicPlayer = new MusicPlayer("data/music/background_music.mp3");
 
   private var _player: Player = null
   private var _stage: Stage = null
@@ -84,6 +86,7 @@ object GameplayManager extends Initiable {
     _depth = 0
     player.init()
     DrawManager.init()
+    //backgroundMusicPlayer.loop()
   }
 
   override protected def _dispose(): Unit = {
