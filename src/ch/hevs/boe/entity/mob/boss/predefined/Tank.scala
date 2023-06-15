@@ -36,8 +36,8 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   private var onCooldown : Boolean = false
   private var tankSprites: Spritesheet = null
   private var moveDirection: Direction = null
-  private val salveSpeed: Int = 12
-  private var salveLength: Int = 15
+  private val salveSpeed: Int = 6
+  private var salveLength: Int = 9
   if(GameplayManager.stage != null && GameplayManager.stage.depth != null) {
     salveLength += 2 * GameplayManager.stage.depth
   }
@@ -134,12 +134,13 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
   }
 
   private var spriteIndex: Int = 0
-  private var currentSalveNbr: Int = 0
 
 
   private var salveTimer: () => Unit = null
 
   def fireSalve() = {
+    var currentSalveNbr = 0
+    if(salveTimer != null) salveTimer()
     salveTimer = Timer.every(salveSpeed, () => {
       fireRocket(false)
       currentSalveNbr += 1
