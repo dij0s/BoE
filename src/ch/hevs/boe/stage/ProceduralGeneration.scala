@@ -41,7 +41,7 @@ object ProceduralGeneration {
 		})
 		// TODO: create loops in graph ?
 
-		new Stage(spawnRoom, stageDepth)
-		//new Stage(new ItemRoom, stageDepth)
+		//new Stage(spawnRoom, stageDepth)
+		new Stage(new BossRoom, stageDepth)
 	}
 }
