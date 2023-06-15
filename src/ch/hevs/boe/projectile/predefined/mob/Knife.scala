@@ -17,10 +17,6 @@ class Knife(emitter: Entity, target: Entity) extends Rocket(emitter, target, tru
 
   override def draw(g: GdxGraphics): Unit = {
     super.doGameplayTick()
-    if (homingIndex < 30) {
-      homingIndex += 1
-      homeIn()
-    }
     g.draw(knifeSprite.sprites(0)(0), position.x, g.getScreenHeight - position.y - height, width, height, width*2, height*2, 1, 1, rocketAngle - 90, true)
   }
 }

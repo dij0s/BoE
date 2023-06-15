@@ -85,15 +85,19 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
 
   override def draw(g: GdxGraphics): Unit = {
     super.draw(g)
-    if(homing && homingIndex < 30) {
-      homingIndex += 1
-      homeIn()
-    }
     g.draw(Rocket.rocketSprite.sprites(0)((animationIndex - animationIndex % 3) / 3),
       position.x, g.getScreenHeight - position.y - height, width / 2, height / 2, width, height, 1, 1, rocketAngle, true)
     animationIndex += 1
     if(animationIndex == 5) {
       animationIndex = 0
+    }
+  }
+
+  override def doGameplayTick(): Unit = {
+    super.doGameplayTick()
+    if (homing && homingIndex < 30) {
+      homingIndex += 1
+      homeIn()
     }
   }
 
