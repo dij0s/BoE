@@ -26,6 +26,10 @@ package object zIndex {
 
 package object Notification {
 
+
+  // We could do this better
+  // Extends Initiable -> subscribe to draw manager on init -> have a method draw in which we draw all active notifications
+  // -> in the method print notification -> add an active notification and set a timer to clear it
   def printNotification(g:GdxGraphics , title: String, content: String = ""): Unit  = {
     val dispose = Timer.every(1, () => {
       g.drawStringCentered(g.getScreenHeight - 50, title, GameplayManager.titleFont)

@@ -19,15 +19,14 @@ object GameplayManager extends Initiable {
   val debugMode = false
 
   val screenSize: (Int, Int) = (900, 600)
+  
+  private var _titleFont: BitmapFont = null
+  private var _descriptionFont: BitmapFont = null
+  private val backgroundMusicPlayer = new MusicPlayer("data/music/background_music.mp3");
 
   private var _player: Player = null
   private var _stage: Stage = null
   private var _depth: Int = 0
-
-  private var _titleFont: BitmapFont = null
-  private var _descriptionFont: BitmapFont = null
-
-  private val backgroundMusicPlayer = new MusicPlayer("data/music/background_music.mp3");
 
   def descriptionFont: BitmapFont = _descriptionFont
   def titleFont: BitmapFont = _titleFont
@@ -57,15 +56,27 @@ object GameplayManager extends Initiable {
   def depth: Int = _depth
   
   def gameTick(g: GdxGraphics): Unit = {
-    if(initiated) DrawManager.onDraw(g)
-    CollisionManager.checkCollisions()
-    Timer.tick()
+    if(initiated) {
+      // The three manager to call in order to make the game work
+
+      // Responsible for each draw method call
+      // And doGameplay tick in every physical object
+      // As we don't seperate gameplay from render
+      DrawManager.onDraw(g)
+
+      // Check all the collisions in the game
+      CollisionManager.checkCollisions()
+
+      // Tick all the timers
+      Timer.tick()
+    }
   }
-  
   def restartGame(): Unit = {
+    // Resetting the depth
     _depth = 0
-    player = new Player(new Position(250, 250))
-    player.init()
+    // Disposing old player and stage
+    // Initing the new
+    player = new Player(new Position(250, 250), () => {})
     stage = ProceduralGeneration.generateStage()
   }
 
@@ -73,20 +84,15 @@ object GameplayManager extends Initiable {
     val arcadeSource: FileHandle = Gdx.files.internal("data/fonts/ARCADE_N.TTF")
     val fontGenerator: FreeTypeFontGenerator = new FreeTypeFontGenerator(arcadeSource)
     val fontParameters: FreeTypeFontParameter = new FreeTypeFontParameter()
-
     fontParameters.size = 26
     _titleFont = fontGenerator.generateFont(fontParameters)
-
     fontParameters.size = 14
     _descriptionFont = fontGenerator.generateFont(fontParameters)
-
     fontGenerator.dispose()
-
     SpritesManager.init()
-    _player = new Player(new Position(250, 250))
+    _player = new Player(new Position(250, 250), () => {})
     stage = ProceduralGeneration.generateStage()
     _depth = 0
-
     player.init()
     DrawManager.init()
     backgroundMusicPlayer.loop()

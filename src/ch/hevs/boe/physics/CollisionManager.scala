@@ -35,28 +35,43 @@ object CollisionManager {
     }
   }
 
+  /**
+   * Check the collision between all subscribed physical objects
+   */
   def checkCollisions() = {
+    // This array is here to collect all objects in collision with an object before trigerring the callback
     val toTriggerArr: HashMap[CollisionObject, CollisionList] = new HashMap[CollisionObject, CollisionList]()
     val groupsClone = groups.clone
+    // Looping through all groups
     for(name <- groupsClone.keys) {
+      // Current group
       val group = groupsClone(name)
-      val groupsToCheck = groups.clone()
+
+      // Cloning all groups, removing current group to prevent collision between objects of same group
+      val groupsToCheck = groups.clone
       groupsToCheck.remove(name)
+      // Looping through each physical object/callback pair of current group
       for(current <- group.clone) {
+        // Looping through each object of every group except the current group
         for(toCheck <- groupsToCheck; g <- toCheck._2) {
           if(current.rect.checkCollision(g.rect)) {
             // This means that we have a collision between current and to check
+
+            // If there is not the current object in the trigger array
             if(!toTriggerArr.contains(current)) {
               toTriggerArr.addOne(current, new CollisionList())
             }
+            // If there is not the current group in the trigger array
             if(!toTriggerArr(current).contains(toCheck._1)) {
               toTriggerArr(current).addOne(toCheck._1, new ArrayBuffer[PhysicalObject]())
             }
+            // We add the object in which it is in collision in the trigger array
             toTriggerArr(current)(toCheck._1).addOne(g.rect)
           }
         }
       }
     }
+    // Triggering all callbacks
     for(p <- toTriggerArr) {
       p._1.collisionCallback(p._2)
     }

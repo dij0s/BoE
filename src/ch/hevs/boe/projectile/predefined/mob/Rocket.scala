@@ -38,6 +38,11 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
     }
   }
 
+  // Little bit dirty :(
+  // With more time -> separate this in two class in order to split the homing
+  // mechanic from the rocket altogether -> don't need to do that as the knife implement the homingProjectile
+  protected def isRocket: Boolean = true
+
 
   protected var exploding: Boolean = false
 
@@ -53,7 +58,7 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
 
   override def _init(): Unit = {
     super._init()
-    if(!exploding) {
+    if(isRocket) {
       Rocket.rocketSound.play()
     }
   }
@@ -84,7 +89,7 @@ class Rocket(emitter: Entity, target: Entity, homing: Boolean, emitterGroup: Col
   override protected def _dispose(): Unit = {
     if (exploding) return
     exploding = true
-    if(this.doDeathEffects) {
+    if(this.doDeathEffects && isRocket) {
       new Explosion(this, damage)
     }
     super._dispose()
