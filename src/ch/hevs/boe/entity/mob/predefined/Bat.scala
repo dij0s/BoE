@@ -29,7 +29,6 @@ class Bat(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Bat.SIZE_DEFAULT, B
   
   private val spriteVariations: Int = 3
   private var spriteVariationIndex: Int = 0
-  private var spriteIntermediateIndex: Int = 1
 
 
   private var moving = false

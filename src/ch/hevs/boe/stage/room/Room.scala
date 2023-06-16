@@ -49,9 +49,10 @@ abstract class Room(private val _sprites:Spritesheet = Rooms.mobRoomSprite,
 											Directions.TOP -> new Wall(new Position(100, 0), 700, 100, Directions.TOP)),
                     private val _neighbors: HashMap[Direction, Room] = HashMap.empty)
 extends Drawable with Initiable {
+	// current room credit and spawned mobs
 	private val spawnedList: ArrayBuffer[(Position, Int, Int)] = new ArrayBuffer[(Position, Int, Int)]()
 	protected val credits = (Room.DEFAULT_CREDIT + GameplayManager.depth * Room.CREDIT_SCALE + Random.nextInt(Room.CREDIT_VARIANCE)).toInt
-
+	// called when player exits room
 	var stageRoomExitCallback: (Room, Position) => Unit = null
 
 	private val subscribers: mutable.HashMap[Int, () => Unit] = new mutable.HashMap[Int, () => Unit]()
@@ -64,6 +65,7 @@ extends Drawable with Initiable {
 
 	var item: PassiveItem = null
 
+	// handles room exit
 	private def handleExit(direction: Direction): Unit = if (mobs.isEmpty) {
 		dispose()
 		val playerPosition: Position = Room.getPlayerPositionOnExit(direction)
@@ -73,11 +75,14 @@ extends Drawable with Initiable {
 
 	def borders: HashMap[Direction, PhysicalObject] = _borders
 	def borders_= (newBorders: HashMap[Direction, PhysicalObject]): Unit = _borders = newBorders
+
 	def neighbors: HashMap[Direction, Room] = _neighbors
 	def addNeighbor(direction: Direction, neighbor: Room): Unit = {
 		_neighbors.addOne(direction -> neighbor)
+		// re-inits doors based on neighbor rooms
 		refreshDoors()
 	}
+
 	def hasNeighbors: Boolean = _neighbors.nonEmpty
 	def getNeighborRoom(direction: Direction): Room = _neighbors(direction)
 	def getNeighborsDirection: Array[Direction] = _neighbors.keys.toArray
