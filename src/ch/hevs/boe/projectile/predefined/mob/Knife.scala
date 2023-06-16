@@ -16,7 +16,8 @@ object Knife {
 
 class Knife(emitter: Entity, target: Entity) extends Rocket(emitter, target, true) {
 
-  exploding = true // Little dirty trick to make knife not exploding
+  // Little dirty trick explained in the rocket class file
+  override def isRocket: Boolean = false
 
   override def draw(g: GdxGraphics): Unit = {
     super.doGameplayTick()

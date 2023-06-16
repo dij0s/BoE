@@ -57,16 +57,26 @@ object GameplayManager extends Initiable {
   
   def gameTick(g: GdxGraphics): Unit = {
     if(initiated) {
+      // The three manager to call in order to make the game work
+
+      // Responsible for each draw method call
+      // And doGameplay tick in every physical object
+      // As we don't seperate gameplay from render
       DrawManager.onDraw(g)
+
+      // Check all the collisions in the game
+      CollisionManager.checkCollisions()
+
+      // Tick all the timers
+      Timer.tick()
     }
-    CollisionManager.checkCollisions()
-    Timer.tick()
   }
-  
   def restartGame(): Unit = {
+    // Resetting the depth
     _depth = 0
+    // Disposing old player and stage
+    // Initing the new
     player = new Player(new Position(250, 250), () => {})
-    player.init()
     stage = ProceduralGeneration.generateStage()
   }
 
