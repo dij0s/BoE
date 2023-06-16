@@ -1,10 +1,7 @@
 package ch.hevs.boe.utils
 
-import ch.hevs.boe.entity.Entity
 import ch.hevs.boe.physics.{PhysicalObject, Position}
 import ch.hevs.gdx2d.lib.GdxGraphics
-import com.badlogic.gdx.graphics.Color
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 
 object Utils {
 

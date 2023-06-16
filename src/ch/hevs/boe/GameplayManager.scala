@@ -18,7 +18,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 object GameplayManager extends Initiable {
   val debugMode = false
 
-
   val screenSize: (Int, Int) = (900, 600)
   
   private var _titleFont: BitmapFont = null
@@ -65,7 +64,7 @@ object GameplayManager extends Initiable {
   }
   
   def restartGame(): Unit = {
-//    GameplayManager.stage.dispose()
+    _depth = 0
     player = new Player(new Position(250, 250), () => {})
     player.init()
     stage = ProceduralGeneration.generateStage()
