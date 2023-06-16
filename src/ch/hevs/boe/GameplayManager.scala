@@ -76,7 +76,7 @@ object GameplayManager extends Initiable {
     _depth = 0
     // Disposing old player and stage
     // Initing the new
-    player = new Player(new Position(250, 250), () => {})
+    player = new Player(new Position(250, 250))
     stage = ProceduralGeneration.generateStage()
   }
 
@@ -90,7 +90,7 @@ object GameplayManager extends Initiable {
     _descriptionFont = fontGenerator.generateFont(fontParameters)
     fontGenerator.dispose()
     SpritesManager.init()
-    _player = new Player(new Position(250, 250), () => {})
+    _player = new Player(new Position(250, 250))
     stage = ProceduralGeneration.generateStage()
     _depth = 0
     player.init()

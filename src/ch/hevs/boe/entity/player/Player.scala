@@ -26,7 +26,7 @@ object PlayerDirections extends Enumeration {
 }
 
 object Player extends DefaultEntityStatistics{
-  override val DAMAGE_DEFAULT: Int = 1
+  override val DAMAGE_DEFAULT: Int = 2
   override val SPEED_DEFAULT: Int = 5
   override val SIZE_DEFAULT: Int = 40
   val HEIGHT_FACTOR: Double = 1.5
