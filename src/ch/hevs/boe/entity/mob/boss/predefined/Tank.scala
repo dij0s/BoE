@@ -19,7 +19,7 @@ import scala.util.Random
 
 object Tank extends DefaultEntityStatistics {
   override val FIRE_RATE_DEFAULT: Double = 2
-  override val DEFAULT_HP: Int = 20
+  override val DEFAULT_HP: Int = 15
   override val DAMAGE_DEFAULT: Int = 20
   override val SPEED_DEFAULT: Int = 1
   override val SIZE_DEFAULT: Int = 100
@@ -142,7 +142,7 @@ class Tank(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos, Tan
     var currentSalveNbr = 0
     if(salveTimer != null) salveTimer()
     salveTimer = Timer.every(salveSpeed, () => {
-      fireRocket(false)
+      fireRocket(true)
       currentSalveNbr += 1
       if (currentSalveNbr == salveLength) {
         salveTimer()

@@ -13,8 +13,8 @@ import ch.hevs.gdx2d.lib.GdxGraphics
 import scala.util.Random
 
 object TeddyBear extends DefaultEntityStatistics {
-	override val FIRE_RATE_DEFAULT: Double = 1.35
-	override val DEFAULT_HP: Int = 30
+	override val FIRE_RATE_DEFAULT: Double = 1.45
+	override val DEFAULT_HP: Int = 10
 	override val DAMAGE_DEFAULT: Int = 2
 	override val SPEED_DEFAULT: Int = 0
 	override val SIZE_DEFAULT: Int = 60

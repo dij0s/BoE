@@ -26,11 +26,11 @@ object PlayerDirections extends Enumeration {
 }
 
 object Player extends DefaultEntityStatistics{
-  override val DAMAGE_DEFAULT: Int = 200
+  override val DAMAGE_DEFAULT: Int = 1
   override val SPEED_DEFAULT: Int = 5
   override val SIZE_DEFAULT: Int = 40
   val HEIGHT_FACTOR: Double = 1.5
-  override val FIRE_RATE_DEFAULT: Double = 1.5
+  override val FIRE_RATE_DEFAULT: Double = 2
   private val MAX_HP = 10
   override val DEFAULT_HP: Int = Player.MAX_HP
   val SPRITE_VARIATIONS: Int = 10
