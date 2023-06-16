@@ -84,7 +84,8 @@ class Bat(pos: Position, cb: (Mob) => Unit) extends Mob(pos, Bat.SIZE_DEFAULT, B
   private def fireToPlayer(): Unit = {
     if (fireCooldown) return
     fireCooldown = true
-    new DirectedProjectile(this, GameplayManager.player)
+    val proj = new DirectedProjectile(this, GameplayManager.player)
+    proj.speed = 2
     Timer.in((fireTimeoutInFrames / fireRate).toInt, () => fireCooldown = false)
   }
   
