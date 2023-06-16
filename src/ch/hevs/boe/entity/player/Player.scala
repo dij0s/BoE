@@ -49,7 +49,7 @@ object Player extends DefaultEntityStatistics{
   SpritesManager.addSprites(SpritesheetModel("data/sprites/elijah_hud_hearts.png", 140, 26), initHudSprite)
 }
 
-class Player(pos: Position,  onPlayerKilled: () => Unit) extends Entity(pos, Player.SIZE_DEFAULT, (Player.SIZE_DEFAULT * Player.HEIGHT_FACTOR).toInt) {
+class Player(pos: Position) extends Entity(pos, Player.SIZE_DEFAULT, (Player.SIZE_DEFAULT * Player.HEIGHT_FACTOR).toInt) {
 
   println("Created player")
 

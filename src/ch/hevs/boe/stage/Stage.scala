@@ -1,7 +1,6 @@
 package ch.hevs.boe.stage
 
 import ch.hevs.boe.{GameplayManager, zIndex}
-import ch.hevs.boe.draw.sprites.SpritesManager
 import ch.hevs.boe.draw.{DrawManager, Drawable}
 import ch.hevs.boe.physics.Position
 import ch.hevs.boe.stage.Directions.Direction
@@ -9,11 +8,11 @@ import ch.hevs.boe.stage.room.Room
 import ch.hevs.boe.utils.Initiable
 import ch.hevs.gdx2d.lib.GdxGraphics
 
-class Stage(private val _spawnRoom: Room, private val _depth: Int) extends Initiable{
+class Stage(private val _spawnRoom: Room, private val _depth: Int) extends Drawable with Initiable{
 
 	// field used to know which room of
 	// current stage we should be displaying
-	private var drawManagerId: Int = -1
+	private var drawManagerId: Int = 0
 	private var _currentRoom: Room = null
 	// we store currentRoom in addition to _spawnRoom
 	// so we can later modify the data structure to handle
@@ -56,12 +55,16 @@ class Stage(private val _spawnRoom: Room, private val _depth: Int) extends Initi
 		}
 	}
 
+	override def draw(g: GdxGraphics): Unit = g.drawString(30, g.getScreenHeight - 30, s"stage ${_depth + 1}", GameplayManager.descriptionFont)
+
 	override protected def _dispose(): Unit = {
 		// We need to clear out all the instances correctly
+		DrawManager.unsubscribe(drawManagerId)
 		this.currentRoom.dispose()
 	}
 
 	override protected def _init(): Unit = {
+		drawManagerId = DrawManager.subscribe(draw, zIndex.HUD_Z_INDEX)
 		this.currentRoom = spawnRoom
 	}
 }

@@ -20,6 +20,7 @@ package object zIndex {
   val MOB_Z_INDEX = 4000
   val ITEM_Z_INDEX = 3000
   val PROJECTILE_Z_INDEX = 1000
+  val HUD_Z_INDEX = 750
   val ANIMATION_Z_INDEX = 500
 }
 
