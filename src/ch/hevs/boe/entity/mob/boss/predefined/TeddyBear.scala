@@ -13,9 +13,9 @@ import ch.hevs.gdx2d.lib.GdxGraphics
 import scala.util.Random
 
 object TeddyBear extends DefaultEntityStatistics {
-	override val FIRE_RATE_DEFAULT: Double = 0
+	override val FIRE_RATE_DEFAULT: Double = 1.45
 	override val DEFAULT_HP: Int = 30
-	override val DAMAGE_DEFAULT: Int = 3
+	override val DAMAGE_DEFAULT: Int = 2
 	override val SPEED_DEFAULT: Int = 0
 	override val SIZE_DEFAULT: Int = 60
 }
@@ -27,7 +27,7 @@ class TeddyBear(pos: Position, callbackOnKilled: (Mob) => Unit) extends Boss(pos
 	override var size: Int = TeddyBear.SIZE_DEFAULT
 	override protected val contactDamage: Int = 1
 
-	override var fireRate: Double = 0.5
+	override var fireRate: Double = TeddyBear.FIRE_RATE_DEFAULT
 	private var fireCooldown: Boolean = false
 
 	private var teddyBearSprite: Spritesheet = null
